@@ -11,6 +11,11 @@ import DataStreams from './DataStreams'
 import ArbitrageOrb from './ArbitrageOrb'
 import StarField from './StarField'
 import type { GameState } from '@/hooks/useArenaGame'
+import {
+  useLivePrice,
+  BINANCE_BTC_USDT,
+  COINBASE_ETH_USD,
+} from '@/hooks/useLivePrice'
 
 function hasWebGL(): boolean {
   if (typeof window === 'undefined') return false
@@ -82,6 +87,9 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
   const orbVisible = state.kind === 'live'
   const armed = state.kind === 'armed' || state.kind === 'live'
 
+  const btc = useLivePrice(BINANCE_BTC_USDT)
+  const eth = useLivePrice(COINBASE_ETH_USD)
+
   // On desktop, shift the scene to the right half so the left column has room for text.
   // On mobile, keep it centered and zoomed out a touch so it fits.
   const groupPos: [number, number, number] = isDesktop ? [2.2, -0.1, 0] : [0, -0.6, 0]
@@ -117,14 +125,16 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
         <ExchangeNode
           position={[-3.8, 0, 0]}
           label="BINANCE"
-          price="BTC/USDT  $67,482.11"
+          price={btc.display}
+          live={btc.isLive}
           color="#FF6B35"
           seed={0.3}
         />
         <ExchangeNode
           position={[3.8, 0, 0]}
-          label="NSE"
-          price="RELIANCE  ₹2,948.20"
+          label="COINBASE"
+          price={eth.display}
+          live={eth.isLive}
           color="#00E5FF"
           seed={1.7}
         />

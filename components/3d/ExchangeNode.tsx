@@ -11,12 +11,21 @@ type Props = {
   price: string
   color: string
   seed: number
+  live?: boolean
 }
 
-export default function ExchangeNode({ position, label, price, color, seed }: Props) {
+export default function ExchangeNode({
+  position,
+  label,
+  price,
+  color,
+  seed,
+  live = false,
+}: Props) {
   const group = useRef<THREE.Group>(null)
   const core = useRef<THREE.Mesh>(null)
   const ring = useRef<THREE.Mesh>(null)
+  const liveDot = useRef<THREE.Mesh>(null)
 
   useFrame((state) => {
     const t = state.clock.elapsedTime
@@ -31,6 +40,10 @@ export default function ExchangeNode({ position, label, price, color, seed }: Pr
     }
     if (ring.current) {
       ring.current.rotation.z = t * 0.25 - seed
+    }
+    if (liveDot.current) {
+      const mat = liveDot.current.material as THREE.MeshBasicMaterial
+      mat.opacity = live ? 0.6 + Math.sin(t * 4) * 0.4 : 0
     }
   })
 
@@ -78,6 +91,26 @@ export default function ExchangeNode({ position, label, price, color, seed }: Pr
       >
         {label}
       </Text>
+
+      {/* LIVE indicator next to label */}
+      <group position={[0, 1.05, 0]}>
+        <mesh ref={liveDot} position={[-0.3, 0, 0]}>
+          <sphereGeometry args={[0.04, 12, 12]} />
+          <meshBasicMaterial color="#00FF94" transparent opacity={0} />
+        </mesh>
+        {live && (
+          <Text
+            position={[-0.15, 0, 0]}
+            fontSize={0.1}
+            color="#00FF94"
+            anchorX="left"
+            anchorY="middle"
+            letterSpacing={0.2}
+          >
+            LIVE
+          </Text>
+        )}
+      </group>
 
       {/* Price ticker */}
       <Text
