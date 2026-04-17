@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { PROJECTS, type Project } from '@/lib/constants'
+import Ticker from './Ticker'
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isFeatured = project.featured
@@ -15,13 +16,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       className={`group relative ${isFeatured ? 'md:col-span-2' : ''}`}
     >
       <div
-        className={`relative h-full rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] p-6 md:p-8 transition-all duration-500 hover:border-[#00E5FF] ${
+        className={`relative h-full rounded-xl border border-[var(--border-color)] bg-[rgba(21,27,40,0.7)] backdrop-blur-sm p-6 md:p-8 transition-all duration-500 hover:border-[#00E5FF] ${
           isFeatured
             ? 'hover:shadow-[0_0_48px_rgba(0,229,255,0.15)]'
             : 'hover:shadow-[0_0_24px_rgba(0,229,255,0.1)]'
         }`}
       >
-        {/* Kicker + status */}
         <div
           className="flex items-center justify-between mb-4 text-[10px] tracking-[0.3em] uppercase"
           style={{ fontFamily: 'var(--font-mono)' }}
@@ -110,40 +110,92 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   )
 }
 
+const STATS = [
+  { value: '< 1μs', label: 'match latency' },
+  { value: '1M+', label: 'msgs / sec' },
+  { value: '2', label: 'live markets' },
+  { value: '100%', label: 'C++20 core' },
+]
+
 export default function Projects() {
   return (
-    <section id="projects" className="py-28 md:py-36 px-6">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14"
-        >
-          <span
-            className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-2 block"
-            style={{ fontFamily: 'var(--font-mono)' }}
+    <>
+      <Ticker />
+      <section id="projects" className="relative py-24 md:py-32 px-6">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-10"
           >
-            // deployed strategies
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] tracking-tight">
-            The engine you just raced.
-          </h2>
-          <p
-            className="mt-3 text-sm md:text-base text-[var(--text-secondary)] max-w-2xl"
-            style={{ fontFamily: 'var(--font-mono)' }}
-          >
-            Real systems, running in production. Built to measure in nanoseconds.
-          </p>
-        </motion.div>
+            <span
+              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-3 block"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              // deployed strategies
+            </span>
+            <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] tracking-tight max-w-3xl">
+              The engine you just raced is real.
+            </h2>
+            <p
+              className="mt-4 text-sm md:text-base text-[var(--text-secondary)] max-w-2xl"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              Running in production. Measured in nanoseconds. Below is the code.
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {PROJECTS.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          {/* Stats strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-12 md:mb-16"
+          >
+            {STATS.map((stat, i) => (
+              <div
+                key={stat.label}
+                className="relative px-5 py-5 border border-[rgba(0,229,255,0.15)] bg-[rgba(0,229,255,0.03)] rounded-lg overflow-hidden group"
+              >
+                <div className="relative z-10">
+                  <div
+                    className="text-2xl md:text-3xl font-bold text-[#00E5FF]"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    className="mt-1 text-[10px] tracking-[0.25em] uppercase text-[var(--text-secondary)]"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  >
+                    {stat.label}
+                  </div>
+                </div>
+                <div
+                  className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: '#00E5FF' }}
+                  aria-hidden
+                />
+                <span
+                  className="absolute top-3 right-3 text-[9px] tracking-[0.2em] text-[var(--text-secondary)] opacity-50"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  0{i + 1}
+                </span>
+              </div>
+            ))}
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {PROJECTS.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
