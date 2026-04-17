@@ -52,12 +52,13 @@ function Fallback2D() {
   )
 }
 
-function ParallaxRig() {
+function ParallaxRig({ target }: { target: [number, number, number] }) {
   const { camera, pointer } = useThree()
   useFrame(() => {
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, pointer.x * 0.9, 0.04)
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0.2 + pointer.y * 0.5, 0.04)
-    camera.lookAt(0, 0, 0)
+    const baseX = target[0]
+    camera.position.x = THREE.MathUtils.lerp(camera.position.x, baseX + pointer.x * 0.4, 0.05)
+    camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0.2 + pointer.y * 0.25, 0.05)
+    camera.lookAt(target[0], target[1], target[2])
   })
   return null
 }
@@ -77,58 +78,66 @@ type Props = {
   onOrbClick: () => void
 }
 
-function Scene({ state, onFire, onOrbClick }: Props) {
+function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: boolean }) {
   const orbVisible = state.kind === 'live'
   const armed = state.kind === 'armed' || state.kind === 'live'
+
+  // On desktop, shift the scene to the right half so the left column has room for text.
+  // On mobile, keep it centered and zoomed out a touch so it fits.
+  const groupPos: [number, number, number] = isDesktop ? [2.2, -0.1, 0] : [0, -0.6, 0]
+  const groupScale = isDesktop ? 0.78 : 0.72
+  const cameraTarget: [number, number, number] = isDesktop ? [2.2, 0, 0] : [0, -0.4, 0]
 
   return (
     <>
       <color attach="background" args={['#0A0E13']} />
-      <fog attach="fog" args={['#0A0E13', 9, 28]} />
+      <fog attach="fog" args={['#0A0E13', 10, 30]} />
 
       <ambientLight intensity={0.35} />
-      <pointLight position={[-6, 2, 2]} intensity={2.5} color="#FF6B35" distance={14} />
-      <pointLight position={[6, 2, 2]} intensity={2.5} color="#00E5FF" distance={14} />
-      <pointLight position={[0, 4, 3]} intensity={1.2} color="#FF2E92" distance={10} />
+      <pointLight position={[-6, 2, 2]} intensity={2.2} color="#FF6B35" distance={14} />
+      <pointLight position={[6, 2, 2]} intensity={2.2} color="#00E5FF" distance={14} />
+      <pointLight position={[0, 4, 3]} intensity={1.0} color="#FF2E92" distance={10} />
 
       <StarField />
       <Grid />
 
       {/* Whole-scene click-to-fire plane (behind everything) */}
       <mesh
-        position={[0, 0, -1.5]}
+        position={[0, 0, -2]}
         onPointerDown={(e) => {
           e.stopPropagation()
           onFire()
         }}
       >
-        <planeGeometry args={[40, 20]} />
+        <planeGeometry args={[60, 30]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      <ExchangeNode
-        position={[-3.8, 0, 0]}
-        label="BINANCE"
-        price="BTC/USDT  $67,482.11"
-        color="#FF6B35"
-        seed={0.3}
-      />
-      <ExchangeNode
-        position={[3.8, 0, 0]}
-        label="NSE"
-        price="RELIANCE  ₹2,948.20"
-        color="#00E5FF"
-        seed={1.7}
-      />
+      <group position={groupPos} scale={groupScale}>
+        <ExchangeNode
+          position={[-3.8, 0, 0]}
+          label="BINANCE"
+          price="BTC/USDT  $67,482.11"
+          color="#FF6B35"
+          seed={0.3}
+        />
+        <ExchangeNode
+          position={[3.8, 0, 0]}
+          label="NSE"
+          price="RELIANCE  ₹2,948.20"
+          color="#00E5FF"
+          seed={1.7}
+        />
 
-      <MatchEngine armed={armed} />
-      <DataStreams />
-      <ArbitrageOrb visible={orbVisible} onClick={onOrbClick} />
+        <MatchEngine armed={armed} />
+        <DataStreams />
+        <ArbitrageOrb visible={orbVisible} onClick={onOrbClick} />
+      </group>
 
-      <ParallaxRig />
+      <ParallaxRig target={cameraTarget} />
 
       <EffectComposer>
-        <Bloom intensity={1.1} luminanceThreshold={0.35} luminanceSmoothing={0.85} mipmapBlur />
+        <Bloom intensity={1.0} luminanceThreshold={0.4} luminanceSmoothing={0.85} mipmapBlur />
       </EffectComposer>
 
       <Preload all />
@@ -138,14 +147,26 @@ function Scene({ state, onFire, onOrbClick }: Props) {
 
 export default function ArenaScene(props: Props) {
   const [ok, setOk] = useState<boolean | null>(null)
+  const [isDesktop, setIsDesktop] = useState(false)
+
   useEffect(() => setOk(hasWebGL()), [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(min-width: 768px)')
+    const apply = () => setIsDesktop(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
+
   if (ok === null || !ok) return <Fallback2D />
 
   return (
     <div className="absolute inset-0 z-0">
       <Boundary fallback={<Fallback2D />}>
         <Canvas
-          camera={{ position: [0, 0.3, 7.5], fov: 55, near: 0.1, far: 60 }}
+          camera={{ position: [0, 0.3, 8], fov: 55, near: 0.1, far: 60 }}
           dpr={[1, 1.75]}
           gl={{
             antialias: true,
@@ -156,7 +177,7 @@ export default function ArenaScene(props: Props) {
           onCreated={({ gl }) => gl.setClearColor('#0A0E13')}
         >
           <Suspense fallback={null}>
-            <Scene {...props} />
+            <Scene {...props} isDesktop={isDesktop} />
           </Suspense>
         </Canvas>
       </Boundary>

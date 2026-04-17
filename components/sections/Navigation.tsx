@@ -30,7 +30,7 @@ export default function Navigation() {
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           <span className="text-[#00E5FF]">&lt;</span>
-          <span className="text-[var(--text-primary)]">JB</span>
+          <span className="text-[var(--text-primary)]">SS</span>
           <span className="text-[#00E5FF]"> /&gt;</span>
         </a>
 

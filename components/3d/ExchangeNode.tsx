@@ -38,27 +38,33 @@ export default function ExchangeNode({ position, label, price, color, seed }: Pr
     <group ref={group} position={position}>
       {/* Core crystal */}
       <mesh ref={core}>
-        <icosahedronGeometry args={[0.55, 0]} />
+        <icosahedronGeometry args={[0.6, 1]} />
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={1.6}
-          roughness={0.25}
-          metalness={0.75}
+          emissiveIntensity={1.8}
+          roughness={0.15}
+          metalness={0.85}
           flatShading
         />
       </mesh>
 
+      {/* Wireframe overlay */}
+      <mesh scale={1.02}>
+        <icosahedronGeometry args={[0.6, 1]} />
+        <meshBasicMaterial color={color} wireframe transparent opacity={0.35} />
+      </mesh>
+
       {/* Inner glow */}
       <mesh>
-        <sphereGeometry args={[0.35, 24, 24]} />
-        <meshBasicMaterial color={color} transparent opacity={0.35} />
+        <sphereGeometry args={[0.4, 24, 24]} />
+        <meshBasicMaterial color={color} transparent opacity={0.22} />
       </mesh>
 
       {/* Orbital ring */}
       <mesh ref={ring} rotation={[Math.PI / 2.4, 0, 0]}>
-        <torusGeometry args={[0.95, 0.012, 8, 80]} />
-        <meshBasicMaterial color={color} transparent opacity={0.6} />
+        <torusGeometry args={[1.0, 0.01, 8, 96]} />
+        <meshBasicMaterial color={color} transparent opacity={0.55} />
       </mesh>
 
       {/* Label */}

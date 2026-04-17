@@ -18,33 +18,36 @@ type Props = {
 }
 
 export default function ArenaHUD({ state, leaderboard, onArm, onReset }: Props) {
+  // On resolved/missed, show the card centered (it needs to be the focus).
+  // Otherwise, text lives in the left column; scene breathes on the right.
+  const centered = state.kind === 'resolved' || state.kind === 'missed' || state.kind === 'live'
+
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
-      {/* Top ribbon */}
-      <div className="absolute top-4 left-0 right-0 flex justify-center px-6">
+      <div
+        className={`h-full w-full flex px-6 md:px-12 lg:px-20 ${
+          centered ? 'items-center justify-center' : 'items-center'
+        }`}
+      >
         <div
-          className="pointer-events-auto flex items-center gap-3 text-[11px] tracking-[0.2em] uppercase text-[var(--text-secondary)] border border-[rgba(0,229,255,0.2)] bg-[rgba(10,14,19,0.6)] backdrop-blur px-4 py-1.5 rounded-full"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className={
+            centered
+              ? 'w-full max-w-3xl text-center'
+              : 'w-full md:max-w-xl text-center md:text-left'
+          }
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
-          arena · live · p50 800ns · p99 2.4μs
+          <AnimatePresence mode="wait">
+            {state.kind === 'idle' && <IdlePanel key="idle" onArm={onArm} />}
+            {state.kind === 'armed' && <ArmedPanel key="armed" />}
+            {state.kind === 'live' && <LivePanel key="live" />}
+            {state.kind === 'resolved' && (
+              <ResultPanel key="resolved" state={state} onReset={onReset} />
+            )}
+            {state.kind === 'missed' && <MissedPanel key="missed" onReset={onReset} />}
+          </AnimatePresence>
         </div>
       </div>
 
-      {/* Center content — shifts based on game state */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 pt-10">
-        <AnimatePresence mode="wait">
-          {state.kind === 'idle' && <IdlePanel key="idle" onArm={onArm} />}
-          {state.kind === 'armed' && <ArmedPanel key="armed" />}
-          {state.kind === 'live' && <LivePanel key="live" />}
-          {state.kind === 'resolved' && (
-            <ResultPanel key="resolved" state={state} onReset={onReset} />
-          )}
-          {state.kind === 'missed' && <MissedPanel key="missed" onReset={onReset} />}
-        </AnimatePresence>
-      </div>
-
-      {/* Leaderboard bottom-left */}
       <Leaderboard scores={leaderboard} />
     </div>
   )
@@ -57,50 +60,45 @@ function IdlePanel({ onArm }: { onArm: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className="text-center max-w-3xl"
     >
       <div
-        className="inline-block mb-5 px-3 py-1 text-xs tracking-[0.25em] uppercase text-[#00E5FF] border border-[rgba(0,229,255,0.3)] rounded"
+        className="inline-flex items-center gap-2 mb-5 px-3 py-1 text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] border border-[rgba(0,229,255,0.25)] rounded bg-[rgba(10,14,19,0.4)] backdrop-blur-sm"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
-        ~/{PERSON.handle} — {PERSON.role}
+        <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
+        ~/{PERSON.handle} · {PERSON.role}
       </div>
-      <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-5">
-        <span className="text-[var(--text-primary)]">{PERSON.firstName} </span>
-        <span className="text-gradient">{PERSON.lastName}</span>
+
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-5">
+        <span className="block text-[var(--text-primary)]">{PERSON.firstName}</span>
+        <span className="block text-gradient">{PERSON.lastName}</span>
       </h1>
+
       <p
-        className="text-base md:text-lg text-[var(--text-secondary)] mb-8 max-w-xl mx-auto leading-relaxed"
+        className="text-sm md:text-base text-[var(--text-secondary)] mb-7 max-w-md mx-auto md:mx-0 leading-relaxed"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         You think you&apos;re fast. My C++ match engine is faster.
         <br />
-        <span className="text-[#FFD600]">Race it.</span>
+        <span className="text-[#FFD600]">Race it →</span>
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center items-center pointer-events-auto">
+      <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start items-center pointer-events-auto">
         <button
           onClick={onArm}
-          className="group relative px-8 py-3 bg-[#00E5FF] text-[#0A0E13] font-bold text-sm tracking-[0.2em] uppercase rounded-md hover:shadow-[0_0_32px_rgba(0,229,255,0.6)] transition-all duration-300"
+          className="px-7 py-3 bg-[#00E5FF] text-[#0A0E13] font-bold text-xs tracking-[0.25em] uppercase rounded-md hover:shadow-[0_0_32px_rgba(0,229,255,0.55)] transition-all duration-300"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           ► start the race
         </button>
         <a
           href="#projects"
-          className="px-8 py-3 text-sm tracking-[0.2em] uppercase text-[var(--text-secondary)] border border-[rgba(138,148,166,0.3)] rounded-md hover:text-[#00E5FF] hover:border-[#00E5FF] transition-all duration-300"
+          className="px-7 py-3 text-xs tracking-[0.25em] uppercase text-[var(--text-secondary)] border border-[rgba(138,148,166,0.3)] rounded-md hover:text-[#00E5FF] hover:border-[#00E5FF] transition-all duration-300"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           view work
         </a>
       </div>
-
-      <p
-        className="mt-6 text-[11px] text-[var(--text-secondary)] tracking-[0.2em] uppercase"
-        style={{ fontFamily: 'var(--font-mono)' }}
-      >
-        a yellow arb orb will appear · click anywhere to take it
-      </p>
     </motion.div>
   )
 }
@@ -108,27 +106,25 @@ function IdlePanel({ onArm }: { onArm: () => void }) {
 function ArmedPanel() {
   return (
     <motion.div
-      key="armed"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 1.1 }}
-      className="text-center"
+      exit={{ opacity: 0, scale: 1.05 }}
     >
       <div
-        className="inline-flex items-center gap-3 px-6 py-3 border border-[rgba(255,214,0,0.35)] bg-[rgba(255,214,0,0.05)] rounded-full"
+        className="inline-flex items-center gap-3 px-5 py-2.5 border border-[rgba(255,214,0,0.4)] bg-[rgba(255,214,0,0.05)] backdrop-blur rounded-full"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         <motion.span
           animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 0.9, repeat: Infinity }}
+          transition={{ duration: 0.8, repeat: Infinity }}
           className="w-2 h-2 rounded-full bg-[#FFD600]"
         />
-        <span className="text-sm tracking-[0.25em] uppercase text-[#FFD600]">
+        <span className="text-xs tracking-[0.3em] uppercase text-[#FFD600]">
           arming · hold steady
         </span>
       </div>
       <p
-        className="mt-5 text-xs text-[var(--text-secondary)] tracking-[0.2em] uppercase"
+        className="mt-4 text-[11px] text-[var(--text-secondary)] tracking-[0.25em] uppercase"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         wait for the orb. don&apos;t jump the gun.
@@ -140,20 +136,18 @@ function ArmedPanel() {
 function LivePanel() {
   return (
     <motion.div
-      key="live"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className="text-center"
+      transition={{ duration: 0.12 }}
     >
       <motion.div
-        animate={{ scale: [1, 1.08, 1] }}
-        transition={{ duration: 0.5, repeat: Infinity }}
-        className="text-4xl md:text-6xl font-bold text-[#FFD600] tracking-tight"
+        animate={{ scale: [1, 1.06, 1] }}
+        transition={{ duration: 0.45, repeat: Infinity }}
+        className="text-5xl md:text-7xl font-bold text-[#FFD600] tracking-tight"
         style={{
           fontFamily: 'var(--font-mono)',
-          textShadow: '0 0 40px rgba(255,214,0,0.8)',
+          textShadow: '0 0 40px rgba(255,214,0,0.75)',
         }}
       >
         CLICK NOW
@@ -170,14 +164,11 @@ function ResultPanel({
   onReset: () => void
 }) {
   const { userMs, engineNs, multiplier } = state.result
-  const beatable = multiplier < 100_000 // dream scenario
+  const beatable = multiplier < 100_000
   const share = () => {
     const text = `I just raced Sujal's C++ match engine. I clicked in ${formatMs(userMs)}. It won in ${formatNs(engineNs)}. I lost by ${formatMultiplier(multiplier)}. → ${typeof window !== 'undefined' ? window.location.href : ''}`
-    if (navigator.share) {
-      navigator.share({ text }).catch(() => copyToClipboard(text))
-    } else {
-      copyToClipboard(text)
-    }
+    if (navigator.share) navigator.share({ text }).catch(() => copyToClipboard(text))
+    else copyToClipboard(text)
   }
 
   return (
@@ -186,11 +177,11 @@ function ResultPanel({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -24 }}
       transition={{ duration: 0.45 }}
-      className="pointer-events-auto w-full max-w-3xl"
+      className="pointer-events-auto w-full max-w-3xl mx-auto"
     >
-      <div className="border border-[rgba(0,229,255,0.25)] bg-[rgba(10,14,19,0.75)] backdrop-blur rounded-xl p-6 md:p-8">
+      <div className="border border-[rgba(0,229,255,0.25)] bg-[rgba(10,14,19,0.82)] backdrop-blur rounded-xl p-6 md:p-8">
         <div
-          className="text-[11px] tracking-[0.3em] uppercase text-[var(--text-secondary)] mb-5"
+          className="text-[10px] tracking-[0.3em] uppercase text-[var(--text-secondary)] mb-5"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           race · complete
@@ -227,21 +218,12 @@ function ResultPanel({
           </div>
         </div>
 
-        {/* Visual bar */}
         <div className="relative h-2 bg-[rgba(255,255,255,0.05)] rounded-full overflow-hidden mb-6">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: '100%' }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00E5FF] via-[#FF2E92] to-[#FF6B35]"
-          />
-          <div
-            className="absolute top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#00E5FF]"
-            style={{ left: '0.5%' }}
-          />
-          <div
-            className="absolute top-1/2 -translate-y-1/2 w-[2px] h-3 bg-[#FF6B35]"
-            style={{ right: '0.5%' }}
           />
         </div>
 
@@ -271,21 +253,21 @@ function ResultPanel({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={onReset}
-            className="px-6 py-2.5 bg-[#00E5FF] text-[#0A0E13] font-bold text-xs tracking-[0.2em] uppercase rounded-md hover:shadow-[0_0_24px_rgba(0,229,255,0.5)] transition-all"
+            className="px-6 py-2.5 bg-[#00E5FF] text-[#0A0E13] font-bold text-xs tracking-[0.25em] uppercase rounded-md hover:shadow-[0_0_24px_rgba(0,229,255,0.5)] transition-all"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             ► race again
           </button>
           <button
             onClick={share}
-            className="px-6 py-2.5 border border-[rgba(255,46,146,0.4)] text-[#FF2E92] text-xs tracking-[0.2em] uppercase rounded-md hover:bg-[rgba(255,46,146,0.1)] transition-all"
+            className="px-6 py-2.5 border border-[rgba(255,46,146,0.4)] text-[#FF2E92] text-xs tracking-[0.25em] uppercase rounded-md hover:bg-[rgba(255,46,146,0.1)] transition-all"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             share result
           </button>
           <a
             href="#projects"
-            className="px-6 py-2.5 border border-[rgba(138,148,166,0.3)] text-[var(--text-secondary)] text-xs tracking-[0.2em] uppercase rounded-md hover:text-[#00E5FF] hover:border-[#00E5FF] transition-all"
+            className="px-6 py-2.5 border border-[rgba(138,148,166,0.3)] text-[var(--text-secondary)] text-xs tracking-[0.25em] uppercase rounded-md hover:text-[#00E5FF] hover:border-[#00E5FF] transition-all"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             see the engine
@@ -302,10 +284,10 @@ function MissedPanel({ onReset }: { onReset: () => void }) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0 }}
-      className="pointer-events-auto text-center max-w-md"
+      className="pointer-events-auto text-center max-w-md mx-auto"
     >
       <div
-        className="inline-block mb-4 px-3 py-1 text-[11px] tracking-[0.3em] uppercase text-[#FF2E92] border border-[rgba(255,46,146,0.35)] rounded"
+        className="inline-block mb-4 px-3 py-1 text-[10px] tracking-[0.3em] uppercase text-[#FF2E92] border border-[rgba(255,46,146,0.4)] rounded bg-[rgba(10,14,19,0.6)] backdrop-blur"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         invalid · null trade
@@ -324,7 +306,7 @@ function MissedPanel({ onReset }: { onReset: () => void }) {
       </p>
       <button
         onClick={onReset}
-        className="px-6 py-2.5 bg-[#00E5FF] text-[#0A0E13] font-bold text-xs tracking-[0.2em] uppercase rounded-md"
+        className="px-6 py-2.5 bg-[#00E5FF] text-[#0A0E13] font-bold text-xs tracking-[0.25em] uppercase rounded-md"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         ► retry
@@ -343,7 +325,7 @@ function Leaderboard({ scores }: { scores: Score[] }) {
       className="absolute bottom-6 left-6 hidden md:block"
     >
       <div
-        className="border border-[rgba(0,229,255,0.2)] bg-[rgba(10,14,19,0.6)] backdrop-blur rounded-lg px-4 py-3 min-w-[200px]"
+        className="border border-[rgba(0,229,255,0.2)] bg-[rgba(10,14,19,0.7)] backdrop-blur rounded-lg px-4 py-3 min-w-[200px]"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         <div className="text-[9px] tracking-[0.3em] uppercase text-[var(--text-secondary)] mb-2">
