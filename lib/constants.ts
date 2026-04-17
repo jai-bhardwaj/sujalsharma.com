@@ -1,8 +1,8 @@
 export const PERSON = {
-  firstName: 'Jai',
-  lastName: 'Bhardwaj',
-  full: 'Jai Bhardwaj',
-  handle: 'jai',
+  firstName: 'Sujal',
+  lastName: 'Sharma',
+  full: 'Sujal Sharma',
+  handle: 'sujal',
   role: 'systems engineer',
   tagline: 'I build ultra-low-latency systems.',
 } as const

@@ -172,7 +172,7 @@ function ResultPanel({
   const { userMs, engineNs, multiplier } = state.result
   const beatable = multiplier < 100_000 // dream scenario
   const share = () => {
-    const text = `I just raced jai-bhardwaj's C++ match engine. I clicked in ${formatMs(userMs)}. It won in ${formatNs(engineNs)}. I lost by ${formatMultiplier(multiplier)}. → ${typeof window !== 'undefined' ? window.location.href : ''}`
+    const text = `I just raced Sujal's C++ match engine. I clicked in ${formatMs(userMs)}. It won in ${formatNs(engineNs)}. I lost by ${formatMultiplier(multiplier)}. → ${typeof window !== 'undefined' ? window.location.href : ''}`
     if (navigator.share) {
       navigator.share({ text }).catch(() => copyToClipboard(text))
     } else {

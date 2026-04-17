@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jaibhardwaj.dev'),
-  title: 'Jai Bhardwaj · Race my C++ match engine',
+  metadataBase: new URL('https://sujalsharma.com'),
+  title: 'Sujal Sharma · Race my C++ match engine',
   description:
-    "Think you're fast? Race jai-bhardwaj's ultra-low-latency match engine in the browser. Your reaction time vs Mach-Zero's sub-microsecond execution. Spoiler: you lose by ~300,000×.",
+    "Think you're fast? Race Sujal's ultra-low-latency match engine in the browser. Your reaction time vs Mach-Zero's sub-microsecond execution. Spoiler: you lose by ~300,000×.",
   keywords: [
-    'Jai Bhardwaj',
+    'Sujal Sharma',
     'HFT',
     'high frequency trading',
     'C++ engineer',
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Jai Bhardwaj · Race my C++ match engine',
+    title: 'Sujal Sharma · Race my C++ match engine',
     description:
       "Your reaction time vs an ultra-low-latency match engine. 180ms vs 800ns. Play the game.",
-    siteName: 'Jai Bhardwaj',
+    siteName: 'Sujal Sharma',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Jai Bhardwaj · Race my C++ match engine',
+    title: 'Sujal Sharma · Race my C++ match engine',
     description:
       '180ms vs 800ns. Race my engine. You will lose by ~300,000×.',
   },
