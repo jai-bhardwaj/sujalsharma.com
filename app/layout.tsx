@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     'C++ engineer',
     'Mach-Zero',
     'ultra-low latency',
-    'systems engineer',
+    'software engineer',
     'trading systems',
     'portfolio',
   ],

@@ -33,28 +33,25 @@ export default function Contact() {
     'w-full px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-md text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[#00E5FF] focus:shadow-[0_0_0_1px_rgba(0,229,255,0.3)] transition-all duration-300 text-sm'
 
   return (
-    <section id="contact" className="py-28 md:py-36 px-6">
+    <section id="contact" className="py-20 md:py-28 px-6 md:px-10">
       <div className="max-w-2xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="mb-10"
         >
           <span
-            className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-2 block"
+            className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-4 block"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             // open an order
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-4 tracking-tight leading-[1.1]">
             Hiring a fast engineer?
           </h2>
-          <p
-            className="text-[var(--text-secondary)] text-sm md:text-base"
-            style={{ fontFamily: 'var(--font-mono)' }}
-          >
+          <p className="text-[var(--text-secondary)] text-sm md:text-base leading-relaxed">
             Tell me about the problem. I read every message.
           </p>
         </motion.div>

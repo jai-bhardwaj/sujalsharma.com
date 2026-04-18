@@ -9,21 +9,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.55, delay: index * 0.1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
       className={`group relative ${isFeatured ? 'md:col-span-2' : ''}`}
     >
       <div
-        className={`relative h-full rounded-xl border border-[var(--border-color)] bg-[rgba(21,27,40,0.7)] backdrop-blur-sm p-6 md:p-8 transition-all duration-500 hover:border-[#00E5FF] ${
+        className={`relative h-full rounded-xl border border-[rgba(255,255,255,0.06)] bg-[rgba(21,27,40,0.55)] backdrop-blur-sm p-7 md:p-9 transition-all duration-500 hover:border-[rgba(0,229,255,0.4)] ${
           isFeatured
-            ? 'hover:shadow-[0_0_48px_rgba(0,229,255,0.15)]'
-            : 'hover:shadow-[0_0_24px_rgba(0,229,255,0.1)]'
+            ? 'hover:shadow-[0_0_60px_rgba(0,229,255,0.12)]'
+            : 'hover:shadow-[0_0_28px_rgba(0,229,255,0.08)]'
         }`}
       >
         <div
-          className="flex items-center justify-between mb-4 text-[10px] tracking-[0.3em] uppercase"
+          className="flex items-center justify-between mb-5 text-[10px] tracking-[0.3em] uppercase"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           <span className="text-[#00E5FF]">{project.kicker}</span>
@@ -36,43 +36,43 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         <h3
-          className={`font-bold mb-3 text-[var(--text-primary)] group-hover:text-[#00E5FF] transition-colors duration-300 ${
-            isFeatured ? 'text-3xl md:text-4xl' : 'text-xl md:text-2xl'
+          className={`font-bold mb-4 text-[var(--text-primary)] group-hover:text-[#00E5FF] transition-colors duration-300 tracking-tight ${
+            isFeatured ? 'text-2xl md:text-3xl' : 'text-xl'
           }`}
         >
           {project.title}
         </h3>
 
         <p
-          className={`text-[var(--text-secondary)] mb-6 leading-relaxed ${
-            isFeatured ? 'text-base md:text-lg max-w-2xl' : 'text-sm'
+          className={`text-[var(--text-secondary)] mb-7 leading-relaxed ${
+            isFeatured ? 'text-base max-w-2xl' : 'text-sm'
           }`}
         >
           {isFeatured ? project.longDescription : project.description}
         </p>
 
         {project.metrics && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+          <div className="flex flex-wrap gap-2.5 mb-7">
             {Object.entries(project.metrics).map(([key, value]) => (
               <div
                 key={key}
-                className="px-3 py-2 bg-[rgba(0,229,255,0.04)] border border-[rgba(0,229,255,0.15)] rounded"
+                className="px-3.5 py-2 bg-[rgba(0,229,255,0.04)] border border-[rgba(0,229,255,0.12)] rounded-md"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
-                <div className="text-[9px] tracking-[0.25em] uppercase text-[var(--text-secondary)]">
+                <span className="text-[9px] tracking-[0.25em] uppercase text-[var(--text-secondary)]">
                   {key}
-                </div>
-                <div className="text-sm font-semibold text-[#00E5FF]">{value}</div>
+                </span>
+                <span className="ml-2 text-xs font-semibold text-[#00E5FF]">{value}</span>
               </div>
             ))}
           </div>
         )}
 
-        <div className="flex flex-wrap gap-1.5 mb-6">
+        <div className="flex flex-wrap gap-1.5 mb-7">
           {project.technologies.map((tech) => (
             <span
               key={tech}
-              className="text-[10px] tracking-[0.1em] px-2 py-1 bg-[rgba(255,255,255,0.04)] text-[var(--text-secondary)] rounded border border-[rgba(255,255,255,0.06)]"
+              className="text-[10px] px-2 py-1 bg-[rgba(255,255,255,0.03)] text-[var(--text-secondary)] rounded border border-[rgba(255,255,255,0.05)]"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
               {tech}
@@ -81,7 +81,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         <div
-          className="flex gap-5 text-xs tracking-[0.2em] uppercase"
+          className="flex gap-6 text-[11px] tracking-[0.25em] uppercase"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           {project.links.github && (
@@ -121,75 +121,56 @@ export default function Projects() {
   return (
     <>
       <Ticker />
-      <section id="projects" className="relative py-24 md:py-32 px-6">
+      <section id="projects" className="relative py-20 md:py-28 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-10"
+            transition={{ duration: 0.5 }}
+            className="mb-12 md:mb-16 max-w-3xl"
           >
             <span
-              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-3 block"
+              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-4 block"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
               // deployed strategies
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] tracking-tight max-w-3xl">
+            <h2 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-[1.1]">
               The engine you just raced is real.
             </h2>
-            <p
-              className="mt-4 text-sm md:text-base text-[var(--text-secondary)] max-w-2xl"
-              style={{ fontFamily: 'var(--font-mono)' }}
-            >
+            <p className="mt-4 text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-xl">
               Running in production. Measured in nanoseconds. Below is the code.
             </p>
           </motion.div>
 
-          {/* Stats strip */}
+          {/* Stats strip — understated, sits as a quiet data row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-12 md:mb-16"
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 mb-14 md:mb-20 py-6 border-y border-[rgba(255,255,255,0.06)]"
           >
-            {STATS.map((stat, i) => (
-              <div
-                key={stat.label}
-                className="relative px-5 py-5 border border-[rgba(0,229,255,0.15)] bg-[rgba(0,229,255,0.03)] rounded-lg overflow-hidden group"
-              >
-                <div className="relative z-10">
-                  <div
-                    className="text-2xl md:text-3xl font-bold text-[#00E5FF]"
-                    style={{ fontFamily: 'var(--font-mono)' }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    className="mt-1 text-[10px] tracking-[0.25em] uppercase text-[var(--text-secondary)]"
-                    style={{ fontFamily: 'var(--font-mono)' }}
-                  >
-                    {stat.label}
-                  </div>
-                </div>
+            {STATS.map((stat) => (
+              <div key={stat.label}>
                 <div
-                  className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: '#00E5FF' }}
-                  aria-hidden
-                />
-                <span
-                  className="absolute top-3 right-3 text-[9px] tracking-[0.2em] text-[var(--text-secondary)] opacity-50"
+                  className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] tracking-tight"
                   style={{ fontFamily: 'var(--font-mono)' }}
                 >
-                  0{i + 1}
-                </span>
+                  {stat.value}
+                </div>
+                <div
+                  className="mt-1.5 text-[10px] tracking-[0.25em] uppercase text-[var(--text-secondary)]"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {stat.label}
+                </div>
               </div>
             ))}
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {PROJECTS.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}

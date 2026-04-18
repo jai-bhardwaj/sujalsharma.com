@@ -3,7 +3,7 @@ export const PERSON = {
   lastName: 'Sharma',
   full: 'Sujal Sharma',
   handle: 'sujal',
-  role: 'systems engineer',
+  role: 'software engineer',
   tagline: 'I build ultra-low-latency systems.',
 } as const
 
