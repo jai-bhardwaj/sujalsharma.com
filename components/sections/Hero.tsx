@@ -47,24 +47,28 @@ export default function Hero() {
       <ArenaScene state={state} onFire={fire} onOrbClick={fire} />
       <ArenaHUD state={state} leaderboard={leaderboard} onArm={arm} onReset={reset} />
 
-      {/* Scroll hint */}
-      <motion.a
-        href="#projects"
+      {/* Scroll hint — aligned to the same container as the rest of the site */}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
-        className="absolute bottom-6 right-6 z-20 hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors"
-        style={{ fontFamily: 'var(--font-mono)' }}
+        className="absolute bottom-10 md:bottom-12 left-0 right-0 z-20 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 hidden md:flex justify-end pointer-events-none"
       >
-        scroll · work
-        <motion.span
-          animate={{ y: [0, 4, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity }}
-          className="inline-block"
+        <a
+          href="#projects"
+          className="inline-flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors pointer-events-auto"
+          style={{ fontFamily: 'var(--font-mono)' }}
         >
-          ↓
-        </motion.span>
-      </motion.a>
+          scroll · work
+          <motion.span
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity }}
+            className="inline-block"
+          >
+            ↓
+          </motion.span>
+        </a>
+      </motion.div>
     </section>
   )
 }

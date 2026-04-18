@@ -25,7 +25,7 @@ export default function ArenaHUD({ state, leaderboard, onArm, onReset }: Props) 
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
       <div
-        className={`h-full w-full flex px-6 md:px-12 lg:px-20 ${
+        className={`h-full w-full max-w-5xl mx-auto flex px-6 md:px-12 lg:px-16 ${
           centered ? 'items-center justify-center' : 'items-center'
         }`}
       >
@@ -33,7 +33,7 @@ export default function ArenaHUD({ state, leaderboard, onArm, onReset }: Props) 
           className={
             centered
               ? 'w-full max-w-3xl text-center'
-              : 'w-full md:max-w-xl text-center md:text-left'
+              : 'w-full md:max-w-md text-center md:text-left'
           }
         >
           <AnimatePresence mode="wait">
@@ -322,10 +322,10 @@ function Leaderboard({ scores }: { scores: Score[] }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.6, duration: 0.6 }}
-      className="absolute bottom-6 left-6 hidden md:block"
+      className="absolute bottom-10 md:bottom-12 left-0 right-0 max-w-5xl mx-auto px-6 md:px-12 lg:px-16 hidden md:block pointer-events-auto"
     >
       <div
-        className="border border-[rgba(0,229,255,0.2)] bg-[rgba(10,14,19,0.7)] backdrop-blur rounded-lg px-4 py-3 min-w-[200px]"
+        className="inline-block border border-[rgba(0,229,255,0.18)] bg-[rgba(10,14,19,0.7)] backdrop-blur rounded-lg px-4 py-3 min-w-[210px]"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         <div className="text-[9px] tracking-[0.3em] uppercase text-[var(--text-secondary)] mb-2">
