@@ -33,7 +33,11 @@ export default function Contact() {
     'w-full px-4 py-3 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-md text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[#00E5FF] focus:shadow-[0_0_0_1px_rgba(0,229,255,0.3)] transition-all duration-300 text-sm'
 
   return (
-    <section id="contact" className="py-20 md:py-28 px-6 md:px-10">
+    <section
+      id="contact"
+      className="py-28 md:py-40 px-6 md:px-12 lg:px-16"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '900px' }}
+    >
       <div className="max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState, useEffect, Component, type ReactNode } from 'react'
+import { Suspense, useState, useEffect, useRef, Component, type ReactNode } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
@@ -158,6 +158,8 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
 export default function ArenaScene(props: Props) {
   const [ok, setOk] = useState<boolean | null>(null)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [visible, setVisible] = useState(true)
+  const wrapRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => setOk(hasWebGL()), [])
 
@@ -170,19 +172,32 @@ export default function ArenaScene(props: Props) {
     return () => mq.removeEventListener('change', apply)
   }, [])
 
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.02 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   if (ok === null || !ok) return <Fallback2D />
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div ref={wrapRef} className="absolute inset-0 z-0">
       <Boundary fallback={<Fallback2D />}>
         <Canvas
           camera={{ position: [0, 0.3, 8], fov: 55, near: 0.1, far: 60 }}
-          dpr={[1, 1.75]}
+          dpr={[1, 1.5]}
+          frameloop={visible ? 'always' : 'never'}
           gl={{
             antialias: true,
             toneMapping: THREE.ACESFilmicToneMapping,
             outputColorSpace: THREE.SRGBColorSpace,
             failIfMajorPerformanceCaveat: false,
+            powerPreference: 'high-performance',
           }}
           onCreated={({ gl }) => gl.setClearColor('#0A0E13')}
         >

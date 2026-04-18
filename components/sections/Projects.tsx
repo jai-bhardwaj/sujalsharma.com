@@ -121,14 +121,18 @@ export default function Projects() {
   return (
     <>
       <Ticker />
-      <section id="projects" className="relative py-20 md:py-28 px-6 md:px-10">
-        <div className="max-w-6xl mx-auto">
+      <section
+        id="projects"
+        className="relative py-28 md:py-40 px-6 md:px-12 lg:px-16"
+        style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}
+      >
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-12 md:mb-16 max-w-3xl"
+            className="mb-16 md:mb-24 max-w-3xl"
           >
             <span
               className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-4 block"
@@ -150,7 +154,7 @@ export default function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 mb-14 md:mb-20 py-6 border-y border-[rgba(255,255,255,0.06)]"
+            className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 mb-20 md:mb-28 py-8 md:py-10 border-y border-[rgba(255,255,255,0.06)]"
           >
             {STATS.map((stat) => (
               <div key={stat.label}>
@@ -170,7 +174,7 @@ export default function Projects() {
             ))}
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7">
             {PROJECTS.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
             ))}

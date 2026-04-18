@@ -1,65 +1,40 @@
 export default function SiteBackground() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden>
-      {/* Base */}
+    <div
+      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
+      aria-hidden
+    >
+      {/* Base solid — cheap single paint */}
       <div className="absolute inset-0 bg-[#0A0E13]" />
 
-      {/* Drifting gradient blobs */}
+      {/* Static radial gradients — GPU-cheap, no animation / no blur filter */}
       <div
-        className="absolute w-[55vw] h-[55vw] rounded-full blur-[120px] opacity-[0.18]"
+        className="absolute inset-0"
         style={{
-          top: '18%',
-          left: '-8%',
-          background: 'radial-gradient(circle, #00E5FF 0%, transparent 70%)',
-          animation: 'bg-drift-a 22s ease-in-out infinite',
-        }}
-      />
-      <div
-        className="absolute w-[50vw] h-[50vw] rounded-full blur-[120px] opacity-[0.12]"
-        style={{
-          bottom: '8%',
-          right: '-10%',
-          background: 'radial-gradient(circle, #FF2E92 0%, transparent 70%)',
-          animation: 'bg-drift-b 28s ease-in-out infinite',
-        }}
-      />
-      <div
-        className="absolute w-[40vw] h-[40vw] rounded-full blur-[100px] opacity-[0.08]"
-        style={{
-          top: '55%',
-          left: '45%',
-          background: 'radial-gradient(circle, #FF6B35 0%, transparent 70%)',
-          animation: 'bg-drift-c 32s ease-in-out infinite 3s',
+          background: `
+            radial-gradient(ellipse 60vw 50vh at 10% 25%, rgba(0,229,255,0.14), transparent 60%),
+            radial-gradient(ellipse 55vw 45vh at 90% 80%, rgba(255,46,146,0.10), transparent 60%),
+            radial-gradient(ellipse 50vw 40vh at 50% 55%, rgba(255,107,53,0.06), transparent 55%)
+          `,
         }}
       />
 
-      {/* Grid */}
+      {/* Grid — static background-image, composites once */}
       <div
-        className="absolute inset-0 opacity-[0.055]"
+        className="absolute inset-0 opacity-[0.05]"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(0,229,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.6) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 90%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, #000 30%, transparent 90%)',
+            'linear-gradient(rgba(0,229,255,0.55) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.55) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
         }}
       />
 
-      {/* Scanline texture */}
-      <div
-        className="absolute inset-0 opacity-[0.025] mix-blend-screen"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(0deg, rgba(255,255,255,0.35) 0px, rgba(255,255,255,0.35) 1px, transparent 1px, transparent 3px)',
-        }}
-      />
-
-      {/* Vignette */}
+      {/* Vignette — static, cheap */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at center, transparent 30%, rgba(10,14,19,0.85) 100%)',
+            'radial-gradient(ellipse at center, transparent 30%, rgba(10,14,19,0.75) 95%)',
         }}
       />
     </div>
