@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://sujalsharma.com'),
   title: 'Sujal Sharma · Race my C++ match engine',
   description:
-    "Think you're fast? Race Sujal's ultra-low-latency match engine in the browser. Your reaction time vs Mach-Zero's sub-microsecond execution. Spoiler: you lose by ~300,000×.",
+    "Software engineer at Orbital (2 yrs). Built Mach-Zero — an HFT-style match engine in C++20 — as a side project. Race it in the browser; your reaction time vs sub-microsecond execution.",
   keywords: [
     'Sujal Sharma',
     'HFT',

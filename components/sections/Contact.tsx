@@ -223,7 +223,15 @@ export default function Contact() {
           <span className="text-[var(--text-secondary)] opacity-60">
             or skip the ticket —
           </span>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-5">
+            <a
+              href={SOCIAL_LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors"
+            >
+              linkedin
+            </a>
             <a
               href={SOCIAL_LINKS.github}
               target="_blank"

@@ -18,7 +18,7 @@ export default function Navigation() {
   // Scroll-spy: keep the URL hash in sync with the most-visible section,
   // and clear it entirely when the user is back at the hero.
   useEffect(() => {
-    const ids = ['home', 'projects', 'contact']
+    const ids = ['home', 'profile', 'projects', 'contact']
     const elements = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el)
@@ -96,6 +96,15 @@ export default function Navigation() {
               </a>
             )
           })}
+          <a
+            href={SOCIAL_LINKS.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs tracking-[0.2em] uppercase text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors duration-200"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            LinkedIn
+          </a>
           <a
             href={SOCIAL_LINKS.github}
             target="_blank"

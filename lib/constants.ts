@@ -5,17 +5,39 @@ export const PERSON = {
   handle: 'sujal',
   role: 'software engineer',
   tagline: 'I build ultra-low-latency systems.',
+  years: 2,
+  company: 'Orbital',
+  companyUrl: 'https://withorbital.com',
+  location: 'Hyderabad, India',
+  workMode: 'onsite',
+  availability: 'open to opportunities',
+  focus: 'low-latency systems · HFT · execution engines',
+  stack: [
+    'C++20',
+    'TypeScript',
+    'React',
+    'Next.js',
+    'Python',
+    'PostgreSQL',
+    'Linux',
+  ],
+  education: {
+    degree: 'B.Tech · Computer Science',
+    school: 'Dr. A.P.J. Abdul Kalam Technical University',
+    years: '2020–2024',
+  },
 } as const
 
 export const SOCIAL_LINKS = {
   github: 'https://github.com/jai-bhardwaj',
   githubHandle: 'jai-bhardwaj',
   email: '0987sujals@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/jai-bhardwaj/',
+  linkedin: 'https://www.linkedin.com/in/sharmasujal/',
 } as const
 
 export const NAV_LINKS = [
   { label: 'Arena', href: '#home' },
+  { label: 'Profile', href: '#profile' },
   { label: 'Work', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ] as const
@@ -64,10 +86,10 @@ export const PROJECTS: Project[] = [
     proc: 'mach-zero-engine',
     pid: 8421,
     startedAt: '2026-01-03T00:00:00Z',
-    kicker: 'strategy_01 · live',
-    description: 'Ultra-low latency algorithmic trading engine',
+    kicker: 'side_project_01 · open source',
+    description: 'HFT-style execution engine, built solo to learn low-latency C++',
     longDescription:
-      'Nanosecond-precision execution engine with a C++20 core and a Next.js 16 control plane. Runs across Binance (crypto) and NSE (India equities) with multi-tenant risk monitoring, a strategy marketplace, and replayable order flow.',
+      "A C++20 HFT-style execution engine I built solo to learn low-latency systems from the ground up. Simulates order flow against Binance and NSE market data with matching, risk checks, and replay — paired with a Next.js 16 control plane. Not production; it's how I learn by building what I wish existed.",
     featured: true,
     technologies: [
       'C++20',
@@ -89,10 +111,10 @@ export const PROJECTS: Project[] = [
       storage: 'postgres · questdb',
     },
     bars: [
-      { label: 'latency p50', value: '800 ns', fill: 96, tone: 'cyan' },
-      { label: 'latency p99', value: '2.4 μs', fill: 88, tone: 'cyan' },
-      { label: 'tick→trade', value: '< 25 μs', fill: 82, tone: 'green' },
-      { label: 'throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
+      { label: 'target p50', value: '< 1 μs', fill: 96, tone: 'cyan' },
+      { label: 'target p99', value: '< 2.5 μs', fill: 88, tone: 'cyan' },
+      { label: 'target tick→trade', value: '< 25 μs', fill: 82, tone: 'green' },
+      { label: 'target throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
     ],
   },
   {
@@ -101,10 +123,10 @@ export const PROJECTS: Project[] = [
     proc: 'tcp-engine',
     pid: 4512,
     startedAt: '2026-02-12T00:00:00Z',
-    kicker: 'primitive_02',
-    description: 'Zero-copy TCP server in C++20',
+    kicker: 'primitive_02 · open source',
+    description: 'Zero-copy TCP server on io_uring',
     longDescription:
-      'Lock-free TCP client-server built on io_uring with zero-copy buffers. Sustains 1M+ msgs/sec on commodity hardware — the networking substrate that powers Mach-Zero.',
+      "Lock-free TCP server built on io_uring with zero-copy buffers — a learning project exploring the networking substrate HFT engines sit on top of. Targets 1M+ msg/s on commodity hardware.",
     featured: false,
     technologies: ['C++20', 'io_uring', 'Linux', 'epoll', 'Socket Programming'],
     links: { github: 'https://github.com/jai-bhardwaj' },
@@ -114,8 +136,8 @@ export const PROJECTS: Project[] = [
       platform: 'linux',
     },
     bars: [
-      { label: 'throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
-      { label: 'cpu', value: '< 8% / core', fill: 12, tone: 'green' },
+      { label: 'target throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
+      { label: 'target cpu', value: '< 8% / core', fill: 12, tone: 'green' },
     ],
   },
 ]

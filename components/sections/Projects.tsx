@@ -91,7 +91,7 @@ function TerminalPanel({ project, index }: { project: Project; index: number }) 
         </div>
         <div className="flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-[#00FF94]">
           <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
-          running
+          open source
         </div>
       </header>
 
@@ -118,7 +118,7 @@ function TerminalPanel({ project, index }: { project: Project; index: number }) 
         {/* Bars */}
         {project.bars && project.bars.length > 0 && (
           <div>
-            <Prompt command="stats --live" />
+            <Prompt command="cat ./perf-targets.md" />
             <div className="mt-4 pl-2 space-y-3">
               {project.bars.map((b, i) => (
                 <Bar key={b.label} bar={b} delay={0.1 + i * 0.08} />
@@ -207,13 +207,15 @@ export default function Projects() {
               className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-4 block"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
-              // deployed strategies
+              // side projects
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-[1.1]">
-              The engine you just raced is real.
+              The engine you just raced — the source is open.
             </h2>
             <p className="mt-4 text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-xl">
-              Running in production. Measured in nanoseconds. Below is the <code className="text-[#00E5FF]" style={{ fontFamily: 'var(--font-mono)' }}>ps</code> output.
+              Personal projects I built to learn low-latency systems from the
+              ground up. Targets are benchmarks I&apos;m designing against — not
+              production numbers.
             </p>
           </motion.div>
 
