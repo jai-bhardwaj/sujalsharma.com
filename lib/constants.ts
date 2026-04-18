@@ -33,22 +33,37 @@ export const COLORS = {
   accentYellow: '#FFD600',
 } as const
 
+export interface ProjectBar {
+  label: string
+  value: string
+  /** fill pct 0–100 */
+  fill: number
+  tone?: 'cyan' | 'green' | 'orange' | 'magenta'
+}
+
 export interface Project {
   id: string
   title: string
+  proc: string
+  pid: number
+  startedAt: string
   kicker: string
   description: string
   longDescription: string
   featured: boolean
   technologies: string[]
   links: { github?: string; demo?: string }
-  metrics?: Record<string, string>
+  info?: Record<string, string>
+  bars?: ProjectBar[]
 }
 
 export const PROJECTS: Project[] = [
   {
     id: 'mach-zero',
     title: 'Mach-Zero',
+    proc: 'mach-zero-engine',
+    pid: 8421,
+    startedAt: '2026-01-03T00:00:00Z',
     kicker: 'strategy_01 · live',
     description: 'Ultra-low latency algorithmic trading engine',
     longDescription:
@@ -67,15 +82,25 @@ export const PROJECTS: Project[] = [
       github: 'https://github.com/jai-bhardwaj/mach-zero',
       demo: 'https://mach-zero.vercel.app',
     },
-    metrics: {
-      'Match Latency': '< 1μs',
-      'Tick-to-Trade': '< 25μs',
-      'Markets': 'Binance · NSE',
+    info: {
+      core: 'C++20',
+      markets: 'binance · nse',
+      control: 'next.js 16',
+      storage: 'postgres · questdb',
     },
+    bars: [
+      { label: 'latency p50', value: '800 ns', fill: 96, tone: 'cyan' },
+      { label: 'latency p99', value: '2.4 μs', fill: 88, tone: 'cyan' },
+      { label: 'tick→trade', value: '< 25 μs', fill: 82, tone: 'green' },
+      { label: 'throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
+    ],
   },
   {
     id: 'tcp-engine',
     title: 'TCP Engine',
+    proc: 'tcp-engine',
+    pid: 4512,
+    startedAt: '2026-02-12T00:00:00Z',
     kicker: 'primitive_02',
     description: 'Zero-copy TCP server in C++20',
     longDescription:
@@ -83,10 +108,15 @@ export const PROJECTS: Project[] = [
     featured: false,
     technologies: ['C++20', 'io_uring', 'Linux', 'epoll', 'Socket Programming'],
     links: { github: 'https://github.com/jai-bhardwaj' },
-    metrics: {
-      'Throughput': '1M+ msg/s',
-      'Syscalls': 'zero-copy',
+    info: {
+      kernel: 'io_uring',
+      syscalls: 'zero-copy',
+      platform: 'linux',
     },
+    bars: [
+      { label: 'throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
+      { label: 'cpu', value: '< 8% / core', fill: 12, tone: 'green' },
+    ],
   },
 ]
 
