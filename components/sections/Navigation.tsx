@@ -18,7 +18,7 @@ export default function Navigation() {
   // Scroll-spy: keep the URL hash in sync with the most-visible section,
   // and clear it entirely when the user is back at the hero.
   useEffect(() => {
-    const ids = ['home', 'profile', 'projects', 'contact']
+    const ids = ['home', 'now', 'race', 'projects', 'contact']
     const elements = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el)

@@ -1,261 +1,145 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { PROJECTS, type Project, type ProjectBar } from '@/lib/constants'
-import { useUptime } from '@/hooks/useUptime'
-import Ticker from './Ticker'
+import { PROJECTS, type Project } from '@/lib/constants'
 
-const TONE: Record<NonNullable<ProjectBar['tone']>, string> = {
-  cyan: '#00E5FF',
-  green: '#00FF94',
-  orange: '#FF6B35',
-  magenta: '#FF2E92',
-}
-
-function Prompt({ command, delay = 0 }: { command: string; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -8 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.35, delay }}
-      className="flex items-center gap-2 text-[13px]"
-      style={{ fontFamily: 'var(--font-mono)' }}
-    >
-      <span className="text-[#00FF94] opacity-80">sujal@mach-zero</span>
-      <span className="text-[var(--text-secondary)]">:</span>
-      <span className="text-[#FF2E92] opacity-80">~</span>
-      <span className="text-[var(--text-secondary)] pr-1">$</span>
-      <span className="text-[var(--text-primary)]">{command}</span>
-    </motion.div>
-  )
-}
-
-function Bar({ bar, delay = 0 }: { bar: ProjectBar; delay?: number }) {
-  const color = TONE[bar.tone ?? 'cyan']
-  return (
-    <div
-      className="grid grid-cols-[140px_1fr_auto] items-center gap-4 text-xs"
-      style={{ fontFamily: 'var(--font-mono)' }}
-    >
-      <span className="text-[var(--text-secondary)]">{bar.label}</span>
-      <div className="relative h-[6px] rounded-sm bg-[rgba(255,255,255,0.05)] overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${bar.fill}%` }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.7, ease: 'easeOut', delay }}
-          className="absolute inset-y-0 left-0"
-          style={{
-            backgroundColor: color,
-            boxShadow: `0 0 12px ${color}55`,
-          }}
-        />
-      </div>
-      <span className="font-semibold tabular-nums" style={{ color }}>
-        {bar.value}
-      </span>
-    </div>
-  )
-}
-
-function TerminalPanel({ project, index }: { project: Project; index: number }) {
-  const uptime = useUptime(project.startedAt)
+function BuildEntry({ project, index }: { project: Project; index: number }) {
+  const num = String(index + 1).padStart(2, '0')
+  const isFeatured = project.featured
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 20 }}
+    <motion.article
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="rounded-md border border-[rgba(0,229,255,0.15)] bg-[rgba(10,14,19,0.72)] backdrop-blur-sm overflow-hidden"
-      style={{ fontFamily: 'var(--font-mono)' }}
+      transition={{ duration: 0.55, delay: index * 0.08 }}
+      className="group grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-12 py-10 md:py-14 border-t border-[rgba(255,255,255,0.08)]"
     >
-      {/* Header bar */}
-      <header className="flex flex-wrap items-center justify-between gap-3 px-5 md:px-7 py-3 border-b border-[rgba(0,229,255,0.1)] bg-[rgba(0,229,255,0.025)]">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] text-[var(--text-secondary)]">
-          <span>
-            <span className="text-[var(--text-secondary)] opacity-60">proc:</span>{' '}
-            <span className="text-[#00E5FF]">{project.proc}</span>
-          </span>
-          <span>
-            <span className="opacity-60">pid:</span>{' '}
-            <span className="text-[var(--text-primary)] tabular-nums">{project.pid}</span>
-          </span>
-          <span>
-            <span className="opacity-60">uptime:</span>{' '}
-            <span className="text-[var(--text-primary)] tabular-nums">
-              {uptime ?? '—'}
-            </span>
-          </span>
-        </div>
-        <div className="flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-[#00FF94]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
-          open source
-        </div>
-      </header>
+      {/* Number */}
+      <div
+        className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] pt-2"
+        style={{ fontFamily: 'var(--font-mono)' }}
+      >
+        /{num}
+      </div>
 
-      {/* Body */}
-      <div className="p-5 md:p-7 space-y-8">
-        {/* Title block */}
-        <div>
-          <div className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-3">
-            {project.kicker}
-          </div>
-          <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
+      <div>
+        <div className="flex flex-wrap items-baseline justify-between gap-4 mb-4">
+          <h3
+            className="font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[#00E5FF] transition-colors duration-300"
+            style={{
+              fontSize: 'clamp(1.75rem, 4vw, 3rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+            }}
+          >
             {project.title}
           </h3>
+          {isFeatured && (
+            <a
+              href="#race"
+              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] border-b border-[#00E5FF]/30 pb-0.5 hover:border-[#00E5FF] transition"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              ↑ race it
+            </a>
+          )}
         </div>
 
-        {/* Description */}
-        <div>
-          <Prompt command="cat ./README.md" />
-          <p className="mt-3 pl-2 text-sm md:text-base leading-relaxed text-[var(--text-secondary)]">
-            {project.longDescription}
-          </p>
-        </div>
+        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl mb-7">
+          {project.longDescription}
+        </p>
 
-        {/* Bars */}
-        {project.bars && project.bars.length > 0 && (
-          <div>
-            <Prompt command="cat ./perf-targets.md" />
-            <div className="mt-4 pl-2 space-y-3">
-              {project.bars.map((b, i) => (
-                <Bar key={b.label} bar={b} delay={0.1 + i * 0.08} />
-              ))}
-            </div>
+        <div
+          className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] tracking-[0.25em] uppercase"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          <div className="text-[var(--text-secondary)] opacity-60">
+            {project.technologies.slice(0, 5).join(' · ')}
           </div>
-        )}
-
-        {/* Info table */}
-        {project.info && (
-          <div>
-            <Prompt command="cat ./stack.txt" />
-            <div className="mt-3 pl-2 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1.5 text-xs">
-              {Object.entries(project.info).map(([k, v]) => (
-                <div key={k} className="flex items-baseline gap-2">
-                  <span className="text-[var(--text-secondary)] opacity-60">{k}:</span>
-                  <span className="text-[var(--text-primary)]">{v}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Tech tags */}
-        <div>
-          <Prompt command="ls --tags" />
-          <div className="mt-3 pl-2 flex flex-wrap gap-1.5">
-            {project.technologies.map((tech) => (
-              <span
-                key={tech}
-                className="text-[10px] px-2 py-1 rounded border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] text-[var(--text-secondary)]"
+          <div className="flex gap-6">
+            {project.links.github && (
+              <a
+                href={project.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00E5FF] border-b border-[#00E5FF]/30 pb-0.5 hover:border-[#00E5FF] transition"
               >
-                {tech}
-              </span>
-            ))}
+                source →
+              </a>
+            )}
+            {project.links.demo && (
+              <a
+                href={project.links.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--text-primary)] border-b border-[rgba(255,255,255,0.2)] pb-0.5 hover:border-[var(--text-primary)] transition"
+              >
+                live →
+              </a>
+            )}
           </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-wrap gap-5 pt-1 text-[11px] tracking-[0.25em] uppercase">
-          {project.links.github && (
-            <a
-              href={project.links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#00E5FF] hover:text-[var(--text-primary)] transition-colors"
-            >
-              [ source → ]
-            </a>
-          )}
-          {project.links.demo && (
-            <a
-              href={project.links.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#FF6B35] hover:text-[var(--text-primary)] transition-colors"
-            >
-              [ live → ]
-            </a>
-          )}
         </div>
       </div>
-    </motion.section>
+    </motion.article>
   )
 }
 
 export default function Projects() {
   return (
-    <>
-      <Ticker />
-      <section
-        id="projects"
-        className="relative py-28 md:py-40 px-6 md:px-12 lg:px-16"
-        style={{ contentVisibility: 'auto', containIntrinsicSize: '1600px' }}
-      >
-        <div className="max-w-5xl mx-auto">
-          {/* Intro */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mb-12 md:mb-16 max-w-3xl"
-          >
-            <span
-              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] mb-4 block"
-              style={{ fontFamily: 'var(--font-mono)' }}
-            >
-              // side projects
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] tracking-tight leading-[1.1]">
-              The engine you just raced — the source is open.
-            </h2>
-            <p className="mt-4 text-sm md:text-base text-[var(--text-secondary)] leading-relaxed max-w-xl">
-              Personal projects I built to learn low-latency systems from the
-              ground up. Targets are benchmarks I&apos;m designing against — not
-              production numbers.
-            </p>
-          </motion.div>
+    <section
+      id="projects"
+      className="relative py-28 md:py-40 px-6 md:px-12 lg:px-20"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}
+    >
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+          className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] mb-6 flex items-center gap-3"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          <span className="w-8 h-px bg-[#00E5FF]" />
+          chapter 03 · builds
+        </motion.div>
 
-          {/* Terminal output */}
-          <div className="space-y-8 md:space-y-10">
-            <Prompt command="ps -ef | grep --color -E 'running'" />
+        <motion.h2
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.05 }}
+          className="font-bold tracking-tight leading-[0.95] mb-6 max-w-4xl"
+          style={{
+            fontSize: 'clamp(2.25rem, 7vw, 5.5rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+          }}
+        >
+          Things I&apos;ve shipped
+          <br />
+          <span className="text-[var(--text-secondary)]">on my own time.</span>
+        </motion.h2>
 
-            {PROJECTS.map((project, i) => (
-              <div key={project.id} className="space-y-4 md:space-y-5">
-                {i > 0 && (
-                  <Prompt
-                    command={`systemctl status ${project.proc}`}
-                    delay={0.1}
-                  />
-                )}
-                <TerminalPanel project={project} index={i} />
-              </div>
-            ))}
+        <motion.p
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl mb-8 md:mb-10"
+        >
+          Side projects I built to learn the problems I wanted to understand.
+          All open source.
+        </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="flex items-center gap-2 text-[13px]"
-              style={{ fontFamily: 'var(--font-mono)' }}
-            >
-              <span className="text-[#00FF94] opacity-80">sujal@mach-zero</span>
-              <span className="text-[var(--text-secondary)]">:</span>
-              <span className="text-[#FF2E92] opacity-80">~</span>
-              <span className="text-[var(--text-secondary)] pr-1">$</span>
-              <motion.span
-                animate={{ opacity: [1, 0.2, 1] }}
-                transition={{ duration: 1.1, repeat: Infinity }}
-                className="inline-block w-2 h-[15px] bg-[var(--text-primary)]"
-              />
-            </motion.div>
-          </div>
+        <div>
+          {PROJECTS.map((project, i) => (
+            <BuildEntry key={project.id} project={project} index={i} />
+          ))}
+          <div className="border-t border-[rgba(255,255,255,0.08)]" />
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }

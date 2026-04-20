@@ -36,8 +36,8 @@ export const SOCIAL_LINKS = {
 } as const
 
 export const NAV_LINKS = [
-  { label: 'Arena', href: '#home' },
-  { label: 'Profile', href: '#profile' },
+  { label: 'Now', href: '#now' },
+  { label: 'Race', href: '#race' },
   { label: 'Work', href: '#projects' },
   { label: 'Contact', href: '#contact' },
 ] as const
