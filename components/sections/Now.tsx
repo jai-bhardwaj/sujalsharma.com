@@ -5,15 +5,15 @@ import { PERSON } from '@/lib/constants'
 
 const FACTS = [
   { label: 'role', value: 'software engineer' },
-  { label: 'years', value: `${PERSON.years} yrs` },
-  { label: 'where', value: `${PERSON.location.split(',')[0]} · ${PERSON.workMode}` },
-  {
-    label: 'stack',
-    value: PERSON.stack.slice(0, 5).join(' · '),
-  },
+  { label: 'tenure', value: `${PERSON.years} yrs` },
+  { label: 'where', value: `${PERSON.location} · ${PERSON.workMode}` },
+  { label: 'stack', value: PERSON.stack.slice(0, 5).join(' · ') },
   {
     label: 'edu',
-    value: `${PERSON.education.degree}, ${PERSON.education.school.replace('Dr. A.P.J. ', '')} · ${PERSON.education.years.split('–')[1]}`,
+    value: `${PERSON.education.degree} · ${PERSON.education.school.replace(
+      'Dr. A.P.J. ',
+      '',
+    )} (${PERSON.education.years.split('–')[1]})`,
   },
 ]
 
@@ -21,19 +21,41 @@ export default function Now() {
   return (
     <section
       id="now"
-      className="relative py-28 md:py-40 px-6 md:px-12 lg:px-20"
-      style={{ contentVisibility: 'auto', containIntrinsicSize: '800px' }}
+      className="relative overflow-hidden py-28 md:py-40 px-6 md:px-12 lg:px-20"
+      style={{ background: 'var(--blue)', color: 'var(--cream)' }}
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Big decoration */}
+      <div
+        className="absolute -right-24 -top-24 rounded-full opacity-90"
+        style={{
+          width: 'clamp(280px, 38vw, 560px)',
+          height: 'clamp(280px, 38vw, 560px)',
+          background: 'var(--lime)',
+        }}
+        aria-hidden
+      />
+      <div
+        className="absolute -left-24 bottom-[8%] opacity-90"
+        style={{
+          width: 'clamp(120px, 16vw, 240px)',
+          height: 'clamp(120px, 16vw, 240px)',
+          background: 'var(--pink)',
+          borderRadius: '50%',
+        }}
+        aria-hidden
+      />
+      <div className="noise-overlay" />
+
+      <div className="relative max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
-          className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] mb-6 flex items-center gap-3"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className="text-[11px] tracking-[0.4em] uppercase mb-6 flex items-center gap-3"
+          style={{ fontFamily: 'var(--font-mono)', color: 'rgba(250,246,236,0.7)' }}
         >
-          <span className="w-8 h-px bg-[#00E5FF]" />
+          <span className="w-10 h-px bg-[var(--cream)] opacity-50" />
           chapter 01 · now
         </motion.div>
 
@@ -42,48 +64,60 @@ export default function Now() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.05 }}
-          className="font-bold tracking-tight leading-[0.95] mb-10 md:mb-12"
+          className="font-bold tracking-tight leading-[0.9] mb-12 md:mb-16"
           style={{
-            fontSize: 'clamp(2.25rem, 7vw, 5.5rem)',
-            fontWeight: 800,
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 9vw, 7.5rem)',
             letterSpacing: '-0.03em',
           }}
         >
-          I build software
-          <br />
-          at <a
+          Currently at{' '}
+          <a
             href={PERSON.companyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#00E5FF] hover:text-[var(--text-primary)] transition"
-          >Orbital</a>.
+            className="relative inline-block"
+            style={{ color: 'var(--lime)' }}
+          >
+            Orbital.
+            <span
+              className="absolute left-0 right-0"
+              style={{
+                bottom: '0.04em',
+                height: '0.07em',
+                background: 'var(--cream)',
+                opacity: 0.9,
+              }}
+              aria-hidden
+            />
+          </a>
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-10 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 md:gap-14 lg:gap-24 items-start">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-5 text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl"
+            className="space-y-6 text-lg md:text-2xl leading-[1.45] max-w-2xl font-medium"
+            style={{ color: 'rgba(250,246,236,0.92)' }}
           >
             <p>
-              Orbital is an{' '}
-              <span className="text-[var(--text-primary)]">
-                AI sales-intelligence platform for SMBs
-              </span>{' '}
-              — the piece that&apos;s been missing from the enterprise tooling
-              stack (think ZoomInfo, but for local businesses: HVAC,
-              restaurants, dental practices, gyms).
+              Orbital is an AI sales-intelligence platform for SMBs — the piece
+              that&apos;s been missing from the enterprise tooling stack (think
+              ZoomInfo, but for HVAC, restaurants, dental practices, gyms).
             </p>
             <p>
               I ship things that prospect, enrich, and verify data at scale.
               The problems are a mix of backend throughput, messy real-world
               data, and turning it into something a sales rep can actually use.
             </p>
-            <p className="text-[var(--text-secondary)] opacity-70 text-sm md:text-base italic">
-              [ Sujal: swap this paragraph for specifics — what you actually
-              shipped this quarter, team size, tech you touch day-to-day. ]
+            <p
+              className="text-base md:text-lg opacity-70 italic"
+              style={{ fontFamily: 'var(--font-inter)' }}
+            >
+              [ Sujal: swap this paragraph for specifics — what you shipped
+              this quarter, team size, tech you touch day-to-day. ]
             </p>
           </motion.div>
 
@@ -92,15 +126,22 @@ export default function Now() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.6, delay: 0.18 }}
-            className="border-l border-[rgba(255,255,255,0.08)] pl-6 space-y-4"
+            className="space-y-5"
             style={{ fontFamily: 'var(--font-mono)' }}
           >
             {FACTS.map((f) => (
-              <div key={f.label}>
-                <dt className="text-[10px] tracking-[0.3em] uppercase text-[var(--text-secondary)] opacity-70 mb-1">
+              <div
+                key={f.label}
+                className="pl-5 border-l-2"
+                style={{ borderColor: 'var(--lime)' }}
+              >
+                <dt
+                  className="text-[10px] tracking-[0.3em] uppercase mb-1"
+                  style={{ color: 'rgba(250,246,236,0.6)' }}
+                >
                   {f.label}
                 </dt>
-                <dd className="text-sm md:text-base text-[var(--text-primary)] leading-snug">
+                <dd className="text-sm md:text-base leading-snug font-medium">
                   {f.value}
                 </dd>
               </div>

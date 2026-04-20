@@ -8,7 +8,7 @@ import { useArenaGame } from '@/hooks/useArenaGame'
 
 const ArenaScene = dynamic(() => import('@/components/3d/ArenaScene'), {
   ssr: false,
-  loading: () => <div className="absolute inset-0 bg-[#0A0E13]" />,
+  loading: () => <div className="absolute inset-0 bg-[#07090D]" />,
 })
 
 export default function Race() {
@@ -19,7 +19,6 @@ export default function Race() {
       if (e.key !== ' ' && e.key !== 'Enter') return
       const tag = (e.target as HTMLElement)?.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA') return
-      // only respond when the user is actually looking at this section
       const el = document.getElementById('race')
       if (!el) return
       const rect = el.getBoundingClientRect()
@@ -44,19 +43,41 @@ export default function Race() {
   return (
     <section
       id="race"
-      className="relative py-28 md:py-40 px-6 md:px-12 lg:px-20"
+      className="relative overflow-hidden py-28 md:py-40 px-6 md:px-12 lg:px-20"
+      style={{ background: 'var(--ink)', color: 'var(--cream)' }}
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Chapter header */}
+      {/* Bright sticker dots on dark */}
+      <div
+        className="absolute top-16 right-[6%] rounded-full opacity-90"
+        style={{
+          width: 'clamp(120px, 16vw, 260px)',
+          height: 'clamp(120px, 16vw, 260px)',
+          background: 'var(--pink)',
+          filter: 'blur(60px)',
+        }}
+        aria-hidden
+      />
+      <div
+        className="absolute bottom-20 left-[4%] rounded-full opacity-90"
+        style={{
+          width: 'clamp(100px, 14vw, 220px)',
+          height: 'clamp(100px, 14vw, 220px)',
+          background: 'var(--cyan)',
+          filter: 'blur(60px)',
+        }}
+        aria-hidden
+      />
+
+      <div className="relative max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
-          className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] mb-6 flex items-center gap-3"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className="text-[11px] tracking-[0.4em] uppercase mb-6 flex items-center gap-3"
+          style={{ fontFamily: 'var(--font-mono)', color: 'rgba(250,246,236,0.65)' }}
         >
-          <span className="w-8 h-px bg-[#00E5FF]" />
+          <span className="w-10 h-px opacity-40" style={{ background: 'var(--cream)' }} />
           chapter 02 · on the side
         </motion.div>
 
@@ -65,16 +86,17 @@ export default function Race() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.05 }}
-          className="font-bold tracking-tight leading-[0.95] mb-8"
+          className="font-bold tracking-tight leading-[0.9] mb-8"
           style={{
-            fontSize: 'clamp(2.25rem, 7vw, 5.5rem)',
-            fontWeight: 800,
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 9vw, 7.5rem)',
             letterSpacing: '-0.03em',
           }}
         >
-          I built an HFT engine
+          I built an{' '}
+          <span style={{ color: 'var(--lime)' }}>HFT engine</span>
           <br />
-          <span className="text-[var(--text-secondary)]">for fun.</span>
+          <span style={{ color: 'rgba(250,246,236,0.5)' }}>for fun.</span>
         </motion.h2>
 
         <motion.p
@@ -82,24 +104,29 @@ export default function Race() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl mb-10 md:mb-14"
+          className="text-base md:text-xl leading-[1.55] max-w-2xl mb-12 md:mb-16 font-medium"
+          style={{ color: 'rgba(250,246,236,0.85)' }}
         >
           Mach-Zero is a C++20 match engine I built solo — not in production,
           not making money, just the system I wish existed so I could learn
           how the real ones work. Target: sub-microsecond matching.{' '}
-          <span className="text-[var(--text-primary)]">
-            Click below. The engine will beat you by ~6 orders of magnitude.
+          <span style={{ color: 'var(--lime)' }}>
+            Click the card. The engine will beat you by ~6 orders of magnitude.
           </span>
         </motion.p>
 
-        {/* Race arena card */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.65, delay: 0.15 }}
-          className="relative w-full overflow-hidden rounded-lg border border-[rgba(0,229,255,0.15)] bg-[rgba(10,14,19,0.6)]"
-          style={{ height: 'min(70vh, 620px)', minHeight: '480px' }}
+          className="relative w-full overflow-hidden rounded-3xl arena-surface"
+          style={{
+            height: 'min(72vh, 640px)',
+            minHeight: '480px',
+            border: '2px solid var(--lime)',
+            boxShadow: '0 30px 80px -20px rgba(194, 255, 0, 0.25)',
+          }}
           onPointerDown={() => {
             if (state.kind === 'armed' || state.kind === 'live') fire()
           }}

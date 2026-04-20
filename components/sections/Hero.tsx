@@ -3,23 +3,27 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useEffect } from 'react'
 import { PERSON } from '@/lib/constants'
+import Marquee from './Marquee'
 
-const LINE_1 = ['I', 'like']
-const LINE_2 = ['fast', 'software.']
+const HERO_WORDS = [
+  'software engineer',
+  'C++ · TypeScript · React',
+  'obsessed with latency',
+  'Hyderabad · India',
+  'building Mach-Zero',
+  'open to opportunities',
+]
 
 export default function Hero() {
-  // Subtle mouse-driven tilt on the headline
-  const mx = useMotionValue(0)
-  const my = useMotionValue(0)
-  const rx = useSpring(useTransform(my, [-1, 1], [3, -3]), { stiffness: 80, damping: 20 })
-  const ry = useSpring(useTransform(mx, [-1, 1], [-4, 4]), { stiffness: 80, damping: 20 })
+  const mx = useMotionValue(0.5)
+  const my = useMotionValue(0.5)
+  const blobX = useSpring(useTransform(mx, [0, 1], ['10%', '30%']), { stiffness: 60, damping: 20 })
+  const blobY = useSpring(useTransform(my, [0, 1], ['20%', '40%']), { stiffness: 60, damping: 20 })
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1
-      const y = (e.clientY / window.innerHeight) * 2 - 1
-      mx.set(x)
-      my.set(y)
+      mx.set(e.clientX / window.innerWidth)
+      my.set(e.clientY / window.innerHeight)
     }
     window.addEventListener('pointermove', onMove, { passive: true })
     return () => window.removeEventListener('pointermove', onMove)
@@ -28,159 +32,188 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] flex flex-col justify-center items-center px-6 md:px-12 lg:px-20 pt-28 pb-24 overflow-hidden"
+      className="relative min-h-[100vh] flex flex-col justify-between overflow-hidden pt-24 pb-0"
+      style={{ background: 'var(--cream)' }}
     >
-      <div className="max-w-5xl mx-auto w-full text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] mb-10 md:mb-14 inline-flex items-center gap-3"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          <span className="w-8 h-px bg-[#00E5FF]" />
-          sujalsharma.com
-          <span className="w-8 h-px bg-[#00E5FF]" />
-        </motion.div>
+      {/* Decorative shapes */}
+      <motion.div
+        className="absolute rounded-full"
+        style={{
+          top: blobY,
+          left: blobX,
+          width: 'clamp(280px, 34vw, 520px)',
+          height: 'clamp(280px, 34vw, 520px)',
+          background: 'var(--pink)',
+          filter: 'blur(60px)',
+          opacity: 0.55,
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        className="absolute right-[-120px] top-[15%] rounded-full"
+        style={{
+          width: 'clamp(200px, 26vw, 380px)',
+          height: 'clamp(200px, 26vw, 380px)',
+          background: 'var(--lime)',
+          filter: 'blur(40px)',
+          opacity: 0.55,
+          pointerEvents: 'none',
+        }}
+      />
+      <div className="noise-overlay" />
 
-        {/* Kinetic headline with tilt */}
-        <motion.h1
-          className="font-bold tracking-tight leading-[0.88] mb-10 md:mb-14"
-          style={{
-            fontSize: 'clamp(3rem, 11vw, 9.5rem)',
-            fontFamily: 'var(--font-inter)',
-            fontWeight: 800,
-            letterSpacing: '-0.035em',
-            rotateX: rx,
-            rotateY: ry,
-            transformPerspective: 1200,
-            transformStyle: 'preserve-3d',
-          }}
-        >
-          <KineticLine words={LINE_1} baseDelay={0.15} />
-          <KineticLine words={LINE_2} baseDelay={0.35} underlineWord="fast" />
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.7 }}
-          className="mx-auto max-w-2xl text-lg md:text-xl lg:text-[1.375rem] text-[var(--text-secondary)] leading-[1.55]"
-        >
-          I&apos;m{' '}
-          <span className="text-[var(--text-primary)] font-medium">
-            {PERSON.full}
-          </span>
-          , a software engineer at{' '}
-          <a
-            href={PERSON.companyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[var(--text-primary)] underline decoration-[#00E5FF]/40 underline-offset-4 hover:decoration-[#00E5FF] transition"
-          >
-            Orbital
-          </a>
-          . Two years in, based in {PERSON.location.split(',')[0]}. Obsessed
-          with things measured in nanoseconds &mdash; which is why I built an
-          HFT match engine in C++ for fun.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.85 }}
-          className="mt-12 md:mt-14 flex flex-wrap gap-x-8 gap-y-4 items-center justify-center"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          <a
-            href="#race"
-            className="group inline-flex items-center gap-2 text-sm tracking-[0.25em] uppercase text-[#00E5FF] border-b border-[#00E5FF]/30 pb-1 hover:border-[#00E5FF] transition"
-          >
-            race my engine
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </a>
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 text-sm tracking-[0.25em] uppercase text-[var(--text-secondary)] border-b border-transparent pb-1 hover:text-[var(--text-primary)] transition"
-          >
-            get in touch
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </a>
-        </motion.div>
+      {/* Spinning asterisk sticker */}
+      <div
+        className="absolute top-28 right-8 md:top-32 md:right-16"
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(80px, 10vw, 140px)',
+          color: 'var(--blue)',
+          animation: 'spin-slow 18s linear infinite',
+          transformOrigin: 'center',
+          lineHeight: 1,
+        }}
+        aria-hidden
+      >
+        ✳
       </div>
 
-      {/* Status strip */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 md:bottom-10 left-0 right-0 max-w-6xl mx-auto px-6 md:px-12 lg:px-20 flex items-center justify-between text-[10px] tracking-[0.3em] uppercase text-[var(--text-secondary)]"
-        style={{ fontFamily: 'var(--font-mono)' }}
-      >
-        <span className="flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
-          {PERSON.availability}
-        </span>
-        <span className="hidden md:block opacity-60">scroll ↓</span>
-      </motion.div>
+      {/* Main content */}
+      <div className="relative flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-20 pt-12 md:pt-16">
+        <div className="max-w-6xl mx-auto w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-3 mb-8 md:mb-10 px-3 py-1.5 rounded-full border border-[rgba(10,10,10,0.15)] bg-white/60 backdrop-blur-sm text-[11px] tracking-[0.25em] uppercase"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            <span className="w-2 h-2 rounded-full bg-[var(--blue)] animate-pulse" />
+            {PERSON.availability}
+          </motion.div>
+
+          <h1
+            className="relative font-bold leading-[0.82] tracking-tight"
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(3.5rem, 15vw, 14rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
+              color: 'var(--ink)',
+            }}
+          >
+            <Word delay={0.1}>I like</Word>
+            <br />
+            <span className="relative inline-block">
+              <Word delay={0.22} color="var(--blue)">
+                fast
+              </Word>
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.8, delay: 0.85, ease: [0.2, 0.8, 0.2, 1] }}
+                className="absolute left-0 right-0 origin-left"
+                style={{
+                  bottom: '0.05em',
+                  height: '0.065em',
+                  background: 'var(--pink)',
+                }}
+              />
+            </span>{' '}
+            <Word delay={0.32}>software.</Word>
+          </h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.65 }}
+            className="mt-8 md:mt-12 max-w-2xl text-lg md:text-xl lg:text-[1.375rem] leading-[1.55]"
+            style={{ color: 'rgba(10,10,10,0.7)' }}
+          >
+            I&apos;m{' '}
+            <span className="font-semibold" style={{ color: 'var(--ink)' }}>
+              {PERSON.full}
+            </span>
+            . Software engineer at{' '}
+            <a
+              href={PERSON.companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline decoration-[var(--pink)] decoration-[3px] underline-offset-[6px] hover:decoration-[var(--blue)] transition"
+              style={{ color: 'var(--ink)' }}
+            >
+              Orbital
+            </a>
+            . Two years in, based in {PERSON.location.split(',')[0]}. Building a C++ HFT
+            engine for fun because things measured in nanoseconds make me happy.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="mt-10 md:mt-12 flex flex-wrap gap-3 md:gap-4"
+          >
+            <a
+              href="#race"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-base hover:scale-[1.03] transition-transform"
+              style={{
+                background: 'var(--ink)',
+                color: 'var(--cream)',
+                fontFamily: 'var(--font-display)',
+              }}
+            >
+              Race my engine
+              <span className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+            <a
+              href="#contact"
+              className="group inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-base border-2 hover:scale-[1.03] transition-transform"
+              style={{
+                borderColor: 'var(--ink)',
+                color: 'var(--ink)',
+                fontFamily: 'var(--font-display)',
+              }}
+            >
+              Hire me
+              <span className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Bottom marquee */}
+      <div className="relative pt-8 pb-6 border-t border-[rgba(10,10,10,0.08)]">
+        <Marquee items={HERO_WORDS} tone="ink" speed={60} />
+      </div>
     </section>
   )
 }
 
-function KineticLine({
-  words,
-  baseDelay,
-  underlineWord,
+function Word({
+  children,
+  delay,
+  color,
 }: {
-  words: string[]
-  baseDelay: number
-  underlineWord?: string
+  children: React.ReactNode
+  delay: number
+  color?: string
 }) {
   return (
-    <span className="block overflow-hidden py-[0.06em]">
-      {words.map((word, i) => {
-        const isUnderlined = word.replace(/\W/g, '') === underlineWord
-        return (
-          <motion.span
-            key={i}
-            initial={{ y: '110%' }}
-            animate={{ y: '0%' }}
-            transition={{
-              duration: 0.75,
-              delay: baseDelay + i * 0.08,
-              ease: [0.2, 0.8, 0.2, 1],
-            }}
-            className="inline-block"
-            style={{ marginRight: i === words.length - 1 ? 0 : '0.22em' }}
-          >
-            {isUnderlined ? (
-              <span className="relative inline-block">
-                {word}
-                <motion.span
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: baseDelay + 0.55,
-                    ease: [0.2, 0.8, 0.2, 1],
-                  }}
-                  className="absolute left-0 right-0 origin-left bg-[#00E5FF]"
-                  style={{
-                    bottom: '0.08em',
-                    height: '0.055em',
-                  }}
-                />
-              </span>
-            ) : (
-              word
-            )}
-          </motion.span>
-        )
-      })}
+    <span className="inline-block overflow-hidden py-[0.05em]">
+      <motion.span
+        initial={{ y: '110%' }}
+        animate={{ y: '0%' }}
+        transition={{ duration: 0.75, delay, ease: [0.2, 0.8, 0.2, 1] }}
+        className="inline-block"
+        style={color ? { color } : undefined}
+      >
+        {children}
+      </motion.span>
     </span>
   )
 }

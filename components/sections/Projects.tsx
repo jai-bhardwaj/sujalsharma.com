@@ -3,67 +3,92 @@
 import { motion } from 'framer-motion'
 import { PROJECTS, type Project } from '@/lib/constants'
 
-function BuildEntry({ project, index }: { project: Project; index: number }) {
-  const num = String(index + 1).padStart(2, '0')
-  const isFeatured = project.featured
+const CARD_PALETTE = [
+  { bg: 'var(--purple)', fg: 'var(--cream)', accent: 'var(--lime)' },
+  { bg: 'var(--orange)', fg: 'var(--ink)', accent: 'var(--blue)' },
+  { bg: 'var(--cyan)', fg: 'var(--ink)', accent: 'var(--pink)' },
+]
 
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const theme = CARD_PALETTE[index % CARD_PALETTE.length]
+  const num = String(index + 1).padStart(2, '0')
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.55, delay: index * 0.08 }}
-      className="group grid grid-cols-1 md:grid-cols-[auto_1fr] gap-6 md:gap-12 py-10 md:py-14 border-t border-[rgba(255,255,255,0.08)]"
+      transition={{ duration: 0.55, delay: index * 0.1 }}
+      className="relative rounded-3xl overflow-hidden p-7 md:p-10 lg:p-12"
+      style={{
+        background: theme.bg,
+        color: theme.fg,
+        minHeight: 'clamp(360px, 45vh, 520px)',
+      }}
     >
-      {/* Number */}
+      {/* Shape decoration */}
       <div
-        className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] pt-2"
-        style={{ fontFamily: 'var(--font-mono)' }}
-      >
-        /{num}
-      </div>
+        className="absolute -top-16 -right-16 rounded-full"
+        style={{
+          width: 'clamp(140px, 18vw, 240px)',
+          height: 'clamp(140px, 18vw, 240px)',
+          background: theme.accent,
+          opacity: 0.8,
+        }}
+        aria-hidden
+      />
 
-      <div>
-        <div className="flex flex-wrap items-baseline justify-between gap-4 mb-4">
-          <h3
-            className="font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[#00E5FF] transition-colors duration-300"
-            style={{
-              fontSize: 'clamp(1.75rem, 4vw, 3rem)',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {project.title}
-          </h3>
-          {isFeatured && (
+      <div className="relative flex flex-col h-full">
+        <div
+          className="flex items-baseline justify-between mb-6 text-[11px] tracking-[0.35em] uppercase"
+          style={{ fontFamily: 'var(--font-mono)', opacity: 0.7 }}
+        >
+          <span>/{num}</span>
+          {project.featured && (
             <a
               href="#race"
-              className="text-[10px] tracking-[0.3em] uppercase text-[#00E5FF] border-b border-[#00E5FF]/30 pb-0.5 hover:border-[#00E5FF] transition"
-              style={{ fontFamily: 'var(--font-mono)' }}
+              className="px-3 py-1 rounded-full border"
+              style={{ borderColor: 'currentColor', opacity: 0.85 }}
             >
               ↑ race it
             </a>
           )}
         </div>
 
-        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl mb-7">
+        <h3
+          className="font-bold tracking-tight leading-[0.95] mb-5"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2rem, 5vw, 4rem)',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          {project.title}
+        </h3>
+
+        <p
+          className="text-base md:text-lg leading-[1.55] max-w-2xl mb-8 font-medium"
+          style={{ opacity: 0.88 }}
+        >
           {project.longDescription}
         </p>
 
         <div
-          className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] tracking-[0.25em] uppercase"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-current/20"
         >
-          <div className="text-[var(--text-secondary)] opacity-60">
+          <div
+            className="text-[11px] tracking-[0.2em] uppercase opacity-70 max-w-[70%]"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
             {project.technologies.slice(0, 5).join(' · ')}
           </div>
-          <div className="flex gap-6">
+          <div className="flex gap-5 text-[11px] tracking-[0.25em] uppercase font-semibold">
             {project.links.github && (
               <a
                 href={project.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#00E5FF] border-b border-[#00E5FF]/30 pb-0.5 hover:border-[#00E5FF] transition"
+                className="inline-flex items-center gap-1 hover:translate-x-0.5 transition-transform"
+                style={{ fontFamily: 'var(--font-mono)' }}
               >
                 source →
               </a>
@@ -73,7 +98,8 @@ function BuildEntry({ project, index }: { project: Project; index: number }) {
                 href={project.links.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--text-primary)] border-b border-[rgba(255,255,255,0.2)] pb-0.5 hover:border-[var(--text-primary)] transition"
+                className="inline-flex items-center gap-1 hover:translate-x-0.5 transition-transform"
+                style={{ fontFamily: 'var(--font-mono)' }}
               >
                 live →
               </a>
@@ -89,19 +115,43 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative py-28 md:py-40 px-6 md:px-12 lg:px-20"
-      style={{ contentVisibility: 'auto', containIntrinsicSize: '1200px' }}
+      className="relative overflow-hidden py-28 md:py-40 px-6 md:px-12 lg:px-20"
+      style={{ background: 'var(--pink)', color: 'var(--ink)' }}
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Decorations */}
+      <div
+        className="absolute -left-16 top-[10%] rounded-full"
+        style={{
+          width: 'clamp(160px, 18vw, 280px)',
+          height: 'clamp(160px, 18vw, 280px)',
+          background: 'var(--lime)',
+          opacity: 0.9,
+        }}
+        aria-hidden
+      />
+      <div
+        className="absolute right-[-8%] bottom-[6%] rounded-full"
+        style={{
+          width: 'clamp(140px, 16vw, 240px)',
+          height: 'clamp(140px, 16vw, 240px)',
+          background: 'var(--blue)',
+          filter: 'blur(60px)',
+          opacity: 0.7,
+        }}
+        aria-hidden
+      />
+      <div className="noise-overlay" />
+
+      <div className="relative max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.5 }}
-          className="text-[11px] tracking-[0.4em] uppercase text-[var(--text-secondary)] mb-6 flex items-center gap-3"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className="text-[11px] tracking-[0.4em] uppercase mb-6 flex items-center gap-3"
+          style={{ fontFamily: 'var(--font-mono)', color: 'rgba(10,10,10,0.7)' }}
         >
-          <span className="w-8 h-px bg-[#00E5FF]" />
+          <span className="w-10 h-px bg-[var(--ink)] opacity-40" />
           chapter 03 · builds
         </motion.div>
 
@@ -110,16 +160,16 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.05 }}
-          className="font-bold tracking-tight leading-[0.95] mb-6 max-w-4xl"
+          className="font-bold tracking-tight leading-[0.9] mb-8 md:mb-10"
           style={{
-            fontSize: 'clamp(2.25rem, 7vw, 5.5rem)',
-            fontWeight: 800,
+            fontFamily: 'var(--font-display)',
+            fontSize: 'clamp(2.5rem, 9vw, 7.5rem)',
             letterSpacing: '-0.03em',
           }}
         >
           Things I&apos;ve shipped
           <br />
-          <span className="text-[var(--text-secondary)]">on my own time.</span>
+          <span style={{ color: 'var(--cream)' }}>on my own time.</span>
         </motion.h2>
 
         <motion.p
@@ -127,17 +177,17 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-base md:text-lg text-[var(--text-secondary)] leading-[1.65] max-w-2xl mb-8 md:mb-10"
+          className="text-lg md:text-xl leading-[1.55] max-w-2xl mb-14 md:mb-20 font-medium"
+          style={{ color: 'rgba(10,10,10,0.82)' }}
         >
           Side projects I built to learn the problems I wanted to understand.
           All open source.
         </motion.p>
 
-        <div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {PROJECTS.map((project, i) => (
-            <BuildEntry key={project.id} project={project} index={i} />
+            <ProjectCard key={project.id} project={project} index={i} />
           ))}
-          <div className="border-t border-[rgba(255,255,255,0.08)]" />
         </div>
       </div>
     </section>

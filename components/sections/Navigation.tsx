@@ -6,7 +6,6 @@ import { NAV_LINKS, SOCIAL_LINKS } from '@/lib/constants'
 import { useLivePrice, BINANCE_BTC_USDT } from '@/hooks/useLivePrice'
 
 function compactPrice(display: string): string {
-  // "BTC/USDT  $67,482.11" -> "$67.5k"
   const match = display.match(/\$([\d,]+\.?\d*)/)
   if (!match) return display
   const n = parseFloat(match[1].replace(/,/g, ''))
@@ -16,19 +15,10 @@ function compactPrice(display: string): string {
 }
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [active, setActive] = useState<string>('home')
   const btc = useLivePrice(BINANCE_BTC_USDT)
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  // Scroll-spy: keep the URL hash in sync with the most-visible section,
-  // and clear it entirely when the user is back at the hero.
   useEffect(() => {
     const ids = ['home', 'now', 'race', 'projects', 'contact']
     const elements = ids
@@ -66,50 +56,50 @@ export default function Navigation() {
     setMobileOpen(false)
   }
 
+  // White text + mix-blend-difference inverts against whatever color
+  // sits behind the nav, so it reads on cream / blue / black / pink / lime.
+  const blendStyle: React.CSSProperties = {
+    color: '#FFFFFF',
+    mixBlendMode: 'difference',
+    fontFamily: 'var(--font-mono)',
+  }
+
   return (
     <motion.nav
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'glass' : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div
+        className="max-w-7xl mx-auto px-6 md:px-10 h-16 flex items-center justify-between pointer-events-auto"
+        style={blendStyle}
+      >
         <div className="flex items-center gap-5">
           <a
             href="#home"
             onClick={handleHomeClick}
             className="text-lg font-bold tracking-tight"
-            style={{ fontFamily: 'var(--font-mono)' }}
           >
-            <span className="text-[#00E5FF]">&lt;</span>
-            <span className="text-[var(--text-primary)]">SS</span>
-            <span className="text-[#00E5FF]"> /&gt;</span>
+            <span>&lt;</span>
+            <span>SS</span>
+            <span> /&gt;</span>
           </a>
 
-          {/* Live BTC ticker — persistent across the whole site */}
           <a
             href="#race"
-            className="hidden lg:flex items-center gap-2 text-[11px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors pl-5 border-l border-[rgba(255,255,255,0.08)]"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            className="hidden lg:flex items-center gap-2 text-[11px] pl-5 border-l border-current/40"
             aria-label="Live BTC/USDT price"
           >
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${
-                btc.isLive
-                  ? 'bg-[#00FF94] animate-pulse'
-                  : 'bg-[var(--text-secondary)] opacity-40'
-              }`}
-            />
-            <span className="opacity-60">btc</span>
-            <span className="text-[var(--text-primary)] tabular-nums min-w-[54px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+            <span className="opacity-70">btc</span>
+            <span className="tabular-nums min-w-[54px]">
               {compactPrice(btc.display)}
             </span>
           </a>
         </div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-7">
           {NAV_LINKS.map((link) => {
             const id = link.href.replace('#', '')
             const isActive = active === id
@@ -119,12 +109,9 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 onClick={onClick}
-                className={`text-xs tracking-[0.2em] uppercase transition-colors duration-200 ${
-                  isActive
-                    ? 'text-[#00E5FF]'
-                    : 'text-[var(--text-secondary)] hover:text-[#00E5FF]'
+                className={`text-xs tracking-[0.25em] uppercase transition-opacity ${
+                  isActive ? 'opacity-100' : 'opacity-65 hover:opacity-100'
                 }`}
-                style={{ fontFamily: 'var(--font-mono)' }}
               >
                 {link.label}
               </a>
@@ -134,8 +121,7 @@ export default function Navigation() {
             href={SOCIAL_LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs tracking-[0.2em] uppercase text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors duration-200"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            className="text-xs tracking-[0.25em] uppercase opacity-65 hover:opacity-100 transition-opacity"
           >
             LinkedIn
           </a>
@@ -143,8 +129,7 @@ export default function Navigation() {
             href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs tracking-[0.2em] uppercase px-4 py-1.5 border border-[#00E5FF] text-[#00E5FF] rounded hover:bg-[rgba(0,229,255,0.1)] transition-all duration-200"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            className="text-xs tracking-[0.25em] uppercase opacity-65 hover:opacity-100 transition-opacity"
           >
             GitHub
           </a>
@@ -157,15 +142,15 @@ export default function Navigation() {
         >
           <motion.span
             animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-            className="block w-6 h-0.5 bg-[var(--text-primary)]"
+            className="block w-6 h-0.5 bg-current"
           />
           <motion.span
             animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="block w-6 h-0.5 bg-[var(--text-primary)]"
+            className="block w-6 h-0.5 bg-current"
           />
           <motion.span
             animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-            className="block w-6 h-0.5 bg-[var(--text-primary)]"
+            className="block w-6 h-0.5 bg-current"
           />
         </button>
       </div>
@@ -176,27 +161,39 @@ export default function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass"
+            className="md:hidden pointer-events-auto"
+            style={{ background: 'rgba(10,10,10,0.96)', color: 'var(--cream)' }}
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
+            <div
+              className="px-6 py-5 flex flex-col gap-4 text-sm tracking-[0.25em] uppercase"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
               {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-sm text-[var(--text-secondary)] hover:text-[#00E5FF] transition-colors"
-                  style={{ fontFamily: 'var(--font-mono)' }}
+                  className="hover:text-[var(--lime)] transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
+              <div className="h-px bg-[rgba(250,246,236,0.15)] my-1" />
+              <a
+                href={SOCIAL_LINKS.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="hover:text-[var(--lime)] transition-colors"
+              >
+                LinkedIn →
+              </a>
               <a
                 href={SOCIAL_LINKS.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-[#00E5FF] transition-colors"
-                style={{ fontFamily: 'var(--font-mono)' }}
+                className="hover:text-[var(--lime)] transition-colors"
               >
                 GitHub →
               </a>
