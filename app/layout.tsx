@@ -3,32 +3,31 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sujalsharma.com'),
-  title: 'SUJAL SHARMA · SWE:L2',
+  title: 'Sujal Sharma — Software Engineer',
   description:
-    'Software engineer at Orbital (2y). Building Mach-Zero, an HFT-style C++20 match engine, for fun. Hyderabad, IN. Open to opportunities.',
+    'I build software that has to be fast. Software engineer at Orbital (2y), based in Hyderabad. On the side: Mach-Zero, a C++20 HFT-style match engine built for learning.',
   keywords: [
     'Sujal Sharma',
     'software engineer',
     'C++',
-    'HFT',
-    'low latency',
     'Mach-Zero',
     'Orbital',
     'Hyderabad',
+    'low latency',
     'portfolio',
   ],
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'SUJAL SHARMA · SWE:L2 · OPEN',
+    title: 'Sujal Sharma — Software Engineer',
     description:
-      'Software engineer at Orbital. Building Mach-Zero on the side. Race my C++ match engine — you will lose.',
+      'I build software that has to be fast. Orbital engineer, Hyderabad. Try the race — it will beat you by ~300,000×.',
     siteName: 'Sujal Sharma',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SUJAL SHARMA · SWE:L2 · OPEN',
-    description: 'Race my C++ match engine. You will lose by ~300,000×.',
+    title: 'Sujal Sharma — Software Engineer',
+    description: 'I build software that has to be fast. Race my C++ match engine.',
   },
   robots: { index: true, follow: true },
 }
@@ -48,7 +47,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>

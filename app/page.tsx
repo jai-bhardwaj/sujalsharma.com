@@ -1,5 +1,21 @@
-import App from '@/components/terminal/App'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
+import Hero from '@/components/home/Hero'
+import Work from '@/components/home/Work'
+import Info from '@/components/home/Info'
+import Contact from '@/components/home/Contact'
 
 export default function Home() {
-  return <App />
+  return (
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <Work />
+        <Info />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  )
 }
