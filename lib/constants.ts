@@ -4,10 +4,14 @@ export const PERSON = {
   full: 'Sujal Sharma',
   handle: 'sujal',
   role: 'software engineer',
-  tagline: 'I build ultra-low-latency systems.',
+  level: 'SWE:L2',
   years: 2,
   company: 'Orbital',
+  companyBlurb: 'AI sales intel for SMBs',
   companyUrl: 'https://withorbital.com',
+  orbitalStartDate: '2024-06-01T00:00:00Z',
+  orbitalBlurb:
+    "I ship things that prospect, enrich, and verify SMB data at scale. Most of what I write touches backend throughput, messy real-world data, and the glue that turns it into something a sales rep can actually use. (Sujal: replace this with specifics — team size, 2 things shipped this quarter, the tech you touch day-to-day.)",
   location: 'Hyderabad, India',
   workMode: 'onsite',
   availability: 'open to opportunities',
@@ -24,6 +28,7 @@ export const PERSON = {
   education: {
     degree: 'B.Tech · Computer Science',
     school: 'Dr. A.P.J. Abdul Kalam Technical University',
+    schoolShort: 'AKTU',
     years: '2020–2024',
   },
 } as const
@@ -33,64 +38,36 @@ export const SOCIAL_LINKS = {
   githubHandle: 'jai-bhardwaj',
   email: '0987sujals@gmail.com',
   linkedin: 'https://www.linkedin.com/in/sharmasujal/',
+  linkedinHandle: 'sharmasujal',
 } as const
-
-export const NAV_LINKS = [
-  { label: 'Now', href: '#now' },
-  { label: 'Race', href: '#race' },
-  { label: 'Work', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-] as const
-
-export const COLORS = {
-  bgPrimary: '#0A0E13',
-  bgSecondary: '#111722',
-  bgCard: '#151B28',
-  textPrimary: '#F5F7FA',
-  textSecondary: '#8A94A6',
-  accentCyan: '#00E5FF',
-  accentOrange: '#FF6B35',
-  accentMagenta: '#FF2E92',
-  accentGreen: '#00FF94',
-  accentYellow: '#FFD600',
-} as const
-
-export interface ProjectBar {
-  label: string
-  value: string
-  /** fill pct 0–100 */
-  fill: number
-  tone?: 'cyan' | 'green' | 'orange' | 'magenta'
-}
 
 export interface Project {
   id: string
+  ticker: string
   title: string
-  proc: string
-  pid: number
-  startedAt: string
-  kicker: string
+  lang: string
+  status: 'OSS' | 'WIP' | 'ARCHIVED'
+  lastCommit: string
   description: string
   longDescription: string
   featured: boolean
   technologies: string[]
   links: { github?: string; demo?: string }
-  info?: Record<string, string>
-  bars?: ProjectBar[]
+  metrics?: { label: string; target: string; note?: string }[]
 }
 
 export const PROJECTS: Project[] = [
   {
     id: 'mach-zero',
+    ticker: 'MACH-0',
     title: 'Mach-Zero',
-    proc: 'mach-zero-engine',
-    pid: 8421,
-    startedAt: '2026-01-03T00:00:00Z',
-    kicker: 'side_project_01 · open source',
-    description: 'HFT-style execution engine, built solo to learn low-latency C++',
-    longDescription:
-      "A C++20 HFT-style execution engine I built solo to learn low-latency systems from the ground up. Simulates order flow against Binance and NSE market data with matching, risk checks, and replay — paired with a Next.js 16 control plane. Not production; it's how I learn by building what I wish existed.",
+    lang: 'C++20',
+    status: 'OSS',
+    lastCommit: '2d ago',
     featured: true,
+    description: 'HFT-style match engine, built solo to learn low-latency C++',
+    longDescription:
+      "A C++20 match engine I built solo to learn low-latency systems from the ground up. Simulates order flow against Binance and NSE market data with matching, risk checks, and replay — paired with a Next.js 16 control plane. Not production; it's how I learn by building what I wish existed.",
     technologies: [
       'C++20',
       'Next.js 16',
@@ -104,40 +81,29 @@ export const PROJECTS: Project[] = [
       github: 'https://github.com/jai-bhardwaj/mach-zero',
       demo: 'https://mach-zero.vercel.app',
     },
-    info: {
-      core: 'C++20',
-      markets: 'binance · nse',
-      control: 'next.js 16',
-      storage: 'postgres · questdb',
-    },
-    bars: [
-      { label: 'target p50', value: '< 1 μs', fill: 96, tone: 'cyan' },
-      { label: 'target p99', value: '< 2.5 μs', fill: 88, tone: 'cyan' },
-      { label: 'target tick→trade', value: '< 25 μs', fill: 82, tone: 'green' },
-      { label: 'target throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
+    metrics: [
+      { label: 'match p50',    target: '< 1 μs',      note: 'target' },
+      { label: 'match p99',    target: '< 2.5 μs',    note: 'target' },
+      { label: 'tick→trade',   target: '< 25 μs',     note: 'target' },
+      { label: 'throughput',   target: '1M+ msg/s',   note: 'target' },
     ],
   },
   {
     id: 'tcp-engine',
+    ticker: 'TCP-1',
     title: 'TCP Engine',
-    proc: 'tcp-engine',
-    pid: 4512,
-    startedAt: '2026-02-12T00:00:00Z',
-    kicker: 'primitive_02 · open source',
+    lang: 'C++20',
+    status: 'OSS',
+    lastCommit: '14d ago',
+    featured: false,
     description: 'Zero-copy TCP server on io_uring',
     longDescription:
-      "Lock-free TCP server built on io_uring with zero-copy buffers — a learning project exploring the networking substrate HFT engines sit on top of. Targets 1M+ msg/s on commodity hardware.",
-    featured: false,
+      "Lock-free TCP server on io_uring with zero-copy buffers — a learning project exploring the networking substrate HFT engines sit on top of. Targets 1M+ msg/s on commodity hardware.",
     technologies: ['C++20', 'io_uring', 'Linux', 'epoll', 'Socket Programming'],
     links: { github: 'https://github.com/jai-bhardwaj' },
-    info: {
-      kernel: 'io_uring',
-      syscalls: 'zero-copy',
-      platform: 'linux',
-    },
-    bars: [
-      { label: 'target throughput', value: '1M+ msg/s', fill: 92, tone: 'orange' },
-      { label: 'target cpu', value: '< 8% / core', fill: 12, tone: 'green' },
+    metrics: [
+      { label: 'throughput',   target: '1M+ msg/s',   note: 'target' },
+      { label: 'cpu',          target: '< 8% / core', note: 'target' },
     ],
   },
 ]
@@ -157,3 +123,12 @@ export type ArenaResult = {
   multiplier: number
   at: number
 }
+
+export const NAV_PANELS = [
+  { id: 'now',     label: 'NOW',     kbd: '1' },
+  { id: 'builds',  label: 'BUILDS',  kbd: '2' },
+  { id: 'bench',   label: 'BENCH',   kbd: '3' },
+  { id: 'contact', label: 'CONTACT', kbd: '4' },
+] as const
+
+export type PanelId = (typeof NAV_PANELS)[number]['id']
