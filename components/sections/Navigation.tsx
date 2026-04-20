@@ -3,11 +3,23 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { NAV_LINKS, SOCIAL_LINKS } from '@/lib/constants'
+import { useLivePrice, BINANCE_BTC_USDT } from '@/hooks/useLivePrice'
+
+function compactPrice(display: string): string {
+  // "BTC/USDT  $67,482.11" -> "$67.5k"
+  const match = display.match(/\$([\d,]+\.?\d*)/)
+  if (!match) return display
+  const n = parseFloat(match[1].replace(/,/g, ''))
+  if (!Number.isFinite(n)) return display
+  if (n >= 1000) return `$${(n / 1000).toFixed(1)}k`
+  return `$${n.toFixed(2)}`
+}
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [active, setActive] = useState<string>('home')
+  const btc = useLivePrice(BINANCE_BTC_USDT)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -64,16 +76,38 @@ export default function Navigation() {
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a
-          href="#home"
-          onClick={handleHomeClick}
-          className="text-lg font-bold tracking-tight"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          <span className="text-[#00E5FF]">&lt;</span>
-          <span className="text-[var(--text-primary)]">SS</span>
-          <span className="text-[#00E5FF]"> /&gt;</span>
-        </a>
+        <div className="flex items-center gap-5">
+          <a
+            href="#home"
+            onClick={handleHomeClick}
+            className="text-lg font-bold tracking-tight"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            <span className="text-[#00E5FF]">&lt;</span>
+            <span className="text-[var(--text-primary)]">SS</span>
+            <span className="text-[#00E5FF]"> /&gt;</span>
+          </a>
+
+          {/* Live BTC ticker — persistent across the whole site */}
+          <a
+            href="#race"
+            className="hidden lg:flex items-center gap-2 text-[11px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors pl-5 border-l border-[rgba(255,255,255,0.08)]"
+            style={{ fontFamily: 'var(--font-mono)' }}
+            aria-label="Live BTC/USDT price"
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                btc.isLive
+                  ? 'bg-[#00FF94] animate-pulse'
+                  : 'bg-[var(--text-secondary)] opacity-40'
+              }`}
+            />
+            <span className="opacity-60">btc</span>
+            <span className="text-[var(--text-primary)] tabular-nums min-w-[54px]">
+              {compactPrice(btc.display)}
+            </span>
+          </a>
+        </div>
 
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => {
