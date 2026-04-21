@@ -1,17 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  /* Warm editorial monochrome */
-  --bg:         #F5F1E8;  /* warm off-white paper */
-  --paper:      #EEE9DC;  /* slightly darker stripe for cards */
-  --ink:        #0F0F0F;  /* near-black */
-  --ink-muted:  rgba(15, 15, 15, 0.55);
-  --ink-dim:    rgba(15, 15, 15, 0.32);
-  --rule:       rgba(15, 15, 15, 0.12);
-  --rule-soft:  rgba(15, 15, 15, 0.06);
-
-  /* Single accent — used rarely, for emphasis */
-  --accent:     #C84B2B;  /* soft brick red */
+  /* Minimal monochrome */
+  --bg:         #FAFAF7;
+  --ink:        #111111;
+  --ink-muted:  rgba(17, 17, 17, 0.58);
+  --ink-dim:    rgba(17, 17, 17, 0.32);
+  --rule:       rgba(17, 17, 17, 0.10);
+  --rule-soft:  rgba(17, 17, 17, 0.05);
 
   --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;

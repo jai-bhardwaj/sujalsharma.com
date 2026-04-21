@@ -35,50 +35,101 @@ export default function Contact() {
     'w-full bg-transparent px-0 py-3 text-[16px] text-[var(--ink)] placeholder-[var(--ink-dim)] border-0 border-b border-[var(--rule)] focus:outline-none focus:border-[var(--ink)] transition-colors'
 
   return (
-    <section id="contact" className="px-5 md:px-10 py-16 md:py-28 rule-t">
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-10 md:gap-20">
-        <motion.div
+    <section
+      id="contact"
+      className="px-6 md:px-10 py-16 md:py-28"
+    >
+      <div className="max-w-[1080px] mx-auto">
+        <h2
+          className="text-[13px] tracking-[0.12em] uppercase text-[var(--ink-muted)] mb-8"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
+          Contact
+        </h2>
+
+        <motion.a
+          href={`mailto:${SOCIAL_LINKS.email}`}
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.55 }}
+          className="display block text-[var(--ink)] mb-10 break-all hover:text-[var(--ink-muted)] transition-colors"
+          style={{ fontSize: 'clamp(1.75rem, 5vw, 3.5rem)' }}
         >
-          <h2 className="label mb-6">Contact</h2>
-          <p
-            className="display text-[var(--ink)] mb-6"
-            style={{ fontSize: 'clamp(2.25rem, 6vw, 4.5rem)' }}
-          >
-            Tell me what
-            <br />
-            you&apos;re building.
-          </p>
-          <p className="text-[17px] md:text-[19px] leading-[1.55] text-[var(--ink-muted)] mb-10 max-w-[42ch]">
-            Recruiters, founders, collaborators — all welcome. I read every
-            message and reply within a day.
-          </p>
+          {SOCIAL_LINKS.email}
+        </motion.a>
 
-          <a
-            href={`mailto:${SOCIAL_LINKS.email}`}
-            className="group block mb-8"
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.55, delay: 0.08 }}
+          className="max-w-[52ch] text-[17px] md:text-[19px] leading-[1.6] text-[var(--ink-muted)] mb-12"
+        >
+          Recruiters, founders, builders — all welcome. Short notes are fine,
+          long ones are better. I read everything and reply within a day.
+        </motion.p>
+
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-10 md:gap-16">
+          <motion.form
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.55, delay: 0.16 }}
+            onSubmit={handleSubmit}
+            className="space-y-7 max-w-[480px]"
           >
-            <div className="label mb-1">Write me →</div>
-            <div
-              className="display text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors break-all"
-              style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)' }}
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Your name"
+              className={input}
+            />
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="you@company.com"
+              className={input}
+            />
+            <textarea
+              required
+              rows={3}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              placeholder="What are you working on?"
+              className={`${input} resize-none`}
+            />
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="text-[14px] text-[var(--ink)] link-ink disabled:opacity-50"
             >
-              {SOCIAL_LINKS.email}
-            </div>
-          </a>
+              {status === 'loading'
+                ? 'Sending…'
+                : status === 'success'
+                  ? '✓ Sent'
+                  : status === 'error'
+                    ? 'Failed — try again'
+                    : 'Send →'}
+            </button>
+          </motion.form>
 
-          <div
-            className="flex flex-wrap gap-6 text-[14px]"
-            style={{ fontFamily: 'var(--font-mono)' }}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.55, delay: 0.24 }}
+            className="flex flex-col gap-4 text-[15px]"
           >
             <a
               href={SOCIAL_LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="link-ink"
+              className="link-ink text-[var(--ink)]"
             >
               LinkedIn →
             </a>
@@ -86,83 +137,18 @@ export default function Contact() {
               href={SOCIAL_LINKS.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="link-ink"
+              className="link-ink text-[var(--ink)]"
             >
               GitHub →
             </a>
-          </div>
-
-          <div
-            className="mt-10 pt-6 rule-t text-[11px] tracking-[0.12em] uppercase text-[var(--ink-muted)]"
-            style={{ fontFamily: 'var(--font-mono)' }}
-          >
-            Based in {PERSON.location} · {PERSON.availability}
-          </div>
-        </motion.div>
-
-        <motion.form
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          onSubmit={handleSubmit}
-          className="space-y-8"
-        >
-          <div>
-            <label className="label block mb-1">Name</label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="your name"
-              className={input}
-            />
-          </div>
-          <div>
-            <label className="label block mb-1">Email</label>
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              placeholder="you@company.com"
-              className={input}
-            />
-          </div>
-          <div>
-            <label className="label block mb-1">Message</label>
-            <textarea
-              required
-              rows={4}
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
-              placeholder="what are you building?"
-              className={`${input} resize-none`}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[var(--ink)] text-[var(--bg)] font-medium text-[14px] hover:bg-[var(--accent)] transition-colors disabled:opacity-50"
-          >
-            {status === 'loading'
-              ? 'Sending…'
-              : status === 'success'
-                ? '✓ Sent'
-                : status === 'error'
-                  ? 'Failed — try again'
-                  : 'Send message'}
-            <span className="transition-transform group-hover:translate-x-1">
-              →
+            <span
+              className="mt-4 text-[11px] tracking-[0.12em] uppercase text-[var(--ink-muted)]"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {PERSON.location} · {PERSON.availability}
             </span>
-          </button>
-        </motion.form>
+          </motion.div>
+        </div>
       </div>
     </section>
   )

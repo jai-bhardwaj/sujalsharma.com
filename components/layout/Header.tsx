@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 const NAV = [
-  { label: 'Home', href: '/#home' },
   { label: 'Work', href: '/#work' },
+  { label: 'About', href: '/#about' },
   { label: 'Race', href: '/race' },
-  { label: 'Info', href: '/#info' },
   { label: 'Contact', href: '/#contact' },
 ]
 
@@ -33,20 +32,16 @@ export default function Header() {
   }, [])
 
   return (
-    <header className="sticky top-0 z-40 bg-[var(--bg)]/88 backdrop-blur-md rule-b">
-      <div className="max-w-[1400px] mx-auto px-5 md:px-10 h-14 md:h-16 flex items-center justify-between gap-6">
+    <header className="sticky top-0 z-40 bg-[var(--bg)]/90 backdrop-blur-sm">
+      <div className="max-w-[1080px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between gap-6">
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-[13px] md:text-[14px] font-semibold tracking-tight"
+          className="text-[14px] font-medium tracking-tight text-[var(--ink)]"
         >
-          <span
-            className="inline-block w-2 h-2 rounded-full bg-[var(--ink)] pulse"
-            aria-hidden
-          />
           Sujal Sharma
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-[13px]">
+        <nav className="hidden md:flex items-center gap-7 text-[14px]">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -59,49 +54,41 @@ export default function Header() {
         </nav>
 
         <div
-          className="hidden md:flex items-center gap-2 text-[11px] tracking-[0.12em] uppercase text-[var(--ink-muted)]"
+          className="hidden md:block text-[12px] text-[var(--ink-muted)] tab"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
-          <span>Hyderabad, IN</span>
-          <span className="text-[var(--ink-dim)]">—</span>
-          <span className="tab text-[var(--ink)]">{time || '—'}</span>
+          {time || '—'} IST
         </div>
 
         <button
-          className="md:hidden relative w-9 h-9 flex flex-col items-center justify-center gap-1"
+          className="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
           <span
-            className="block w-5 h-[1.5px] bg-[var(--ink)] transition-transform"
+            className="block w-5 h-px bg-[var(--ink)] transition-transform"
             style={{ transform: open ? 'translateY(3px) rotate(45deg)' : 'none' }}
           />
           <span
-            className="block w-5 h-[1.5px] bg-[var(--ink)] transition-transform"
+            className="block w-5 h-px bg-[var(--ink)] transition-transform"
             style={{ transform: open ? 'translateY(-3px) rotate(-45deg)' : 'none' }}
           />
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden rule-t">
-          <nav className="flex flex-col px-5 py-3">
+        <div className="md:hidden border-t border-[var(--rule)]">
+          <nav className="flex flex-col px-6 py-2">
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="py-2 text-[15px] text-[var(--ink)] rule-soft-b last:border-none"
+                className="py-3 text-[15px] text-[var(--ink)] border-b border-[var(--rule-soft)] last:border-none"
               >
                 {item.label}
               </Link>
             ))}
-            <div
-              className="pt-3 text-[11px] tracking-[0.12em] uppercase text-[var(--ink-muted)]"
-              style={{ fontFamily: 'var(--font-mono)' }}
-            >
-              Hyderabad, IN · <span className="tab text-[var(--ink)]">{time || '—'}</span>
-            </div>
           </nav>
         </div>
       )}
