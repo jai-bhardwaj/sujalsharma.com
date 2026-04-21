@@ -8,27 +8,36 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="px-6 md:px-10 pt-20 md:pt-32 pb-24 md:pb-40"
+      className="relative px-6 md:px-10 pt-32 md:pt-48 pb-32 md:pb-48 min-h-[92vh] flex flex-col justify-center"
     >
-      <div className="max-w-[1080px] mx-auto">
+      <div className="max-w-[960px] mx-auto w-full">
         <motion.h1
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="display text-[var(--ink)] max-w-[18ch]"
-          style={{ fontSize: 'clamp(2.5rem, 6.5vw, 5.25rem)' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="display text-[var(--ink)]"
+          style={{
+            fontSize: 'clamp(3.25rem, 14vw, 12rem)',
+            lineHeight: 0.9,
+            letterSpacing: '-0.045em',
+          }}
         >
-          {PERSON.full} — software engineer building things
-          that have to be fast.
+          Sujal
+          <br />
+          Sharma<span className="text-[var(--ink-muted)]">,</span>
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-10 md:mt-14 max-w-[55ch] text-[17px] md:text-[19px] leading-[1.6] text-[var(--ink-muted)]"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-8 md:mt-12 max-w-[40ch] text-[17px] md:text-[20px] leading-[1.55] text-[var(--ink-muted)]"
         >
-          Currently at{' '}
+          software engineer in{' '}
+          <span className="text-[var(--ink)]">
+            {PERSON.location.split(',')[0]}
+          </span>
+          . {PERSON.years} years at{' '}
           <a
             href={PERSON.companyUrl}
             target="_blank"
@@ -36,30 +45,28 @@ export default function Hero() {
             className="link-ink text-[var(--ink)]"
           >
             Orbital
-          </a>{' '}
-          in {PERSON.location.split(',')[0]}, {PERSON.years} years in. On the
-          side I&apos;m building{' '}
-          <Link href="/race" className="link-ink text-[var(--ink)]">
-            Mach-Zero
-          </Link>
-          , a C++20 match engine — not because anyone asked, but because
-          latency is the most interesting problem I know.
+          </a>
+          . Building a C++ match engine on the side because latency is the
+          most interesting problem I know.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10 md:mt-12 flex flex-wrap gap-x-8 gap-y-3 text-[14px]"
+          transition={{ duration: 0.6, delay: 0.32 }}
+          className="mt-12 md:mt-16 flex flex-col gap-3 text-[15px]"
         >
-          <Link href="/race" className="link-ink text-[var(--ink)]">
-            Race my engine →
+          <Link href="/race" className="link-ink text-[var(--ink)] w-fit">
+            → Race my engine
           </Link>
-          <a href="#work" className="link-ink text-[var(--ink-muted)]">
-            See work
+          <a href="#work" className="link-ink text-[var(--ink-muted)] w-fit">
+            → See work
           </a>
-          <a href="#contact" className="link-ink text-[var(--ink-muted)]">
-            Get in touch
+          <a
+            href="#contact"
+            className="link-ink text-[var(--ink-muted)] w-fit"
+          >
+            → Get in touch
           </a>
         </motion.div>
       </div>

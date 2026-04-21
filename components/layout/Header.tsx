@@ -11,17 +11,16 @@ const NAV = [
 ]
 
 function formatTime(d: Date): string {
-  const fmt = new Intl.DateTimeFormat('en-GB', {
+  return new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Asia/Kolkata',
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
-  })
-  return fmt.format(d)
+  }).format(d)
 }
 
 export default function Header() {
-  const [time, setTime] = useState<string>('')
+  const [time, setTime] = useState('')
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
@@ -33,15 +32,19 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-[var(--bg)]/90 backdrop-blur-sm">
-      <div className="max-w-[1080px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between gap-6">
+      <div className="max-w-[960px] mx-auto px-6 md:px-10 h-16 flex items-center justify-between gap-6">
         <Link
           href="/"
-          className="text-[14px] font-medium tracking-tight text-[var(--ink)]"
+          className="text-[13px] tracking-[0.06em] text-[var(--ink)]"
+          style={{ fontFamily: 'var(--font-mono)' }}
         >
-          Sujal Sharma
+          sujal sharma
         </Link>
 
-        <nav className="hidden md:flex items-center gap-7 text-[14px]">
+        <nav
+          className="hidden md:flex items-center gap-6 text-[13px]"
+          style={{ fontFamily: 'var(--font-mono)' }}
+        >
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -51,14 +54,10 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
+          <span className="text-[var(--ink-dim)] ml-2 tab">
+            {time || '—'}
+          </span>
         </nav>
-
-        <div
-          className="hidden md:block text-[12px] text-[var(--ink-muted)] tab"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          {time || '—'} IST
-        </div>
 
         <button
           className="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5"
@@ -78,13 +77,16 @@ export default function Header() {
 
       {open && (
         <div className="md:hidden border-t border-[var(--rule)]">
-          <nav className="flex flex-col px-6 py-2">
+          <nav
+            className="flex flex-col px-6 py-2"
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
             {NAV.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="py-3 text-[15px] text-[var(--ink)] border-b border-[var(--rule-soft)] last:border-none"
+                className="py-3 text-[14px] text-[var(--ink)] border-b border-[var(--rule-soft)] last:border-none"
               >
                 {item.label}
               </Link>
