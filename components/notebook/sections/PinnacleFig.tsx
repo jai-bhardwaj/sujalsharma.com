@@ -1,40 +1,35 @@
 import Fig from '../Fig'
 import { PROJECTS } from '@/lib/constants'
 
-const MACH = PROJECTS.find((p) => p.id === 'mach-zero') ?? PROJECTS[0]
+const PNCL = PROJECTS.find((p) => p.id === 'pinnacle') ?? PROJECTS[0]
 
-export default function Mach0Fig() {
+export default function PinnacleFig() {
   return (
-    <section
-      style={{
-        marginBottom: 'var(--s-9)',
-        animationDelay: '300ms',
-      }}
-    >
+    <section style={{ marginBottom: 'var(--s-9)', animationDelay: '380ms' }}>
       <Fig
-        number="01"
-        title="Match Engine"
-        caption="C++20 · personal project · target sub-microsecond · code private, demo open"
+        number="02"
+        title="Pinnacle Trading Platform"
+        caption="Python + TypeScript · OSS · pub/sub backend + Next.js control plane · Angel One"
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-x-10 gap-y-8 items-start">
-          {/* Architecture diagram */}
+          {/* Pipeline diagram */}
           <div
             style={{
               background: 'var(--paper)',
               padding: 'var(--s-6)',
               border: '1px solid var(--rule)',
             }}
-            aria-label="Match engine architecture diagram"
+            aria-label="Pinnacle trading pipeline: strategy engine -> Redis -> order manager -> Angel One"
           >
-            <ArchitectureDiagram />
+            <PipelineDiagram />
 
             <div
               className="grid grid-cols-3 gap-x-6 mt-6 pt-6"
               style={{ borderTop: '1px solid var(--rule)' }}
             >
-              <Spec label="p50 target" value="< 1 μs" />
-              <Spec label="p99 target" value="< 2.5 μs" />
-              <Spec label="tput target" value="1M+ msg/s" />
+              <Spec label="broker" value="Angel One" sub="paper + live" />
+              <Spec label="transport" value="Redis p/s" sub="fan-out" />
+              <Spec label="strategies" value="MA · RSI" sub="extensible" />
             </div>
           </div>
 
@@ -49,7 +44,7 @@ export default function Mach0Fig() {
                 marginBottom: 'var(--s-6)',
               }}
             >
-              {MACH.longDescription}
+              {PNCL.longDescription}
             </p>
 
             <ul
@@ -63,35 +58,19 @@ export default function Mach0Fig() {
                 gap: 'var(--s-3)',
               }}
             >
-              {MACH.demo && (
-                <li>
+              {PNCL.repos?.map((r) => (
+                <li key={r.url}>
                   <a
-                    href={MACH.demo}
+                    href={r.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="link-ink"
                     style={{ color: 'var(--ink)' }}
                   >
-                    → live demo
+                    → {r.label} repo
                   </a>
                 </li>
-              )}
-              <li>
-                <a href="/race" className="link-ink" style={{ color: 'var(--stamp)' }}>
-                  → race the engine
-                </a>
-              </li>
-              <li
-                style={{
-                  color: 'var(--graphite)',
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  fontSize: '10px',
-                  marginTop: 'var(--s-2)',
-                }}
-              >
-                source available on request
-              </li>
+              ))}
             </ul>
 
             <div
@@ -107,7 +86,7 @@ export default function Mach0Fig() {
                 lineHeight: 1.7,
               }}
             >
-              {MACH.technologies.join(' · ')}
+              {PNCL.technologies.join(' · ')}
             </div>
           </div>
         </div>
@@ -116,52 +95,73 @@ export default function Mach0Fig() {
   )
 }
 
-function ArchitectureDiagram() {
+function PipelineDiagram() {
+  // Five stages in a row, with broker as terminal node
   return (
     <svg
       viewBox="0 0 600 200"
       className="w-full h-auto"
       style={{ maxHeight: 200 }}
       role="img"
-      aria-label="Match engine pipeline: market feed flows into matcher then to WAL"
+      aria-label="Pinnacle trading pipeline diagram"
     >
-      <Node x={20} y={70} label="MARKET FEED" sub="binance · nse" />
-      <Node x={220} y={70} label="MATCHER" sub="lock-free" highlight />
-      <Node x={420} y={70} label="WAL + REPLAY" sub="postgres · questdb" />
+      <Stage x={10} y={70} label="STRATEGY" sub="ma · rsi · …" />
+      <Stage x={140} y={70} label="REDIS PUB/SUB" sub="signal bus" />
+      <Stage x={290} y={70} label="ORDER MGR" sub="lifecycle" highlight />
+      <Stage x={420} y={70} label="ANGEL ONE" sub="paper + live" terminal />
 
-      <Line x1={180} y1={100} x2={220} y2={100} />
-      <Line x1={380} y1={100} x2={420} y2={100} />
+      <Arrow x1={130} y1={100} x2={140} y2={100} />
+      <Arrow x1={270} y1={100} x2={290} y2={100} />
+      <Arrow x1={400} y1={100} x2={420} y2={100} />
 
-      <Line x1={300} y1={130} x2={300} y2={170} dashed />
+      {/* Frontend branch */}
+      <line
+        x1={365}
+        y1={130}
+        x2={365}
+        y2={170}
+        stroke="oklch(0.20 0.012 85)"
+        strokeWidth="1.2"
+        strokeDasharray="3 4"
+      />
       <text
-        x={310}
+        x={375}
         y={170}
         fontFamily="var(--font-mono)"
         fontSize="10"
         letterSpacing="0.1em"
         fill="oklch(0.55 0.012 85)"
       >
-        ↳ risk · pre-trade checks
+        ↳ next.js · prisma · postgres
       </text>
     </svg>
   )
 }
 
-function Node({
+function Stage({
   x,
   y,
   label,
   sub,
   highlight,
+  terminal,
 }: {
   x: number
   y: number
   label: string
   sub: string
   highlight?: boolean
+  terminal?: boolean
 }) {
-  const w = 160
+  const w = 120
   const h = 60
+  const fill = highlight
+    ? 'oklch(0.94 0.012 85)'
+    : terminal
+      ? 'oklch(0.45 0.18 32 / 0.10)'
+      : 'transparent'
+  const stroke = terminal ? 'oklch(0.45 0.18 32)' : 'oklch(0.20 0.012 85)'
+  const labelColor = terminal ? 'oklch(0.45 0.18 32)' : 'oklch(0.20 0.012 85)'
   return (
     <g>
       <rect
@@ -169,8 +169,8 @@ function Node({
         y={y}
         width={w}
         height={h}
-        fill={highlight ? 'oklch(0.94 0.012 85)' : 'transparent'}
-        stroke="oklch(0.20 0.012 85)"
+        fill={fill}
+        stroke={stroke}
         strokeWidth="1.4"
       />
       <text
@@ -178,10 +178,10 @@ function Node({
         y={y + 25}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="11"
+        fontSize="10"
         fontWeight="500"
         letterSpacing="0.14em"
-        fill="oklch(0.20 0.012 85)"
+        fill={labelColor}
       >
         {label}
       </text>
@@ -190,7 +190,7 @@ function Node({
         y={y + 44}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="9"
         fill="oklch(0.55 0.012 85)"
       >
         {sub}
@@ -199,18 +199,16 @@ function Node({
   )
 }
 
-function Line({
+function Arrow({
   x1,
   y1,
   x2,
   y2,
-  dashed,
 }: {
   x1: number
   y1: number
   x2: number
   y2: number
-  dashed?: boolean
 }) {
   return (
     <>
@@ -221,19 +219,24 @@ function Line({
         y2={y2}
         stroke="oklch(0.20 0.012 85)"
         strokeWidth="1.2"
-        strokeDasharray={dashed ? '3 4' : undefined}
       />
-      {!dashed && (
-        <polygon
-          points={`${x2},${y2 - 4} ${x2 + 6},${y2} ${x2},${y2 + 4}`}
-          fill="oklch(0.20 0.012 85)"
-        />
-      )}
+      <polygon
+        points={`${x2},${y2 - 4} ${x2 + 6},${y2} ${x2},${y2 + 4}`}
+        fill="oklch(0.20 0.012 85)"
+      />
     </>
   )
 }
 
-function Spec({ label, value }: { label: string; value: string }) {
+function Spec({
+  label,
+  value,
+  sub,
+}: {
+  label: string
+  value: string
+  sub?: string
+}) {
   return (
     <div>
       <div
@@ -253,6 +256,20 @@ function Spec({ label, value }: { label: string; value: string }) {
       >
         {value}
       </div>
+      {sub && (
+        <div
+          style={{
+            marginTop: 2,
+            fontFamily: 'var(--font-mono)',
+            fontSize: 10,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: 'var(--graphite)',
+          }}
+        >
+          {sub}
+        </div>
+      )}
     </div>
   )
 }

@@ -46,13 +46,14 @@ export interface Project {
   ticker: string
   title: string
   lang: string
-  status: 'OSS' | 'WIP' | 'ARCHIVED'
+  status: 'OSS' | 'WIP' | 'PRIVATE' | 'ARCHIVED'
   lastCommit: string
   description: string
   longDescription: string
   featured: boolean
   technologies: string[]
-  links: { github?: string; demo?: string }
+  repos?: Array<{ label: string; url: string }>
+  demo?: string
   metrics?: { label: string; target: string; note?: string }[]
 }
 
@@ -62,12 +63,12 @@ export const PROJECTS: Project[] = [
     ticker: 'MACH-0',
     title: 'Mach-Zero',
     lang: 'C++20',
-    status: 'OSS',
-    lastCommit: '2d ago',
+    status: 'PRIVATE',
+    lastCommit: 'private repo',
     featured: true,
     description: 'HFT-style match engine, built solo to learn low-latency C++',
     longDescription:
-      "A C++20 match engine I built solo to learn low-latency systems from the ground up. Simulates order flow against Binance and NSE market data with matching, risk checks, and replay — paired with a Next.js 16 control plane. Not production; it's how I learn by building what I wish existed.",
+      "A C++20 match engine I built solo to learn low-latency systems from the ground up. Simulates order flow against Binance and NSE market data with matching, risk checks, and replay — paired with a Next.js 16 control plane. Code is private; demo and benchmark are open.",
     technologies: [
       'C++20',
       'Next.js 16',
@@ -77,10 +78,7 @@ export const PROJECTS: Project[] = [
       'QuestDB',
       'WebSocket',
     ],
-    links: {
-      github: 'https://github.com/jai-bhardwaj/mach-zero',
-      demo: 'https://mach-zero.vercel.app',
-    },
+    demo: 'https://mach-zero.vercel.app',
     metrics: [
       { label: 'match p50',    target: '< 1 μs',      note: 'target' },
       { label: 'match p99',    target: '< 2.5 μs',    note: 'target' },
@@ -89,21 +87,55 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    id: 'tcp-engine',
-    ticker: 'TCP-1',
-    title: 'TCP Engine',
-    lang: 'C++20',
+    id: 'pinnacle',
+    ticker: 'PNCL',
+    title: 'Pinnacle Trading Platform',
+    lang: 'Python · TypeScript',
     status: 'OSS',
-    lastCommit: '14d ago',
-    featured: false,
-    description: 'Zero-copy TCP server on io_uring',
+    lastCommit: 'oct 2025',
+    featured: true,
+    description: 'Multi-user algo trading platform: pub/sub backend + Next.js control plane',
     longDescription:
-      "Lock-free TCP server on io_uring with zero-copy buffers — a learning project exploring the networking substrate HFT engines sit on top of. Targets 1M+ msg/s on commodity hardware.",
-    technologies: ['C++20', 'io_uring', 'Linux', 'epoll', 'Socket Programming'],
-    links: { github: 'https://github.com/jai-bhardwaj' },
+      "End-to-end algorithmic trading platform. Python backend pushes signals from a strategy engine through Redis pub/sub to an order manager that executes against Angel One (paper or live). Next.js 15 frontend on Prisma/Postgres for users, strategies, orders, and portfolio tracking. Two repos, one system.",
+    technologies: [
+      'Python',
+      'Redis',
+      'Angel One API',
+      'Next.js 15',
+      'Prisma',
+      'PostgreSQL',
+      'MobX',
+      'Tailwind CSS',
+    ],
+    repos: [
+      { label: 'backend', url: 'https://github.com/jai-bhardwaj/trading-backend' },
+      { label: 'frontend', url: 'https://github.com/jai-bhardwaj/pinnaclealgo' },
+    ],
     metrics: [
-      { label: 'throughput',   target: '1M+ msg/s',   note: 'target' },
-      { label: 'cpu',          target: '< 8% / core', note: 'target' },
+      { label: 'broker',      target: 'Angel One',     note: 'live + paper' },
+      { label: 'transport',   target: 'Redis pub/sub', note: 'fan-out' },
+      { label: 'strategies',  target: 'MA · RSI · …',   note: 'extensible' },
+    ],
+  },
+  {
+    id: 'k8secret',
+    ticker: 'K8S-1',
+    title: 'K8Secret',
+    lang: 'Swift',
+    status: 'OSS',
+    lastCommit: '1d ago',
+    featured: false,
+    description: 'Native macOS app for managing Kubernetes — secrets, deployments, pods, logs, port-forwards',
+    longDescription:
+      "A native macOS app that talks directly to the Kubernetes API. Decodes Opaque secrets in-place, edits with bulk .env import, scales deployments, streams pod logs with severity filters, and handles port-forwarding with retry. Multi-cluster, multi-window, keyboard-driven. MIT.",
+    technologies: ['Swift', 'SwiftUI', 'macOS', 'Kubernetes API', 'kubectl'],
+    repos: [
+      { label: 'source', url: 'https://github.com/jai-bhardwaj/k8secret' },
+    ],
+    metrics: [
+      { label: 'platform',    target: 'macOS native', note: 'menu bar + windows' },
+      { label: 'license',     target: 'MIT',           note: 'OSS' },
+      { label: 'multi-cluster', target: '✓',           note: 'context-aware' },
     ],
   },
 ]

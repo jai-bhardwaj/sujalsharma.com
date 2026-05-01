@@ -4,7 +4,8 @@ import DotGrid from '@/components/notebook/DotGrid'
 import Spread from '@/components/notebook/Spread'
 import Cover from '@/components/notebook/sections/Cover'
 import Mach0Fig from '@/components/notebook/sections/Mach0Fig'
-import Tcp1Fig from '@/components/notebook/sections/Tcp1Fig'
+import PinnacleFig from '@/components/notebook/sections/PinnacleFig'
+import K8SecretFig from '@/components/notebook/sections/K8SecretFig'
 import NowMargin from '@/components/notebook/sections/NowMargin'
 import RaceTaped from '@/components/notebook/sections/RaceTaped'
 import Contact from '@/components/notebook/sections/Contact'
@@ -18,7 +19,8 @@ export default function Home() {
         <Cover />
         <Mach0Fig />
         <RaceTaped />
-        <Tcp1Fig />
+        <PinnacleFig />
+        <K8SecretFig />
         <NowMargin />
         <Contact />
       </Spread>
