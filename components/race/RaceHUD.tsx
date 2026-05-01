@@ -16,12 +16,27 @@ type Props = {
 }
 
 export default function RaceHUD({ state, best, onArm, onReset }: Props) {
+  // 'live' is the only state that wants to dominate the full canvas;
+  // every other state pulls up so it doesn't sit on top of the engine.
+  const isCenteredState = state.kind === 'live'
+
   return (
     <div className="absolute inset-0 z-10 pointer-events-none">
-      <div className="h-full w-full flex flex-col">
+      {/* Top scrim: keeps headline legible over whatever the scene does
+          to render in the upper half. Dark fade-out into the scene below. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-[58vh] pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(7,9,13,0.92) 0%, rgba(7,9,13,0.78) 35%, rgba(7,9,13,0.40) 70%, rgba(7,9,13,0) 100%)',
+        }}
+      />
+
+      <div className="relative h-full w-full flex flex-col">
         {/* Top meta */}
         <div
-          className="flex items-center justify-between px-6 md:px-10 py-5 text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.6)]"
+          className="flex items-center justify-between px-6 md:px-10 py-5 text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.7)]"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           <span className="flex items-center gap-2">
@@ -33,8 +48,14 @@ export default function RaceHUD({ state, best, onArm, onReset }: Props) {
           </span>
         </div>
 
-        {/* Center panel */}
-        <div className="flex-1 flex items-center justify-center px-6">
+        {/* Content panel — pushed to the upper portion of the viewport
+            in idle/armed/resolved/missed; centered only for the LIVE state
+            (where the giant CLICK NOW landscape is the point). */}
+        <div
+          className={`flex-1 flex justify-center px-6 ${
+            isCenteredState ? 'items-center' : 'items-start pt-[6vh] md:pt-[10vh]'
+          }`}
+        >
           <AnimatePresence mode="wait">
             {state.kind === 'idle' && <Idle key="idle" onArm={onArm} />}
             {state.kind === 'armed' && <Armed key="armed" />}

@@ -90,11 +90,11 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
   const btc = useLivePrice(BINANCE_BTC_USDT)
   const eth = useLivePrice(COINBASE_ETH_USD)
 
-  // On desktop, shift the scene to the right half so the left column has room for text.
-  // On mobile, keep it centered and zoomed out a touch so it fits.
-  const groupPos: [number, number, number] = isDesktop ? [2.2, -0.1, 0] : [0, -0.6, 0]
-  const groupScale = isDesktop ? 0.78 : 0.72
-  const cameraTarget: [number, number, number] = isDesktop ? [2.2, 0, 0] : [0, -0.4, 0]
+  // /race is full-bleed: keep the scene horizontally centered but pushed
+  // into the bottom half of the viewport so HUD text up top reads clean.
+  const groupPos: [number, number, number] = isDesktop ? [0, -1.6, 0] : [0, -2.0, 0]
+  const groupScale = isDesktop ? 0.72 : 0.6
+  const cameraTarget: [number, number, number] = isDesktop ? [0, -0.6, 0] : [0, -1.0, 0]
 
   return (
     <>
