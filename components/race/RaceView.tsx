@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useEffect, useMemo } from 'react'
 import RaceHUD from './RaceHUD'
+import PencilArrow from '@/components/notebook/PencilArrow'
 import { useArenaGame } from '@/hooks/useArenaGame'
 
 const ArenaScene = dynamic(() => import('@/components/3d/ArenaScene'), {
@@ -55,9 +56,10 @@ export default function RaceView() {
       >
         <Link
           href="/"
-          className="flex items-center gap-2 hover:text-[#F5F7FA] transition-colors"
+          className="flex items-center gap-3 hover:text-[#F5F7FA] transition-colors"
         >
-          <span>←</span> back to portfolio
+          <PencilArrow direction="left" size={28} />
+          <span>back to notebook</span>
         </Link>
         <span className="hidden md:block">sujalsharma.com / race</span>
       </div>

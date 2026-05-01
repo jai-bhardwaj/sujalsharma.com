@@ -124,11 +124,3 @@ export type ArenaResult = {
   at: number
 }
 
-export const NAV_PANELS = [
-  { id: 'now',     label: 'NOW',     kbd: '1' },
-  { id: 'builds',  label: 'BUILDS',  kbd: '2' },
-  { id: 'bench',   label: 'BENCH',   kbd: '3' },
-  { id: 'contact', label: 'CONTACT', kbd: '4' },
-] as const
-
-export type PanelId = (typeof NAV_PANELS)[number]['id']
