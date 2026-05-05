@@ -5,7 +5,7 @@ const PNCL = PROJECTS.find((p) => p.id === 'pinnacle') ?? PROJECTS[0]
 
 export default function PinnacleFig() {
   return (
-    <section style={{ marginBottom: 'var(--s-9)', animationDelay: '380ms' }}>
+    <section style={{ marginBottom: 'var(--s-section)', animationDelay: '380ms' }}>
       <Fig
         number="02"
         title="Pinnacle Trading Platform"
@@ -16,7 +16,7 @@ export default function PinnacleFig() {
           <div
             style={{
               background: 'var(--paper)',
-              padding: 'var(--s-6)',
+              padding: 'var(--s-card)',
               border: '1px solid var(--rule)',
             }}
             aria-label="Pinnacle trading pipeline: strategy engine -> Redis -> order manager -> Angel One"
@@ -24,7 +24,7 @@ export default function PinnacleFig() {
             <PipelineDiagram />
 
             <div
-              className="grid grid-cols-3 gap-x-6 mt-6 pt-6"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
               style={{ borderTop: '1px solid var(--rule)' }}
             >
               <Spec label="broker" value="Angel One" sub="paper + live" />
@@ -99,9 +99,10 @@ function PipelineDiagram() {
   // Five stages in a row, with broker as terminal node
   return (
     <svg
-      viewBox="0 0 600 200"
+      viewBox="0 0 600 220"
       className="w-full h-auto"
-      style={{ maxHeight: 200 }}
+      style={{ maxHeight: 220, minHeight: 140 }}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Pinnacle trading pipeline diagram"
     >
@@ -119,16 +120,16 @@ function PipelineDiagram() {
         x1={365}
         y1={130}
         x2={365}
-        y2={170}
+        y2={185}
         stroke="oklch(0.20 0.012 85)"
         strokeWidth="1.2"
         strokeDasharray="3 4"
       />
       <text
-        x={375}
-        y={170}
+        x={377}
+        y={188}
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="14"
         letterSpacing="0.1em"
         fill="oklch(0.55 0.012 85)"
       >
@@ -175,22 +176,22 @@ function Stage({
       />
       <text
         x={x + w / 2}
-        y={y + 25}
+        y={y + 26}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="13"
         fontWeight="500"
-        letterSpacing="0.14em"
+        letterSpacing="0.12em"
         fill={labelColor}
       >
         {label}
       </text>
       <text
         x={x + w / 2}
-        y={y + 44}
+        y={y + 46}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="9"
+        fontSize="11"
         fill="oklch(0.55 0.012 85)"
       >
         {sub}

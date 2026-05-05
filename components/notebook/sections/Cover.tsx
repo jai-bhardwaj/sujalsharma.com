@@ -5,7 +5,7 @@ export default function Cover() {
   return (
     <section
       className="relative"
-      style={{ marginBottom: 'var(--s-9)' }}
+      style={{ marginBottom: 'var(--s-section)' }}
       aria-label="Cover page"
     >
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-x-12 gap-y-10 items-start">

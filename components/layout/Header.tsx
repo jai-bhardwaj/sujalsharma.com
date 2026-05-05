@@ -42,8 +42,8 @@ export default function Header() {
         className="mx-auto flex items-center justify-between gap-6"
         style={{
           maxWidth: '1080px',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
+          paddingLeft: 'clamp(20px, 5vw, 80px)',
+          paddingRight: 'clamp(20px, 5vw, 80px)',
           height: 56,
         }}
       >

@@ -9,7 +9,7 @@ export default function RaceTaped() {
     <section
       className="reveal"
       style={{
-        marginBottom: 'var(--s-9)',
+        marginBottom: 'var(--s-section)',
         animationDelay: '460ms',
       }}
       aria-label="Taped-in race link"
@@ -80,7 +80,7 @@ export default function RaceTaped() {
 function RaceThumbnail() {
   return (
     <div
-      className="relative w-[280px] sm:w-[320px] aspect-[4/3] overflow-hidden"
+      className="relative w-full max-w-[320px] aspect-[4/3] overflow-hidden"
       style={{ background: '#0B0F14' }}
     >
       <svg

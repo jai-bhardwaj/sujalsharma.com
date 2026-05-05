@@ -5,7 +5,7 @@ const K8 = PROJECTS.find((p) => p.id === 'k8secret') ?? PROJECTS[0]
 
 export default function K8SecretFig() {
   return (
-    <section style={{ marginBottom: 'var(--s-9)', animationDelay: '460ms' }}>
+    <section style={{ marginBottom: 'var(--s-section)', animationDelay: '460ms' }}>
       <Fig
         number="03"
         title="K8Secret"
@@ -16,7 +16,7 @@ export default function K8SecretFig() {
           <div
             style={{
               background: 'var(--paper)',
-              padding: 'var(--s-6)',
+              padding: 'var(--s-card)',
               border: '1px solid var(--rule)',
             }}
             aria-label="K8Secret macOS window mockup"
@@ -24,7 +24,7 @@ export default function K8SecretFig() {
             <WindowMock />
 
             <div
-              className="grid grid-cols-3 gap-x-6 mt-6 pt-6"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
               style={{ borderTop: '1px solid var(--rule)' }}
             >
               <Spec label="platform" value="macOS" sub="menu bar + windows" />
@@ -99,9 +99,10 @@ function WindowMock() {
   // Stylized macOS window with traffic lights and a small list of K8s resources
   return (
     <svg
-      viewBox="0 0 600 200"
+      viewBox="0 0 600 240"
       className="w-full h-auto"
-      style={{ maxHeight: 200 }}
+      style={{ maxHeight: 240, minHeight: 160 }}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="K8Secret window mock"
     >
@@ -110,7 +111,7 @@ function WindowMock() {
         x={10}
         y={10}
         width={580}
-        height={180}
+        height={220}
         rx={6}
         fill="oklch(0.97 0.008 85)"
         stroke="oklch(0.20 0.012 85)"
@@ -120,25 +121,25 @@ function WindowMock() {
       {/* Title bar */}
       <line
         x1={10}
-        y1={36}
+        y1={42}
         x2={590}
-        y2={36}
+        y2={42}
         stroke="oklch(0.20 0.012 85)"
         strokeWidth="1"
       />
 
       {/* Traffic lights */}
-      <circle cx={28} cy={23} r={5} fill="oklch(0.65 0.18 25)" />
-      <circle cx={46} cy={23} r={5} fill="oklch(0.78 0.16 80)" />
-      <circle cx={64} cy={23} r={5} fill="oklch(0.68 0.18 145)" />
+      <circle cx={28} cy={26} r={6} fill="oklch(0.65 0.18 25)" />
+      <circle cx={48} cy={26} r={6} fill="oklch(0.78 0.16 80)" />
+      <circle cx={68} cy={26} r={6} fill="oklch(0.68 0.18 145)" />
 
       {/* Title */}
       <text
         x={300}
-        y={27}
+        y={31}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="11"
+        fontSize="14"
         letterSpacing="0.12em"
         fill="oklch(0.30 0.012 85)"
       >
@@ -147,25 +148,25 @@ function WindowMock() {
 
       {/* Sidebar */}
       <line
-        x1={150}
-        y1={36}
-        x2={150}
-        y2={190}
+        x1={170}
+        y1={42}
+        x2={170}
+        y2={230}
         stroke="oklch(0.20 0.012 85)"
         strokeWidth="0.6"
       />
-      <SideItem y={56} label="Deployments" count="12" />
-      <SideItem y={82} label="Pods" count="38" />
-      <SideItem y={108} label="Services" count="9" />
-      <SideItem y={134} label="Secrets" count="14" active />
-      <SideItem y={160} label="Logs" />
+      <SideItem y={70} label="Deployments" count="12" />
+      <SideItem y={102} label="Pods" count="38" />
+      <SideItem y={134} label="Services" count="9" />
+      <SideItem y={166} label="Secrets" count="14" active />
+      <SideItem y={198} label="Logs" />
 
       {/* Main pane: secret list */}
-      <SecretRow y={56} name="api-keys" type="Opaque" status="●" />
-      <SecretRow y={82} name="db-credentials" type="Opaque" status="●" />
-      <SecretRow y={108} name="tls-cert" type="kubernetes.io/tls" status="●" />
-      <SecretRow y={134} name="oauth-tokens" type="Opaque" status="●" />
-      <SecretRow y={160} name="redis-password" type="Opaque" status="●" />
+      <SecretRow y={70} name="api-keys" type="Opaque" status="●" />
+      <SecretRow y={102} name="db-credentials" type="Opaque" status="●" />
+      <SecretRow y={134} name="tls-cert" type="tls" status="●" />
+      <SecretRow y={166} name="oauth-tokens" type="Opaque" status="●" />
+      <SecretRow y={198} name="redis-password" type="Opaque" status="●" />
     </svg>
   )
 }
@@ -185,19 +186,19 @@ function SideItem({
     <g>
       {active && (
         <rect
-          x={16}
-          y={y - 14}
-          width={130}
-          height={20}
+          x={20}
+          y={y - 16}
+          width={144}
+          height={24}
           fill="oklch(0.45 0.18 32 / 0.12)"
-          rx={2}
+          rx={3}
         />
       )}
       <text
-        x={26}
+        x={32}
         y={y}
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="13"
         fill={active ? 'oklch(0.45 0.18 32)' : 'oklch(0.30 0.012 85)'}
         fontWeight={active ? 600 : 400}
       >
@@ -205,11 +206,11 @@ function SideItem({
       </text>
       {count && (
         <text
-          x={140}
+          x={158}
           y={y}
           textAnchor="end"
           fontFamily="var(--font-mono)"
-          fontSize="10"
+          fontSize="13"
           fill="oklch(0.55 0.012 85)"
         >
           {count}
@@ -233,30 +234,30 @@ function SecretRow({
   return (
     <g>
       <text
-        x={170}
+        x={190}
         y={y}
         fontFamily="var(--font-mono)"
-        fontSize="11"
+        fontSize="14"
         fill="oklch(0.20 0.012 85)"
         fontWeight={500}
       >
         {name}
       </text>
       <text
-        x={350}
+        x={400}
         y={y}
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="12"
         fill="oklch(0.55 0.012 85)"
       >
         {type}
       </text>
       <text
-        x={570}
+        x={576}
         y={y}
         textAnchor="end"
         fontFamily="var(--font-mono)"
-        fontSize="11"
+        fontSize="14"
         fill="oklch(0.45 0.18 145)"
       >
         {status}

@@ -7,7 +7,7 @@ export default function Mach0Fig() {
   return (
     <section
       style={{
-        marginBottom: 'var(--s-9)',
+        marginBottom: 'var(--s-section)',
         animationDelay: '300ms',
       }}
     >
@@ -21,7 +21,7 @@ export default function Mach0Fig() {
           <div
             style={{
               background: 'var(--paper)',
-              padding: 'var(--s-6)',
+              padding: 'var(--s-card)',
               border: '1px solid var(--rule)',
             }}
             aria-label="Match engine architecture diagram"
@@ -29,7 +29,7 @@ export default function Mach0Fig() {
             <ArchitectureDiagram />
 
             <div
-              className="grid grid-cols-3 gap-x-6 mt-6 pt-6"
+              className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
               style={{ borderTop: '1px solid var(--rule)' }}
             >
               <Spec label="p50 target" value="< 1 μs" />
@@ -119,9 +119,10 @@ export default function Mach0Fig() {
 function ArchitectureDiagram() {
   return (
     <svg
-      viewBox="0 0 600 200"
+      viewBox="0 0 600 220"
       className="w-full h-auto"
-      style={{ maxHeight: 200 }}
+      style={{ maxHeight: 220, minHeight: 140 }}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Match engine pipeline: market feed flows into matcher then to WAL"
     >
@@ -132,12 +133,12 @@ function ArchitectureDiagram() {
       <Line x1={180} y1={100} x2={220} y2={100} />
       <Line x1={380} y1={100} x2={420} y2={100} />
 
-      <Line x1={300} y1={130} x2={300} y2={170} dashed />
+      <Line x1={300} y1={130} x2={300} y2={185} dashed />
       <text
-        x={310}
-        y={170}
+        x={314}
+        y={188}
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="14"
         letterSpacing="0.1em"
         fill="oklch(0.55 0.012 85)"
       >
@@ -175,10 +176,10 @@ function Node({
       />
       <text
         x={x + w / 2}
-        y={y + 25}
+        y={y + 26}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="11"
+        fontSize="14"
         fontWeight="500"
         letterSpacing="0.14em"
         fill="oklch(0.20 0.012 85)"
@@ -187,10 +188,10 @@ function Node({
       </text>
       <text
         x={x + w / 2}
-        y={y + 44}
+        y={y + 46}
         textAnchor="middle"
         fontFamily="var(--font-mono)"
-        fontSize="10"
+        fontSize="12"
         fill="oklch(0.55 0.012 85)"
       >
         {sub}

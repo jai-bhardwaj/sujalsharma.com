@@ -5,7 +5,7 @@ export default function Footer() {
     <footer
       className="rule-t"
       style={{
-        marginTop: 'var(--s-9)',
+        marginTop: 'var(--s-section)',
         background: 'var(--bg)',
       }}
     >
@@ -13,8 +13,8 @@ export default function Footer() {
         className="mx-auto flex flex-col sm:flex-row gap-3 sm:gap-6 justify-between"
         style={{
           maxWidth: '1080px',
-          paddingLeft: 'clamp(24px, 5vw, 80px)',
-          paddingRight: 'clamp(24px, 5vw, 80px)',
+          paddingLeft: 'clamp(20px, 5vw, 80px)',
+          paddingRight: 'clamp(20px, 5vw, 80px)',
           paddingTop: 'var(--s-7)',
           paddingBottom: 'var(--s-7)',
           fontFamily: 'var(--font-mono)',

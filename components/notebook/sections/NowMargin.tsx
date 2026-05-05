@@ -3,7 +3,7 @@ import { PERSON } from '@/lib/constants'
 
 export default function NowMargin() {
   return (
-    <section style={{ marginBottom: 'var(--s-9)' }}>
+    <section style={{ marginBottom: 'var(--s-section)' }}>
       <Margin label="NOW @ ORBITAL">
         <p style={{ marginBottom: 'var(--s-4)' }}>{PERSON.orbitalBlurb}</p>
         <p

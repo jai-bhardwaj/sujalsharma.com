@@ -22,6 +22,11 @@
   --s-9:  96px;
   --s-10: 144px;
 
+  /* Responsive section gap — squeezes on mobile, breathes on desktop */
+  --s-section: clamp(56px, 9vw, 96px);
+  /* Responsive card internal padding */
+  --s-card:    clamp(20px, 4vw, 36px);
+
   /* Type scale — modular 1.333, fixed rem */
   --t-xs:   0.75rem;
   --t-sm:   0.875rem;

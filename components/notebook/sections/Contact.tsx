@@ -6,7 +6,7 @@ export default function Contact() {
       className="reveal"
       id="contact"
       style={{
-        marginTop: 'var(--s-9)',
+        marginTop: 'var(--s-section)',
         paddingTop: 'var(--s-7)',
         borderTop: '1px solid var(--ink)',
         animationDelay: '540ms',
