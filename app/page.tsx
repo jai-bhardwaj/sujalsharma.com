@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import DotGrid from '@/components/notebook/DotGrid'
+import NotebookLife from '@/components/notebook/NotebookLife'
 import Spread from '@/components/notebook/Spread'
 import Cover from '@/components/notebook/sections/Cover'
 import Mach0Fig from '@/components/notebook/sections/Mach0Fig'
@@ -14,6 +15,7 @@ export default function Home() {
   return (
     <>
       <DotGrid />
+      <NotebookLife />
       <Header />
       <Spread>
         <Cover />

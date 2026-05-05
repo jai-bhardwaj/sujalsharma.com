@@ -142,20 +142,21 @@ body {
   to { transform: scaleX(1); }
 }
 
-/* Stamp draw-in: rotate from -4° to final angle, fade */
+/* Stamp draw-in: small relative-rotation overshoot, fade in.
+   The base rotation lives on the parent <Stamp> wrapper, so this
+   keyframe only adds a "land into place" feel on top of it. */
 @keyframes stamp-in {
   from {
     opacity: 0;
-    transform: rotate(-4deg) scale(1.06);
+    transform: rotate(-2deg) scale(1.06);
   }
   to {
     opacity: 1;
-    transform: rotate(var(--rotate, -2deg)) scale(1);
+    transform: rotate(0deg) scale(1);
   }
 }
 .stamp-in {
   animation: stamp-in 700ms var(--ease-quint) 400ms both;
-  transform: rotate(-4deg);
 }
 
 /* Section reveal */
@@ -164,6 +165,61 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 .reveal { animation: reveal-up 700ms var(--ease-quint) both; }
+
+/* Notebook life — drifting graphite specks (paper dust)
+   Each speck travels along its own --dx / --dy vector, fading in/out. */
+@keyframes dust-drift {
+  0%, 100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% { opacity: var(--dust-opacity, 0.18); }
+  85% { opacity: var(--dust-opacity, 0.18); }
+  50% {
+    transform: translate(var(--dx, 0), var(--dy, 0));
+  }
+}
+.dust-speck {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--graphite);
+  animation: dust-drift var(--dur, 50s) ease-in-out var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Ink bloom — slow, occasional dot that rises and fades like ink
+   spreading on paper. Used in the margin gutter. */
+@keyframes ink-bloom {
+  0%, 70%, 100% { transform: scale(0); opacity: 0; }
+  18%, 32%      { transform: scale(1); opacity: var(--bloom-opacity, 0.30); }
+  50%           { transform: scale(0.7); opacity: var(--bloom-opacity-soft, 0.14); }
+}
+.ink-bloom {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  filter: blur(0.4px);
+  transform-origin: center;
+  animation: ink-bloom var(--dur, 18s) ease-in-out var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* Stamp idle drift — barely-perceptible rotation around the base
+   angle, kicks in after the entrance animation settles. Applied to
+   a wrapper around the entrance element so the two transforms compose. */
+@keyframes stamp-idle-drift {
+  0%, 100% { transform: rotate(0deg) translate(0, 0); }
+  50%      { transform: rotate(-0.5deg) translate(0, -1px); }
+}
+.stamp-idle {
+  display: inline-block;
+  animation: stamp-idle-drift 9s ease-in-out 1.4s infinite;
+  will-change: transform;
+}
 
 /* Reduced motion gate */
 @media (prefers-reduced-motion: reduce) {
