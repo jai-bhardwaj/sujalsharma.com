@@ -133,6 +133,20 @@ function ArchitectureDiagram() {
       <Line x1={180} y1={100} x2={220} y2={100} />
       <Line x1={380} y1={100} x2={420} y2={100} />
 
+      {/* Flowing data pulse: travels feed → wal */}
+      <g
+        className="flow-dot"
+        style={
+          {
+            '--flow-distance': '240px',
+            '--flow-dur': '3.8s',
+          } as React.CSSProperties
+        }
+      >
+        <circle cx={180} cy={100} r={4.5} fill="oklch(0.45 0.18 32)" />
+        <circle cx={180} cy={100} r={9} fill="oklch(0.45 0.18 32)" opacity={0.25} />
+      </g>
+
       <Line x1={300} y1={130} x2={300} y2={185} dashed />
       <text
         x={314}

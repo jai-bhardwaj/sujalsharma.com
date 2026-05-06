@@ -69,7 +69,7 @@ export default function NotebookLife() {
               '--dy': `${s.dy}vw`,
               '--dur': `${s.dur}s`,
               '--delay': `${s.delay}s`,
-              '--dust-opacity': i % 4 === 0 ? '0.28' : '0.16',
+              '--dust-opacity': i % 4 === 0 ? '0.55' : '0.32',
             } as React.CSSProperties
           }
         />

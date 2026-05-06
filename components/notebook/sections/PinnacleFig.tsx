@@ -115,6 +115,21 @@ function PipelineDiagram() {
       <Arrow x1={270} y1={100} x2={290} y2={100} />
       <Arrow x1={400} y1={100} x2={420} y2={100} />
 
+      {/* Flowing signal pulse: travels strategy → broker, paced to
+          the natural rhythm of a strategy emitting a fill. */}
+      <g
+        className="flow-dot"
+        style={
+          {
+            '--flow-distance': '410px',
+            '--flow-dur': '4.4s',
+          } as React.CSSProperties
+        }
+      >
+        <circle cx={130} cy={100} r={4.5} fill="oklch(0.45 0.18 32)" />
+        <circle cx={130} cy={100} r={9} fill="oklch(0.45 0.18 32)" opacity={0.25} />
+      </g>
+
       {/* Frontend branch */}
       <line
         x1={365}
