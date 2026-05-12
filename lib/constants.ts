@@ -11,7 +11,7 @@ export const PERSON = {
   companyUrl: 'https://withorbital.com',
   orbitalStartDate: '2024-06-01T00:00:00Z',
   orbitalBlurb:
-    "I ship things that prospect, enrich, and verify SMB data at scale. Most of what I write touches backend throughput, messy real-world data, and the glue that turns it into something a sales rep can actually use. (Sujal: replace this with specifics — team size, 2 things shipped this quarter, the tech you touch day-to-day.)",
+    "At Orbital I'm building the sync system — pulling objects from different CRMs and CSVs, and moving prospect records out of a ClickHouse directory into our Postgres object tables on BullMQ workers under Kubernetes. Most of what I write touches backend throughput, messy real-world data, and the glue that turns it into something a sales rep can actually use.",
   location: 'Hyderabad, India',
   workMode: 'onsite',
   availability: 'open to opportunities',

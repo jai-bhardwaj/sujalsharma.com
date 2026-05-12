@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  /* OKLCH palette — hue 85 (warm graphite cream), one vermilion accent.
-     Pulled darker + warmer than v1 so the page reads with more
-     ink-on-paper presence and less washed-out pastel. */
-  --bg:        oklch(0.96 0.014 85);   /* notebook cream, warmer */
-  --paper:     oklch(0.92 0.020 85);   /* taped-card / FIG band, more contrast */
-  --ink:       oklch(0.16 0.014 85);   /* graphite primary, darker */
-  --graphite:  oklch(0.48 0.014 85);   /* 2H pencil, more saturated */
-  --rule:      oklch(0.76 0.014 85);   /* dot-grid + hairlines, more visible */
-  --rule-soft: oklch(0.84 0.012 85);
-  --stamp:     oklch(0.45 0.18 32);    /* vermilion approval ink */
+  /* OKLCH palette — warm dark brown surface, cream ink, vermilion accent.
+     The page reads like a notebook lit by lamplight: chocolate paper,
+     bone-white graphite, one stamp of red ink. */
+  --bg:        oklch(0.20 0.022 65);   /* dark warm brown, lamplit paper */
+  --paper:     oklch(0.24 0.026 65);   /* taped-card / FIG band, slightly raised */
+  --ink:       oklch(0.92 0.014 85);   /* cream primary text */
+  --graphite:  oklch(0.66 0.018 85);   /* 2H pencil, muted cream */
+  --rule:      oklch(0.34 0.018 65);   /* dot-grid + hairlines on dark */
+  --rule-soft: oklch(0.28 0.020 65);
+  --stamp:     oklch(0.58 0.20 32);    /* vermilion approval ink, brighter on dark */
 
   /* Spacing — 4pt base + 24px vertical rhythm */
   --s-1:  4px;
@@ -24,18 +24,21 @@
   --s-9:  96px;
   --s-10: 144px;
 
-  /* Responsive section gap — squeezes on mobile, breathes on desktop */
-  --s-section: clamp(56px, 9vw, 96px);
+  /* Responsive section gap — squeezes on mobile, breathes on desktop.
+     Mobile floor is the same 48px the inter-section margins inherit
+     from --s-7 so everything rhymes. */
+  --s-section: clamp(48px, 9vw, 96px);
   /* Responsive card internal padding */
-  --s-card:    clamp(20px, 4vw, 36px);
+  --s-card:    clamp(18px, 4vw, 36px);
 
-  /* Type scale — modular 1.333, fixed rem */
+  /* Type scale — fluid where it matters so headlines breathe on
+     phones instead of dominating the viewport. */
   --t-xs:   0.75rem;
   --t-sm:   0.875rem;
   --t-base: 1rem;
-  --t-lg:   1.5rem;
-  --t-xl:   3rem;
-  --t-2xl:  clamp(3rem, 8vw, 5.5rem);
+  --t-lg:   clamp(1.25rem, 3.6vw, 1.5rem);
+  --t-xl:   clamp(2rem, 5.5vw, 3rem);
+  --t-2xl:  clamp(2.5rem, 9vw, 5.5rem);
 
   /* Motion — exponential out for entrances */
   --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -77,10 +80,10 @@ body {
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.82 0.010 85);
+  background: oklch(0.34 0.018 65);
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover { background: oklch(0.70 0.012 85); }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.46 0.022 65); }
 
 :focus-visible {
   outline: 2px solid var(--stamp);
@@ -166,12 +169,29 @@ body {
   animation: stamp-in 700ms var(--ease-quint) 400ms both;
 }
 
-/* Section reveal */
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Section reveal. Default state is FULLY VISIBLE — the hidden state
+   only applies when JS is enabled AND <html> has been tagged ready
+   by RevealRoot. This guarantees that any failure mode (JS disabled,
+   hydration error, ad-blocker, RevealRoot bug) still shows the page.
+   The IntersectionObserver in RevealRoot toggles `.is-visible` to
+   animate elements into place as they scroll in. */
+.reveal { /* default: visible, no transform */ }
+
+@media (scripting: enabled) {
+  html.reveal-ready .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 800ms var(--ease-quint),
+      transform 800ms var(--ease-quint);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  html.reveal-ready .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.reveal { animation: reveal-up 700ms var(--ease-quint) both; }
 
 /* Notebook life — drifting graphite specks (paper dust)
    Each speck travels along its own --dx / --dy vector, fading in/out. */
@@ -257,4 +277,159 @@ body {
 .race-surface {
   background: #07090D;
   color: #E6EDF3;
+}
+
+/* Soft pulse — used for status indicator dots on the race page. */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(0.85); }
+}
+.pulse { animation: pulse-soft 1.4s ease-in-out infinite; }
+
+/* Race buttons — editorial pill that matches the dark race surface.
+   Three variants share base layout and animation; only color/border
+   differ. Cap-height letterspacing + mono = "control panel button". */
+.race-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition:
+    background-color 240ms var(--ease-quart),
+    border-color 240ms var(--ease-quart),
+    color 240ms var(--ease-quart),
+    transform 240ms var(--ease-quart),
+    box-shadow 240ms var(--ease-quart);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.race-btn:active { transform: translateY(1px); }
+.race-btn:focus-visible {
+  outline: 2px solid #22C55E;
+  outline-offset: 3px;
+}
+
+/* Primary — solid bone, dark text. Hover lifts + tints toward green. */
+.race-btn--primary {
+  background: #F5F7FA;
+  color: #07090D;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset, 0 8px 18px -10px rgba(0,0,0,0.6);
+}
+@media (hover: hover) {
+  .race-btn--primary:hover {
+    background: #22C55E;
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 14px 26px -12px rgba(34,197,94,0.55);
+  }
+}
+
+/* Ghost — outlined, transparent. Hover fills lightly. */
+.race-btn--ghost {
+  background: transparent;
+  color: #F5F7FA;
+  border-color: rgba(245,247,250,0.32);
+}
+@media (hover: hover) {
+  .race-btn--ghost:hover {
+    background: rgba(245,247,250,0.06);
+    border-color: rgba(245,247,250,0.6);
+    transform: translateY(-1px);
+  }
+}
+
+/* Arm — small dot + label. Pulse stays via the inline pulse class. */
+.race-btn__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Horizontally scrollable diagram on narrow viewports.
+   The card around it stays put; only the SVG slides. A right-edge
+   fade hints at the hidden content. */
+.diagram-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* mask both edges so the diagram fades in/out rather than cutting */
+  mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.diagram-scroll::-webkit-scrollbar { height: 6px; }
+.diagram-scroll::-webkit-scrollbar-track { background: transparent; }
+.diagram-scroll::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+.diagram-scroll-inner {
+  min-width: 520px;
+}
+@media (min-width: 768px) {
+  .diagram-scroll { mask-image: none; -webkit-mask-image: none; overflow: visible; }
+  .diagram-scroll-inner { min-width: 0; }
+}
+
+/* Hover lift for cards / taped photo. Translates a few pixels and
+   gains a deeper shadow on supported pointer devices only — disabled
+   on touch so it doesn't get stuck after tap. */
+@media (hover: hover) {
+  .lift {
+    transition: transform 240ms var(--ease-quart), box-shadow 240ms var(--ease-quart);
+  }
+  .lift:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Taped polaroid card — rotation comes from --rotate (set inline per
+   instance); hover layers a subtle scale and stronger shadow on top
+   without overwriting the rotation. */
+.taped-card {
+  transform: rotate(var(--rotate, 0deg));
+  box-shadow:
+    0 1px 0 oklch(0.32 0.018 65),
+    0 14px 28px -12px oklch(0.05 0.012 65 / 0.55);
+  transition: transform 320ms var(--ease-quart), box-shadow 320ms var(--ease-quart);
+}
+@media (hover: hover) {
+  a:hover .taped-card,
+  .taped-card:hover {
+    transform: rotate(calc(var(--rotate, 0deg) * 0.55)) scale(1.025);
+    box-shadow:
+      0 1px 0 oklch(0.32 0.018 65),
+      0 22px 42px -14px oklch(0.05 0.012 65 / 0.75);
+  }
+}
+
+/* Mobile menu slide-in */
+@keyframes drawer-slide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.drawer-slide { animation: drawer-slide 280ms var(--ease-quart) both; }
+
+/* Pencil arrow nudges right on link hover */
+.arrow-nudge { transition: transform 200ms var(--ease-quart); }
+@media (hover: hover) {
+  a:hover > .arrow-nudge,
+  button:hover > .arrow-nudge {
+    transform: translateX(3px);
+  }
+}
+/* Mirror version: arrow facing left nudges left on hover. */
+.back-nudge { transition: transform 200ms var(--ease-quart); }
+@media (hover: hover) {
+  a:hover > .back-nudge,
+  button:hover > .back-nudge {
+    transform: translateX(-3px);
+  }
 }

@@ -34,7 +34,7 @@ export default function Header() {
       className="sticky top-0 z-40 backdrop-blur-sm"
       style={{
         background:
-          'linear-gradient(180deg, oklch(0.97 0.008 85 / 0.92), oklch(0.97 0.008 85 / 0.78))',
+          'linear-gradient(180deg, oklch(0.18 0.020 65 / 0.92), oklch(0.18 0.020 65 / 0.78))',
         borderBottom: '1px solid var(--rule-soft)',
       }}
     >
@@ -42,21 +42,21 @@ export default function Header() {
         className="mx-auto flex items-center justify-between gap-6"
         style={{
           maxWidth: '1080px',
-          paddingLeft: 'clamp(20px, 5vw, 80px)',
-          paddingRight: 'clamp(20px, 5vw, 80px)',
+          paddingLeft: 'clamp(24px, 5vw, 80px)',
+          paddingRight: 'clamp(24px, 5vw, 80px)',
           height: 56,
         }}
       >
         <Link
           href="/"
-          className="label"
+          className="label truncate"
           style={{
             color: 'var(--ink)',
             letterSpacing: '0.16em',
             textDecoration: 'none',
           }}
         >
-          SUJAL SHARMA · NOTEBOOK
+          SUJAL SHARMA<span className="hidden sm:inline"> · NOTEBOOK</span>
         </Link>
 
         <nav
@@ -114,12 +114,16 @@ export default function Header() {
 
       {open && (
         <div
-          className="md:hidden"
+          className="md:hidden drawer-slide"
           style={{ borderTop: '1px solid var(--rule)' }}
         >
           <nav
-            className="flex flex-col px-6 py-2"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            className="flex flex-col py-2"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              paddingLeft: 'clamp(24px, 5vw, 80px)',
+              paddingRight: 'clamp(24px, 5vw, 80px)',
+            }}
           >
             {NAV.map((item) => (
               <Link

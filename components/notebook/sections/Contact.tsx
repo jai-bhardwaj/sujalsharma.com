@@ -9,7 +9,6 @@ export default function Contact() {
         marginTop: 'var(--s-section)',
         paddingTop: 'var(--s-7)',
         borderTop: '1px solid var(--ink)',
-        animationDelay: '540ms',
       }}
     >
       <div
@@ -38,7 +37,12 @@ export default function Contact() {
         }}
       >
         {SOCIAL_LINKS.email}{' '}
-        <span style={{ color: 'var(--stamp)', fontStyle: 'normal' }}>→</span>
+        <span
+          className="arrow-nudge inline-block"
+          style={{ color: 'var(--stamp)', fontStyle: 'normal' }}
+        >
+          →
+        </span>
       </a>
 
       <div

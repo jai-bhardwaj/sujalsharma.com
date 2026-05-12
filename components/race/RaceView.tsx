@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useMemo } from 'react'
 import RaceHUD from './RaceHUD'
 import PencilArrow from '@/components/notebook/PencilArrow'
-import { useArenaGame } from '@/hooks/useArenaGame'
+import { useArenaGame, formatMs } from '@/hooks/useArenaGame'
 
 const ArenaScene = dynamic(() => import('@/components/3d/ArenaScene'), {
   ssr: false,
@@ -50,18 +50,32 @@ export default function RaceView() {
         if (state.kind === 'armed' || state.kind === 'live') fire()
       }}
     >
-      {/* Minimal top nav */}
-      <div className="absolute top-0 left-0 right-0 z-20 px-6 md:px-10 py-5 flex items-center justify-between text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.6)]"
+      {/* Top nav — single bar holding the back link on the left and
+          the live status + best time on the right. Both halves shrink
+          gracefully on narrow screens. */}
+      <div
+        className="absolute top-0 left-0 right-0 z-20 px-5 md:px-10 py-4 md:py-5 flex items-center justify-between gap-4 text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.65)] pointer-events-auto"
         style={{ fontFamily: 'var(--font-mono)' }}
       >
         <Link
           href="/"
-          className="flex items-center gap-3 hover:text-[#F5F7FA] transition-colors"
+          className="group flex items-center gap-2 md:gap-3 hover:text-[#F5F7FA] transition-colors"
         >
-          <PencilArrow direction="left" size={28} />
-          <span>back to notebook</span>
+          <span className="back-nudge inline-block">
+            <PencilArrow direction="left" size={24} />
+          </span>
+          <span className="hidden sm:inline">back to notebook</span>
+          <span className="sm:hidden">back</span>
         </Link>
-        <span className="hidden md:block">sujalsharma.com / race</span>
+        <div className="flex items-center gap-3 md:gap-5">
+          <span className="hidden sm:flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] pulse" />
+            <span>Mach-Zero · reaction bench</span>
+          </span>
+          <span className="tab whitespace-nowrap">
+            best · <span className="text-[#E6EDF3]">{best != null ? formatMs(best) : '—'}</span>
+          </span>
+        </div>
       </div>
 
       {/* Arena */}

@@ -12,10 +12,11 @@ export default function Spread({ children }: { children: ReactNode }) {
       className="relative mx-auto"
       style={{
         maxWidth: '1080px',
-        paddingLeft: 'clamp(20px, 5vw, 80px)',
-        paddingRight: 'clamp(20px, 5vw, 80px)',
+        paddingLeft: 'clamp(24px, 5vw, 80px)',
+        paddingRight: 'clamp(24px, 5vw, 80px)',
         paddingTop: 'clamp(40px, 7vw, 96px)',
         paddingBottom: 'clamp(48px, 8vw, 96px)',
+        zIndex: 2,
       }}
     >
       {children}

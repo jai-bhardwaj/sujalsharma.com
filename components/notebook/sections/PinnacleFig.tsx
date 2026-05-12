@@ -5,7 +5,7 @@ const PNCL = PROJECTS.find((p) => p.id === 'pinnacle') ?? PROJECTS[0]
 
 export default function PinnacleFig() {
   return (
-    <section style={{ marginBottom: 'var(--s-section)', animationDelay: '380ms' }}>
+    <section style={{ marginBottom: 'var(--s-section)' }}>
       <Fig
         number="02"
         title="Pinnacle Trading Platform"
@@ -21,7 +21,11 @@ export default function PinnacleFig() {
             }}
             aria-label="Pinnacle trading pipeline: strategy engine -> Redis -> order manager -> Angel One"
           >
-            <PipelineDiagram />
+            <div className="diagram-scroll">
+              <div className="diagram-scroll-inner">
+                <PipelineDiagram />
+              </div>
+            </div>
 
             <div
               className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
@@ -126,8 +130,8 @@ function PipelineDiagram() {
           } as React.CSSProperties
         }
       >
-        <circle cx={130} cy={100} r={4.5} fill="oklch(0.45 0.18 32)" />
-        <circle cx={130} cy={100} r={9} fill="oklch(0.45 0.18 32)" opacity={0.25} />
+        <circle cx={130} cy={100} r={4.5} fill="oklch(0.58 0.20 32)" />
+        <circle cx={130} cy={100} r={9} fill="oklch(0.58 0.20 32)" opacity={0.25} />
       </g>
 
       {/* Frontend branch */}
@@ -136,7 +140,7 @@ function PipelineDiagram() {
         y1={130}
         x2={365}
         y2={185}
-        stroke="oklch(0.20 0.012 85)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1.2"
         strokeDasharray="3 4"
       />
@@ -146,7 +150,7 @@ function PipelineDiagram() {
         fontFamily="var(--font-mono)"
         fontSize="14"
         letterSpacing="0.1em"
-        fill="oklch(0.55 0.012 85)"
+        fill="oklch(0.62 0.014 85)"
       >
         ↳ next.js · prisma · postgres
       </text>
@@ -172,12 +176,12 @@ function Stage({
   const w = 120
   const h = 60
   const fill = highlight
-    ? 'oklch(0.94 0.012 85)'
+    ? 'oklch(0.30 0.022 65)'
     : terminal
       ? 'oklch(0.45 0.18 32 / 0.10)'
       : 'transparent'
-  const stroke = terminal ? 'oklch(0.45 0.18 32)' : 'oklch(0.20 0.012 85)'
-  const labelColor = terminal ? 'oklch(0.45 0.18 32)' : 'oklch(0.20 0.012 85)'
+  const stroke = terminal ? 'oklch(0.58 0.20 32)' : 'oklch(0.86 0.014 85)'
+  const labelColor = terminal ? 'oklch(0.58 0.20 32)' : 'oklch(0.86 0.014 85)'
   return (
     <g>
       <rect
@@ -207,7 +211,7 @@ function Stage({
         textAnchor="middle"
         fontFamily="var(--font-mono)"
         fontSize="11"
-        fill="oklch(0.55 0.012 85)"
+        fill="oklch(0.62 0.014 85)"
       >
         {sub}
       </text>
@@ -233,12 +237,12 @@ function Arrow({
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke="oklch(0.20 0.012 85)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1.2"
       />
       <polygon
         points={`${x2},${y2 - 4} ${x2 + 6},${y2} ${x2},${y2 + 4}`}
-        fill="oklch(0.20 0.012 85)"
+        fill="oklch(0.86 0.014 85)"
       />
     </>
   )

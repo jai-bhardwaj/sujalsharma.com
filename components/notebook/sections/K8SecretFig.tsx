@@ -5,7 +5,7 @@ const K8 = PROJECTS.find((p) => p.id === 'k8secret') ?? PROJECTS[0]
 
 export default function K8SecretFig() {
   return (
-    <section style={{ marginBottom: 'var(--s-section)', animationDelay: '460ms' }}>
+    <section style={{ marginBottom: 'var(--s-section)' }}>
       <Fig
         number="03"
         title="K8Secret"
@@ -21,7 +21,11 @@ export default function K8SecretFig() {
             }}
             aria-label="K8Secret macOS window mockup"
           >
-            <WindowMock />
+            <div className="diagram-scroll">
+              <div className="diagram-scroll-inner">
+                <WindowMock />
+              </div>
+            </div>
 
             <div
               className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
@@ -113,8 +117,8 @@ function WindowMock() {
         width={580}
         height={220}
         rx={6}
-        fill="oklch(0.97 0.008 85)"
-        stroke="oklch(0.20 0.012 85)"
+        fill="oklch(0.26 0.022 65)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1.2"
       />
 
@@ -124,7 +128,7 @@ function WindowMock() {
         y1={42}
         x2={590}
         y2={42}
-        stroke="oklch(0.20 0.012 85)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1"
       />
 
@@ -141,7 +145,7 @@ function WindowMock() {
         fontFamily="var(--font-mono)"
         fontSize="14"
         letterSpacing="0.12em"
-        fill="oklch(0.30 0.012 85)"
+        fill="oklch(0.78 0.014 85)"
       >
         K8SECRET — production
       </text>
@@ -152,7 +156,7 @@ function WindowMock() {
         y1={42}
         x2={170}
         y2={230}
-        stroke="oklch(0.20 0.012 85)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="0.6"
       />
       <SideItem y={70} label="Deployments" count="12" />
@@ -190,7 +194,7 @@ function SideItem({
           y={y - 16}
           width={144}
           height={24}
-          fill="oklch(0.45 0.18 32 / 0.12)"
+          fill="oklch(0.58 0.20 32 / 0.18)"
           rx={3}
         />
       )}
@@ -199,7 +203,7 @@ function SideItem({
         y={y}
         fontFamily="var(--font-mono)"
         fontSize="13"
-        fill={active ? 'oklch(0.45 0.18 32)' : 'oklch(0.30 0.012 85)'}
+        fill={active ? 'oklch(0.62 0.21 32)' : 'oklch(0.78 0.014 85)'}
         fontWeight={active ? 600 : 400}
       >
         {label}
@@ -211,7 +215,7 @@ function SideItem({
           textAnchor="end"
           fontFamily="var(--font-mono)"
           fontSize="13"
-          fill="oklch(0.55 0.012 85)"
+          fill="oklch(0.62 0.014 85)"
         >
           {count}
         </text>
@@ -238,7 +242,7 @@ function SecretRow({
         y={y}
         fontFamily="var(--font-mono)"
         fontSize="14"
-        fill="oklch(0.20 0.012 85)"
+        fill="oklch(0.86 0.014 85)"
         fontWeight={500}
       >
         {name}
@@ -248,7 +252,7 @@ function SecretRow({
         y={y}
         fontFamily="var(--font-mono)"
         fontSize="12"
-        fill="oklch(0.55 0.012 85)"
+        fill="oklch(0.62 0.014 85)"
       >
         {type}
       </text>

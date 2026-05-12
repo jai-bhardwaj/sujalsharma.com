@@ -1,7 +1,6 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import DotGrid from '@/components/notebook/DotGrid'
-import NotebookLife from '@/components/notebook/NotebookLife'
+import Background from '@/components/bg/Background'
 import Spread from '@/components/notebook/Spread'
 import Cover from '@/components/notebook/sections/Cover'
 import Mach0Fig from '@/components/notebook/sections/Mach0Fig'
@@ -14,8 +13,9 @@ import Contact from '@/components/notebook/sections/Contact'
 export default function Home() {
   return (
     <>
-      <DotGrid />
-      <NotebookLife />
+      {/* Ambient layers: warm-brown shader wash + cursor ink trail.
+          Replaces the older DotGrid + NotebookLife pair. */}
+      <Background />
       <Header />
       <Spread>
         <Cover />

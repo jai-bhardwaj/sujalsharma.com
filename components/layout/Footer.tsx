@@ -3,18 +3,19 @@ import { PERSON, SOCIAL_LINKS } from '@/lib/constants'
 export default function Footer() {
   return (
     <footer
-      className="rule-t"
+      className="relative rule-t"
       style={{
         marginTop: 'var(--s-section)',
         background: 'var(--bg)',
+        zIndex: 2,
       }}
     >
       <div
         className="mx-auto flex flex-col sm:flex-row gap-3 sm:gap-6 justify-between"
         style={{
           maxWidth: '1080px',
-          paddingLeft: 'clamp(20px, 5vw, 80px)',
-          paddingRight: 'clamp(20px, 5vw, 80px)',
+          paddingLeft: 'clamp(24px, 5vw, 80px)',
+          paddingRight: 'clamp(24px, 5vw, 80px)',
           paddingTop: 'var(--s-7)',
           paddingBottom: 'var(--s-7)',
           fontFamily: 'var(--font-mono)',

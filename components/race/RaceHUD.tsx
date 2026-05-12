@@ -34,19 +34,10 @@ export default function RaceHUD({ state, best, onArm, onReset }: Props) {
       />
 
       <div className="relative h-full w-full flex flex-col">
-        {/* Top meta */}
-        <div
-          className="flex items-center justify-between px-6 md:px-10 py-5 text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.7)]"
-          style={{ fontFamily: 'var(--font-mono)' }}
-        >
-          <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] pulse" />
-            Mach-Zero · reaction bench
-          </span>
-          <span className="tab">
-            best · <span className="text-[#E6EDF3]">{best != null ? formatMs(best) : '—'}</span>
-          </span>
-        </div>
+        {/* Top meta is now rendered inside RaceView's nav row to avoid
+            stacking two top bars at the same Y. Spacer keeps the
+            content panel's vertical rhythm unchanged. */}
+        <div aria-hidden style={{ height: 56 }} />
 
         {/* Content panel — pushed to the upper portion of the viewport
             in idle/armed/resolved/missed; centered only for the LIVE state
@@ -105,13 +96,10 @@ function Idle({ onArm }: { onArm: () => void }) {
         <span className="text-[#F5F7FA]">1–3 seconds</span>. Click it as fast
         as you can.
       </p>
-      <button
-        onClick={onArm}
-        className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#F5F7FA] text-[#07090D] font-medium text-[14px] hover:bg-[#22C55E] hover:text-white transition-colors"
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-current pulse" />
-        Arm — press [space]
-        <span className="transition-transform group-hover:translate-x-1">→</span>
+      <button onClick={onArm} className="race-btn race-btn--primary">
+        <span className="race-btn__dot pulse" />
+        <span>Arm — press [space]</span>
+        <span className="arrow-nudge inline-block">→</span>
       </button>
     </motion.div>
   )
@@ -265,17 +253,12 @@ function Result({
       </p>
 
       <div className="flex flex-wrap gap-3 justify-center">
-        <button
-          onClick={onReset}
-          className="px-5 py-2.5 rounded-full bg-[#F5F7FA] text-[#07090D] font-medium text-[13px] hover:bg-[#22C55E] hover:text-white transition-colors"
-        >
-          Race again →
+        <button onClick={onReset} className="race-btn race-btn--primary">
+          <span>Race again</span>
+          <span className="arrow-nudge inline-block">→</span>
         </button>
-        <button
-          onClick={share}
-          className="px-5 py-2.5 rounded-full border border-[rgba(245,247,250,0.4)] text-[#F5F7FA] font-medium text-[13px] hover:bg-[rgba(245,247,250,0.08)] transition-colors"
-        >
-          Share result
+        <button onClick={share} className="race-btn race-btn--ghost">
+          <span>Share result</span>
         </button>
       </div>
     </motion.div>
@@ -305,11 +288,9 @@ function Missed({ onReset }: { onReset: () => void }) {
       <p className="text-[14px] text-[rgba(230,237,243,0.6)] mb-6">
         Wait for the yellow orb before you click.
       </p>
-      <button
-        onClick={onReset}
-        className="px-5 py-2.5 rounded-full bg-[#F5F7FA] text-[#07090D] font-medium text-[13px]"
-      >
-        Retry →
+      <button onClick={onReset} className="race-btn race-btn--primary">
+        <span>Retry</span>
+        <span className="arrow-nudge inline-block">→</span>
       </button>
     </motion.div>
   )

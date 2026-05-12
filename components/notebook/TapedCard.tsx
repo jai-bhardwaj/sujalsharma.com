@@ -14,14 +14,14 @@ type Props = {
 export default function TapedCard({ children, rotation = -1.2, className = '' }: Props) {
   return (
     <div
-      className={`relative inline-block ${className}`}
-      style={{
-        transform: `rotate(${rotation}deg)`,
-        background: 'var(--paper)',
-        boxShadow:
-          '0 1px 0 oklch(0.78 0.012 85), 0 14px 28px -12px oklch(0.30 0.012 85 / 0.18)',
-        padding: 'var(--s-3)',
-      }}
+      className={`taped-card relative inline-block ${className}`}
+      style={
+        {
+          '--rotate': `${rotation}deg`,
+          background: 'var(--paper)',
+          padding: 'var(--s-3)',
+        } as React.CSSProperties
+      }
     >
       {/* Top-left masking tape */}
       <span
@@ -33,7 +33,7 @@ export default function TapedCard({ children, rotation = -1.2, className = '' }:
           width: 64,
           height: 18,
           background:
-            'linear-gradient(180deg, oklch(0.92 0.05 85 / 0.85), oklch(0.86 0.07 85 / 0.85))',
+            'linear-gradient(180deg, oklch(0.74 0.06 85 / 0.85), oklch(0.62 0.08 70 / 0.85))',
           transform: 'rotate(-4deg)',
           opacity: 0.85,
         }}
@@ -48,7 +48,7 @@ export default function TapedCard({ children, rotation = -1.2, className = '' }:
           width: 56,
           height: 16,
           background:
-            'linear-gradient(180deg, oklch(0.92 0.05 85 / 0.85), oklch(0.86 0.07 85 / 0.85))',
+            'linear-gradient(180deg, oklch(0.74 0.06 85 / 0.85), oklch(0.62 0.08 70 / 0.85))',
           transform: 'rotate(6deg)',
           opacity: 0.85,
         }}

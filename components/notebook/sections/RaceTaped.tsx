@@ -8,10 +8,7 @@ export default function RaceTaped() {
   return (
     <section
       className="reveal"
-      style={{
-        marginBottom: 'var(--s-section)',
-        animationDelay: '460ms',
-      }}
+      style={{ marginBottom: 'var(--s-section)' }}
       aria-label="Taped-in race link"
     >
       <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center">
@@ -68,7 +65,9 @@ export default function RaceTaped() {
               textDecorationColor: 'var(--stamp)',
             }}
           >
-            <PencilArrow direction="down-right" size={32} />
+            <span className="arrow-nudge inline-block">
+              <PencilArrow direction="down-right" size={32} />
+            </span>
             <span>open the bench</span>
           </Link>
         </div>
@@ -80,8 +79,11 @@ export default function RaceTaped() {
 function RaceThumbnail() {
   return (
     <div
-      className="relative w-full max-w-[320px] aspect-[4/3] overflow-hidden"
-      style={{ background: '#0B0F14' }}
+      className="relative w-full aspect-[4/3] overflow-hidden"
+      style={{
+        background: '#0B0F14',
+        maxWidth: 'min(320px, calc(100vw - 88px))',
+      }}
     >
       <svg
         viewBox="0 0 320 240"

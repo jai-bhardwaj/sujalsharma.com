@@ -5,12 +5,7 @@ const MACH = PROJECTS.find((p) => p.id === 'mach-zero') ?? PROJECTS[0]
 
 export default function Mach0Fig() {
   return (
-    <section
-      style={{
-        marginBottom: 'var(--s-section)',
-        animationDelay: '300ms',
-      }}
-    >
+    <section style={{ marginBottom: 'var(--s-section)' }}>
       <Fig
         number="01"
         title="Match Engine"
@@ -26,7 +21,11 @@ export default function Mach0Fig() {
             }}
             aria-label="Match engine architecture diagram"
           >
-            <ArchitectureDiagram />
+            <div className="diagram-scroll">
+              <div className="diagram-scroll-inner">
+                <ArchitectureDiagram />
+              </div>
+            </div>
 
             <div
               className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4 mt-6 pt-6"
@@ -143,8 +142,8 @@ function ArchitectureDiagram() {
           } as React.CSSProperties
         }
       >
-        <circle cx={180} cy={100} r={4.5} fill="oklch(0.45 0.18 32)" />
-        <circle cx={180} cy={100} r={9} fill="oklch(0.45 0.18 32)" opacity={0.25} />
+        <circle cx={180} cy={100} r={4.5} fill="oklch(0.58 0.20 32)" />
+        <circle cx={180} cy={100} r={9} fill="oklch(0.58 0.20 32)" opacity={0.25} />
       </g>
 
       <Line x1={300} y1={130} x2={300} y2={185} dashed />
@@ -154,7 +153,7 @@ function ArchitectureDiagram() {
         fontFamily="var(--font-mono)"
         fontSize="14"
         letterSpacing="0.1em"
-        fill="oklch(0.55 0.012 85)"
+        fill="oklch(0.62 0.014 85)"
       >
         ↳ risk · pre-trade checks
       </text>
@@ -184,8 +183,8 @@ function Node({
         y={y}
         width={w}
         height={h}
-        fill={highlight ? 'oklch(0.94 0.012 85)' : 'transparent'}
-        stroke="oklch(0.20 0.012 85)"
+        fill={highlight ? 'oklch(0.30 0.022 65)' : 'transparent'}
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1.4"
       />
       <text
@@ -196,7 +195,7 @@ function Node({
         fontSize="14"
         fontWeight="500"
         letterSpacing="0.14em"
-        fill="oklch(0.20 0.012 85)"
+        fill="oklch(0.86 0.014 85)"
       >
         {label}
       </text>
@@ -206,7 +205,7 @@ function Node({
         textAnchor="middle"
         fontFamily="var(--font-mono)"
         fontSize="12"
-        fill="oklch(0.55 0.012 85)"
+        fill="oklch(0.62 0.014 85)"
       >
         {sub}
       </text>
@@ -234,14 +233,14 @@ function Line({
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke="oklch(0.20 0.012 85)"
+        stroke="oklch(0.86 0.014 85)"
         strokeWidth="1.2"
         strokeDasharray={dashed ? '3 4' : undefined}
       />
       {!dashed && (
         <polygon
           points={`${x2},${y2 - 4} ${x2 + 6},${y2} ${x2},${y2 + 4}`}
-          fill="oklch(0.20 0.012 85)"
+          fill="oklch(0.86 0.014 85)"
         />
       )}
     </>

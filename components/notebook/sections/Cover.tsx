@@ -43,8 +43,8 @@ export default function Cover() {
               color: 'var(--ink)',
               marginTop: 'var(--s-7)',
               maxWidth: '36ch',
-              animationDelay: '120ms',
-            }}
+              ['--reveal-delay' as string]: '120ms',
+            } as React.CSSProperties}
           >
             Software engineer at{' '}
             <a
@@ -64,8 +64,8 @@ export default function Cover() {
               marginTop: 'var(--s-7)',
               fontFamily: 'var(--font-mono)',
               fontSize: 'var(--t-xs)',
-              animationDelay: '200ms',
-            }}
+              ['--reveal-delay' as string]: '200ms',
+            } as React.CSSProperties}
           >
             <Datum label="Role" value="Software Eng" />
             <Datum label="Years" value={`${PERSON.years}Y`} />
@@ -74,7 +74,7 @@ export default function Cover() {
           </dl>
         </div>
 
-        <div className="md:pt-12">
+        <div className="absolute right-0 top-0 md:static md:pt-12">
           <Stamp text="Shipping" rotation={-3} />
         </div>
       </div>
