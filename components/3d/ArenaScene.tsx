@@ -68,6 +68,24 @@ function ParallaxRig({ target }: { target: [number, number, number] }) {
   return null
 }
 
+/**
+ * Adjusts the camera FOV + Z based on viewport. Portrait mobile has a
+ * narrow aspect ratio (~0.45) which collapses Three's horizontal FOV
+ * to ~26° at vfov 55 — the exchange nodes at x ±3.8 land outside the
+ * visible cone and get clipped at the screen edges. Widening vfov to
+ * 78 and pulling the camera back a touch keeps everything in frame.
+ */
+function ResponsiveCamera({ isDesktop }: { isDesktop: boolean }) {
+  const camera = useThree((s) => s.camera) as THREE.PerspectiveCamera
+  useEffect(() => {
+    if (!(camera as THREE.PerspectiveCamera).isPerspectiveCamera) return
+    camera.fov = isDesktop ? 55 : 78
+    camera.position.z = isDesktop ? 8 : 9
+    camera.updateProjectionMatrix()
+  }, [camera, isDesktop])
+  return null
+}
+
 function Grid() {
   return (
     <gridHelper
@@ -92,9 +110,11 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
 
   // /race is full-bleed: keep the scene horizontally centered but pushed
   // into the bottom half of the viewport so HUD text up top reads clean.
-  const groupPos: [number, number, number] = isDesktop ? [0, -1.6, 0] : [0, -2.0, 0]
-  const groupScale = isDesktop ? 0.72 : 0.6
-  const cameraTarget: [number, number, number] = isDesktop ? [0, -0.6, 0] : [0, -1.0, 0]
+  // Mobile shrinks the group a touch more so the wider fov has breathing
+  // room on both sides without the exchange nodes hugging the edges.
+  const groupPos: [number, number, number] = isDesktop ? [0, -1.6, 0] : [0, -1.8, 0]
+  const groupScale = isDesktop ? 0.72 : 0.52
+  const cameraTarget: [number, number, number] = isDesktop ? [0, -0.6, 0] : [0, -0.9, 0]
 
   return (
     <>
@@ -144,6 +164,7 @@ function Scene({ state, onFire, onOrbClick, isDesktop }: Props & { isDesktop: bo
         <ArbitrageOrb visible={orbVisible} onClick={onOrbClick} />
       </group>
 
+      <ResponsiveCamera isDesktop={isDesktop} />
       <ParallaxRig target={cameraTarget} />
 
       <EffectComposer>
