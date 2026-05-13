@@ -286,6 +286,16 @@ body {
 }
 .pulse { animation: pulse-soft 1.4s ease-in-out infinite; }
 
+/* Hover/touch visibility toggles. Use sparingly — most things should
+   adapt with viewport queries, but interaction-specific copy (keyboard
+   shortcuts vs tap hints) needs to switch on input capability. */
+@media (hover: none) {
+  .hover-only { display: none !important; }
+}
+@media (hover: hover) {
+  .touch-only { display: none !important; }
+}
+
 /* Race buttons — editorial pill that matches the dark race surface.
    Three variants share base layout and animation; only color/border
    differ. Cap-height letterspacing + mono = "control panel button". */

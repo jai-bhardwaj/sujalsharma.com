@@ -58,13 +58,20 @@ export default function RaceHUD({ state, best, onArm, onReset }: Props) {
           </AnimatePresence>
         </div>
 
-        {/* Bottom hint */}
+        {/* Bottom hint — input legend on the left, engine specs on the
+            right. Both shrink on narrow phones; the keyboard-shortcut
+            copy swaps to a tap-friendly version on touch. */}
         <div
-          className="flex items-center justify-between px-6 md:px-10 py-5 text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.45)]"
-          style={{ fontFamily: 'var(--font-mono)' }}
+          className="flex items-center justify-between gap-3 py-4 md:py-5 text-[10px] sm:text-[11px] tracking-[0.18em] uppercase text-[rgba(230,237,243,0.45)]"
+          style={{
+            fontFamily: 'var(--font-mono)',
+            paddingLeft: 'clamp(20px, 5vw, 80px)',
+            paddingRight: 'clamp(20px, 5vw, 80px)',
+          }}
         >
-          <span>click · spacebar · enter</span>
-          <span>p50 800ns · p99 2.4μs</span>
+          <span className="hover-only">click · spacebar · enter</span>
+          <span className="touch-only">tap to play</span>
+          <span className="whitespace-nowrap">p50 800ns · p99 2.4μs</span>
         </div>
       </div>
     </div>
@@ -98,7 +105,8 @@ function Idle({ onArm }: { onArm: () => void }) {
       </p>
       <button onClick={onArm} className="race-btn race-btn--primary">
         <span className="race-btn__dot pulse" />
-        <span>Arm — press [space]</span>
+        <span className="hover-only">Arm — press [space]</span>
+        <span className="touch-only">Tap to arm</span>
         <span className="arrow-nudge inline-block">→</span>
       </button>
     </motion.div>
