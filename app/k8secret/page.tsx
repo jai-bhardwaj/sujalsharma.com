@@ -7,9 +7,8 @@ import Stamp from '@/components/notebook/Stamp'
 const REPO_RAW = 'https://raw.githubusercontent.com/jai-bhardwaj/k8secret/main/docs/screenshots'
 const REPO_URL = 'https://github.com/jai-bhardwaj/k8secret'
 const INSTALL_CURL =
-  'curl -fsSL https://orbitalk8releases.blob.core.windows.net/k8secret-releases/install.sh | bash'
-const MANIFEST_URL =
-  'https://orbitalk8releases.blob.core.windows.net/k8secret-releases/latest.json'
+  'curl -fsSL https://raw.githubusercontent.com/jai-bhardwaj/k8secret/main/release/install.sh | bash'
+const MANIFEST_URL = 'https://github.com/jai-bhardwaj/k8secret/releases/latest'
 
 export default function K8SecretPage() {
   return (
