@@ -62,6 +62,15 @@ export default function K8SecretFig() {
                 gap: 'var(--s-3)',
               }}
             >
+              <li>
+                <a
+                  href="/k8secret"
+                  className="link-ink"
+                  style={{ color: 'var(--stamp)' }}
+                >
+                  → product page
+                </a>
+              </li>
               {K8.repos?.map((r) => (
                 <li key={r.url}>
                   <a
