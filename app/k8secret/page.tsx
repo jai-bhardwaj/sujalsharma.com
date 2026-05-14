@@ -153,14 +153,30 @@ function Hero() {
               stream. K8Secret talks directly to your cluster's API —
               no Electron, no kubectl shim, no telemetry.
             </p>
+
+            {/* Install one-liner — primary action, Homebrew style */}
+            <div
+              className="k8s-hero-install"
+              role="region"
+              aria-label="Install command — copy and paste into your terminal"
+            >
+              <span className="k8s-hero-install-prompt" aria-hidden>
+                $
+              </span>
+              <div className="k8s-hero-install-scroll">
+                <code>{INSTALL_CURL}</code>
+              </div>
+              <CopyButton text={INSTALL_CURL} />
+            </div>
+
             <div className="k8s-hero-ctas">
               <a
                 href={LATEST_RELEASE_URL}
-                className="k8s-btn k8s-btn-primary"
+                className="k8s-btn k8s-btn-ghost"
                 aria-label="Download K8Secret for macOS"
               >
                 <DownloadIcon />
-                Download for macOS
+                Download .dmg
               </a>
               <a
                 href={REPO_URL}
@@ -478,30 +494,59 @@ function Install() {
     <section className="k8s-section" id="install" aria-labelledby="install-title">
       <div className="k8s-container">
         <div className="k8s-section-head">
-          <div className="k8s-section-eyebrow">Install</div>
+          <div className="k8s-section-eyebrow">What the installer does</div>
           <h2 id="install-title" className="k8s-h2">
-            One command. No Homebrew tap. No notarization wait.
+            Hands on keyboard. No surprises.
           </h2>
+          <p className="k8s-lede">
+            The one-liner in the hero runs a small shell script — under
+            100 lines, no obfuscation — that you can read on GitHub
+            before pasting. Here's exactly what it does, in order:
+          </p>
         </div>
 
-        <div className="k8s-install-card">
-          <div className="k8s-install-bar">
-            <span className="k8s-dot k8s-dot-red" aria-hidden />
-            <span className="k8s-dot k8s-dot-amber" aria-hidden />
-            <span className="k8s-dot k8s-dot-green" aria-hidden />
-            <span className="k8s-install-path">~/$</span>
-          </div>
-          <div className="k8s-install-code">
-            <code>{INSTALL_CURL}</code>
-            <CopyButton text={INSTALL_CURL} />
-          </div>
-          <div className="k8s-install-meta">
-            <span>The installer fetches the manifest, downloads the signed .dmg, copies K8Secret.app into /Applications, and strips the quarantine bit so it launches without a Gatekeeper prompt.</span>
-          </div>
-        </div>
+        <ol className="k8s-install-steps">
+          <li>
+            Fetches <code>release/latest.json</code> from the repo to
+            learn the current version + DMG URL.
+          </li>
+          <li>
+            Downloads the signed <code>.dmg</code> from GitHub Releases
+            (HTTPS, served from GitHub's CDN).
+          </li>
+          <li>
+            Mounts the DMG silently with <code>hdiutil</code> and
+            copies <code>K8Secret.app</code> into <code>/Applications</code>.
+          </li>
+          <li>
+            Strips the <code>com.apple.quarantine</code> attribute so
+            macOS Gatekeeper doesn't prompt on first launch.
+          </li>
+          <li>
+            Re-signs ad-hoc with <code>codesign</code>, unmounts the
+            DMG, deletes the temp file.
+          </li>
+          <li>
+            That's it. No daemons, no PATH changes, no LaunchAgents, no
+            phone-home.
+          </li>
+        </ol>
 
         <div className="k8s-install-alts">
-          <a href={LATEST_RELEASE_URL} className="k8s-link-arrow" target="_blank" rel="noopener noreferrer">
+          <a
+            href={`${REPO_URL}/blob/main/release/install.sh`}
+            className="k8s-link-arrow"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read the installer source <ArrowIcon />
+          </a>
+          <a
+            href={LATEST_RELEASE_URL}
+            className="k8s-link-arrow"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Manual .dmg download <ArrowIcon />
           </a>
           <a
