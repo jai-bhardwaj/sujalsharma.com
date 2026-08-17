@@ -17,52 +17,52 @@ export default function K8SecretPage() {
       <Showcase
         eyebrow="Secrets"
         title="Decoded inline. No more base64 chains."
-        body="Opaque secrets render as readable key/value pairs the moment you select them. Edit in place. Reveal on click. Bulk-import a .env or JSON with a live preview of which keys are new and which will be overwritten — before any change touches the cluster."
+        body="Opaque secrets render as readable key/value pairs the moment you select them, masked until you ask. Edit in place, staged locally and applied as one atomic merge-patch on the version you read — so either every change lands or none does, and a conflict is a conflict rather than a silent overwrite."
         bullets={[
           'Inline reveal on click — never accidentally screenshot a secret you forgot you opened',
           'Bulk import from .env, JSON, or paste — diff preview before commit',
           'Per-key search across an entire secret, across namespaces',
         ]}
-        image="/k8secret/09-secret-detail.png"
+        image="/k8secret/secrets.png"
         alt="A Kubernetes secret displayed as plain key/value pairs with reveal-on-click controls"
         flip={false}
       />
       <Showcase
-        eyebrow="Logs"
-        title="Live tail with severity filters."
-        body="Each pod gets a dedicated log window. Stream in real time, filter by level, search across the stream, pop multiple windows side by side. The kind of log experience you'd build for yourself if kubectl logs -f weren't your only option."
+        eyebrow="YAML"
+        title="The live manifest, a tab away."
+        body="Every resource shows what the API server actually returns — not a rendering of what the app parsed — with managedFields dropped the way kubectl drops it. Secret values stay redacted there: base64 is not encryption, and opening a tab is not asking to see them."
         bullets={[
-          'Per-pod log windows that survive context switches',
-          'Filter by INFO / WARN / ERROR with a single keypress',
-          'Multi-window — tail prod and staging side by side',
+          'Copy the manifest as the server has it, in one click',
+          'Editable for secrets, applied as one write on the version you opened',
+          'Logs stream in their own window, with search and severity filters',
         ]}
-        image="/k8secret/05-log-stream.png"
+        image="/k8secret/yaml.png"
         alt="Live log streaming window with severity filters and search"
         flip={true}
       />
       <Showcase
-        eyebrow="Bulk import"
-        title=".env files, in. Secret manifests, out."
-        body="Paste a .env or upload a JSON file. K8Secret shows the merge preview — which keys are new, which will be overwritten, which are unchanged — before any change touches the cluster. Then commit, or back out cleanly."
+        eyebrow="Multi-cluster"
+        title="One window, one cluster, its own colour."
+        body="⌘N opens a chooser rather than a second window onto the same place. Open ten if you like — each window keeps its own cluster, namespace, scope and selection, and the colour you give a cluster paints its whole window, so the one showing production is unmistakable from across the room."
         bullets={[
-          'Drag-drop .env, JSON, or yaml',
-          'Visual merge preview with per-key diff',
-          'Idempotent: re-importing the same file is a no-op',
+          'Filter clusters and namespaces by name, with counts beside them',
+          'The clusters you actually use sort to the top',
+          '⌘K jumps to any resource in any namespace',
         ]}
-        image="/k8secret/10-bulk-import.png"
+        image="/k8secret/clusters.png"
         alt="Bulk-import dialog showing a .env file being merged into a Kubernetes secret"
         flip={false}
       />
       <Showcase
         eyebrow="Pods"
         title="The detail view a real engineer needs."
-        body="CPU and memory plotted against requests and limits. Container info, pod IP, owner reference, recent events. Everything kubectl describe shows, in a window you can scan at a glance."
+        body="CPU and memory against the pod's own requests, restarts, placement, containers and events. Everything kubectl describe shows, in a window you can scan at a glance — and a rollout is a ring that fills rather than a spinner that spins."
         bullets={[
           'CPU/mem against requests and limits — see throttling before it hurts',
           'Owner chain (Deployment → ReplicaSet → Pod) is one click away',
           'Events feed for the pod and its containers',
         ]}
-        image="/k8secret/04-pod-detail.png"
+        image="/k8secret/pods.png"
         alt="Pod detail view with metrics, container info, and events"
         flip={true}
       />
@@ -139,7 +139,7 @@ function Hero() {
           <div className="k8s-hero-content">
             <div className="k8s-eyebrow">
               <span className="k8s-dot k8s-dot-live" aria-hidden />
-              <span>macOS · open source · v0.5.2</span>
+              <span>macOS · open source · v0.6.6</span>
             </div>
             <h1 className="k8s-h1">
               Kubernetes,{' '}
@@ -194,16 +194,16 @@ function Hero() {
           </div>
 
           <div className="k8s-hero-image" aria-hidden>
-            <MacWindow title="K8Secret — production">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/k8secret/02-deployment-detail.png"
-                alt=""
-                width={1600}
-                height={1000}
-                fetchPriority="high"
-              />
-            </MacWindow>
+            {/* The screenshot carries the app's own window chrome and shadow,
+                so it needs no frame drawn around it. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/k8secret/overview.png"
+              alt=""
+              width={1400}
+              height={900}
+              fetchPriority="high"
+            />
           </div>
         </div>
       </div>
@@ -340,10 +340,8 @@ function Showcase({
             </ul>
           </div>
           <div className="k8s-showcase-image">
-            <MacWindow>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image} alt={alt} width={1600} height={1000} loading="lazy" />
-            </MacWindow>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt={alt} width={1400} height={900} loading="lazy" />
           </div>
         </div>
       </div>
@@ -785,19 +783,6 @@ function Footer() {
 /* macOS window framing                                                       */
 /* -------------------------------------------------------------------------- */
 
-function MacWindow({ title, children }: { title?: string; children: React.ReactNode }) {
-  return (
-    <div className="k8s-window" role="presentation">
-      <div className="k8s-window-bar">
-        <span className="k8s-dot k8s-dot-red" />
-        <span className="k8s-dot k8s-dot-amber" />
-        <span className="k8s-dot k8s-dot-green" />
-        {title && <span className="k8s-window-title">{title}</span>}
-      </div>
-      <div className="k8s-window-body">{children}</div>
-    </div>
-  )
-}
 
 /* -------------------------------------------------------------------------- */
 /* Icons                                                                      */

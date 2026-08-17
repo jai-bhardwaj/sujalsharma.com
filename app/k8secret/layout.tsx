@@ -4,7 +4,7 @@ const TITLE = 'K8Secret — a native macOS app for Kubernetes'
 const DESC =
   'View, edit, and bulk-import secrets. Stream logs. Scale deployments. Port-forward with retry. Multi-cluster, multi-window, keyboard-driven. Native Swift. MIT. No telemetry.'
 const PAGE_URL = 'https://sujalsharma.com/k8secret'
-const OG_IMAGE = 'https://sujalsharma.com/k8secret/02-deployment-detail.png'
+const OG_IMAGE = 'https://sujalsharma.com/k8secret/overview.png'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sujalsharma.com'),
