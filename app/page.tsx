@@ -7,6 +7,7 @@ import Mach0Fig from '@/components/notebook/sections/Mach0Fig'
 import PinnacleFig from '@/components/notebook/sections/PinnacleFig'
 import K8SecretFig from '@/components/notebook/sections/K8SecretFig'
 import DriftscanFig from '@/components/notebook/sections/DriftscanFig'
+import EvalgateFig from '@/components/notebook/sections/EvalgateFig'
 import NowMargin from '@/components/notebook/sections/NowMargin'
 import RaceTaped from '@/components/notebook/sections/RaceTaped'
 import Contact from '@/components/notebook/sections/Contact'
@@ -25,6 +26,7 @@ export default function Home() {
         <PinnacleFig />
         <K8SecretFig />
         <DriftscanFig />
+        <EvalgateFig />
         <NowMargin />
         <Contact />
       </Spread>
