@@ -88,6 +88,20 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'driftscan',
+    ticker: 'DRIFT',
+    title: 'driftscan',
+    lang: 'Python',
+    status: 'OSS',
+    lastCommit: 'oct 2026',
+    featured: true,
+    description: 'A sync that reports success has not told you the two stores agree',
+    longDescription:
+      "The sync failure that matters is not the one that pages you, it is the one where the job completes, logs a row count and is quietly wrong. Checking properly means comparing every row on both sides every time, so nobody runs it. driftscan buckets the key space and compares a row count plus an order-independent XOR of row hashes per bucket \u2014 one grouped query per side whatever the table size \u2014 then opens only the buckets that disagree: finding six bad rows in fifty thousand reads 1,195 of them. It normalises decimal scale, timestamp precision and bool/int before hashing, because a detector that reports every type round-trip as drift stops being read after the third false alarm; each normalisation is lossy on purpose, so each is named in the report. And it has three verdicts rather than two, because \u201cI found nothing\u201d and \u201cI stopped looking\u201d call for opposite responses.",
+    technologies: ['Python', 'BLAKE2b', 'ClickHouse', 'PostgreSQL', 'Zero deps'],
+    repos: [{ label: 'github', url: 'https://github.com/jai-bhardwaj/driftscan' }],
+  },
+  {
     id: 'evalgate',
     ticker: 'EVAL',
     title: 'evalgate',
