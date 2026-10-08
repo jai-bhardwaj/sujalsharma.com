@@ -88,6 +88,20 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'restore-proof',
+    ticker: 'RSTR',
+    title: 'restore-proof',
+    lang: 'PostgreSQL · Bash',
+    status: 'OSS',
+    lastCommit: 'oct 2026',
+    featured: true,
+    description: 'A backup you have not restored is not a backup, it is a claim',
+    longDescription:
+      "Backup tooling reports the claim as the fact: the dump exited zero, the file is on disk, the dashboard is green. None of that establishes the data can come back. This runs Postgres with streaming replication and WAL archiving, then continuously tries to disprove its own backups by restoring each one into a throwaway instance and querying it. Three states and no fourth \u2014 VERIFIED, UNVERIFIED, FAILED \u2014 and the backup script writes UNVERIFIED on success, because exiting zero is not evidence. It caught its own failure mode while being built: a permissions mistake meant the restored container ran initdb and came up as a pristine empty cluster, perfectly healthy and completely empty. Only the query step noticed.",
+    technologies: ['PostgreSQL', 'Replication', 'PITR', 'Ansible', 'Prometheus', 'Docker'],
+    repos: [{ label: 'github', url: 'https://github.com/jai-bhardwaj/restore-proof' }],
+  },
+  {
     id: 'driftscan',
     ticker: 'DRIFT',
     title: 'driftscan',
